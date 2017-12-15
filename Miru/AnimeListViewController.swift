@@ -10,13 +10,7 @@ import EHHorizontalSelectionView
 import UIKit
 import Foundation
 
-class AnimeListViewController: UIViewController, UINavigationBarDelegate, XMLParserDelegate, UITableViewDelegate, UITableViewDataSource, EHHorizontalSelectionViewProtocol {
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var horizontalView: EHHorizontalSelectionView!
-    
-    // states to show in the horizontal list view
-    var states = [MiruGlobals.WATCHING_OR_READING, MiruGlobals.COMPLETED, MiruGlobals.ON_HOLD, MiruGlobals.DROPPED, MiruGlobals.PLAN_TO_WATCH_OR_READ]
-    var selectedState = MiruGlobals.WATCHING_OR_READING
+class AnimeListViewController: ListViewController, UINavigationBarDelegate, XMLParserDelegate, UITableViewDelegate, UITableViewDataSource {
     
     // anime arrays
     var currentlyWatching = [Anime]()
@@ -25,12 +19,8 @@ class AnimeListViewController: UIViewController, UINavigationBarDelegate, XMLPar
     var dropped = [Anime]()
     var planToWatch = [Anime]()
     
-    // cache for images
-    var imageCache = NSCache<NSString, UIImage>()
-    
-    // XML parsing variables
+    // Used to parse through XML, we know which anime to populate
     var currentAnimeObj: Anime?     // keeps track of the current anime to populate/create
-    var currentXMLElement: String?   // xml element we are looking at in XML file eg. <my_status>
 
     override func viewDidAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.topItem?.title = "Anime list"
@@ -38,14 +28,7 @@ class AnimeListViewController: UIViewController, UINavigationBarDelegate, XMLPar
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.        
-        self.navigationController?.navigationBar.prefersLargeTitles = true
-        
-        self.horizontalView.delegate = self
-        EHHorizontalLineViewCell.updateFont(UIFont.systemFont(ofSize: 14))
-        EHHorizontalLineViewCell.updateFontMedium(UIFont.boldSystemFont(ofSize: 16))
-        EHHorizontalLineViewCell.updateColorHeight(2)
-        
+        // Do any additional setup after loading the view, typically from a nib.
         // make API call
         getAnimeList()
         
@@ -56,7 +39,6 @@ class AnimeListViewController: UIViewController, UINavigationBarDelegate, XMLPar
         dropped = dropped.sorted(by: { $0.series_title! < $1.series_title! })
         planToWatch = planToWatch.sorted(by: { $0.series_title! < $1.series_title! })
         
-        // self.tableView.register(TableViewSeriesCell.self, forCellReuseIdentifier: "CustomCell")
         self.tableView.delegate = self
         self.tableView.dataSource = self
     }
@@ -184,30 +166,6 @@ class AnimeListViewController: UIViewController, UINavigationBarDelegate, XMLPar
         cell.configureCell(anime: selectedAnime, image: img, cache: imageCache)
         
         return cell
-    }
-    
-    // EHHorizontal Protocol
-    func horizontalSelection(_ selectionView: EHHorizontalSelectionView, didSelectObjectAt index: UInt) {
-        self.selectedState = states[Int(index)]
-        self.tableView.reloadData()
-    }
-
-    func numberOfItems(inHorizontalSelection hSelView: EHHorizontalSelectionView) -> UInt {
-        return UInt(states.count)
-    }
-    
-    func titleForItem(at index: UInt, forHorisontalSelection hSelView: EHHorizontalSelectionView) -> String? {
-        if self.states[Int(index)] == MiruGlobals.WATCHING_OR_READING {
-            return "Currently watching"
-        } else if self.states[Int(index)] == MiruGlobals.COMPLETED {
-            return "Completed"
-        } else if self.states[Int(index)] == MiruGlobals.ON_HOLD {
-            return "On hold"
-        } else if self.states[Int(index)] == MiruGlobals.DROPPED {
-            return "Dropped"
-        } else {
-            return "Plan to watch"
-        }
     }
     
     /*

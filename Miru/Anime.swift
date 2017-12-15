@@ -25,4 +25,5 @@ class Anime {
     var my_status: Int?
     var my_rewatching: Int?
     var my_rewatching_ep: Int?
+    var my_last_updated: Int?
 }

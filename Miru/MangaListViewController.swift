@@ -9,7 +9,7 @@
 import UIKit
 import Foundation
 
-class MangaListViewController: UIViewController {
+class MangaListViewController: ListViewController {
     var currentlyReading: [Manga]?
     var completed: [Manga]?
     var onHold: [Manga]?
@@ -22,13 +22,11 @@ class MangaListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        print("MANGA LIST LOAD")
-        
-        getAnimeList()
+        // Do any additional setup after loading the view, typically from a nib.        
+        getMangaList()
     }
     
-    func getAnimeList() {
+    func getMangaList() {
         guard let username = MiruGlobals.username else { return }
         let url = URL(string: "https://myanimelist.net/malappinfo.php?u=" + username + "&status=all&type=manga")
         
