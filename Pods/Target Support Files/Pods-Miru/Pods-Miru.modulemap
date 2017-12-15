@@ -1,0 +1,6 @@
+framework module Pods_Miru {
+  umbrella header "Pods-Miru-umbrella.h"
+
+  export *
+  module * { export * }
+}

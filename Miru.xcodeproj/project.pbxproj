@@ -1,0 +1,452 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3304180AA0AEBED579CDFCA6 /* Pods_Miru.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF0BF946466754992A97F8B6 /* Pods_Miru.framework */; };
+		8A3D3C831FE38348000D2573 /* TableViewSeriesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3D3C821FE38348000D2573 /* TableViewSeriesCell.swift */; };
+		8A5D59001FE0B92E00304B91 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5D58FF1FE0B92E00304B91 /* AppDelegate.swift */; };
+		8A5D59021FE0B92E00304B91 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5D59011FE0B92E00304B91 /* LoginViewController.swift */; };
+		8A5D59051FE0B92E00304B91 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8A5D59031FE0B92E00304B91 /* Main.storyboard */; };
+		8A5D59071FE0B92E00304B91 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A5D59061FE0B92E00304B91 /* Assets.xcassets */; };
+		8A5D590A1FE0B92E00304B91 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8A5D59081FE0B92E00304B91 /* LaunchScreen.storyboard */; };
+		8A5D59121FE0C47400304B91 /* Anime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5D59111FE0C47400304B91 /* Anime.swift */; };
+		8AEE73551FE1DEBE0044B216 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEE73541FE1DEBE0044B216 /* Util.swift */; };
+		8AEE73571FE1E3420044B216 /* AnimeListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEE73561FE1E3420044B216 /* AnimeListViewController.swift */; };
+		8AEE73591FE1ECA40044B216 /* MangaListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEE73581FE1ECA40044B216 /* MangaListViewController.swift */; };
+		8AEE735B1FE1ECBE0044B216 /* BrowseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEE735A1FE1ECBE0044B216 /* BrowseViewController.swift */; };
+		8AEE735D1FE1ECD30044B216 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEE735C1FE1ECD30044B216 /* SettingsViewController.swift */; };
+		8AEE735F1FE1F2A20044B216 /* MiruGlobals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEE735E1FE1F2A20044B216 /* MiruGlobals.swift */; };
+		8AEE73611FE1F4F60044B216 /* Manga.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEE73601FE1F4F60044B216 /* Manga.swift */; };
+		8AEE73631FE231AA0044B216 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEE73621FE231AA0044B216 /* ProfileViewController.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0D339C64A2D27B2D5418B6F6 /* Pods-Miru.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Miru.release.xcconfig"; path = "Pods/Target Support Files/Pods-Miru/Pods-Miru.release.xcconfig"; sourceTree = "<group>"; };
+		8A3D3C821FE38348000D2573 /* TableViewSeriesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewSeriesCell.swift; sourceTree = "<group>"; };
+		8A5D58FC1FE0B92E00304B91 /* Miru.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Miru.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8A5D58FF1FE0B92E00304B91 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		8A5D59011FE0B92E00304B91 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		8A5D59041FE0B92E00304B91 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		8A5D59061FE0B92E00304B91 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8A5D59091FE0B92E00304B91 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8A5D590B1FE0B92F00304B91 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8A5D59111FE0C47400304B91 /* Anime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Anime.swift; sourceTree = "<group>"; };
+		8AEE73541FE1DEBE0044B216 /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
+		8AEE73561FE1E3420044B216 /* AnimeListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimeListViewController.swift; sourceTree = "<group>"; };
+		8AEE73581FE1ECA40044B216 /* MangaListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MangaListViewController.swift; sourceTree = "<group>"; };
+		8AEE735A1FE1ECBE0044B216 /* BrowseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseViewController.swift; sourceTree = "<group>"; };
+		8AEE735C1FE1ECD30044B216 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		8AEE735E1FE1F2A20044B216 /* MiruGlobals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiruGlobals.swift; sourceTree = "<group>"; };
+		8AEE73601FE1F4F60044B216 /* Manga.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Manga.swift; sourceTree = "<group>"; };
+		8AEE73621FE231AA0044B216 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		933CDA135441116C9FD57533 /* Pods-Miru.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Miru.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Miru/Pods-Miru.debug.xcconfig"; sourceTree = "<group>"; };
+		BF0BF946466754992A97F8B6 /* Pods_Miru.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Miru.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8A5D58F91FE0B92E00304B91 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3304180AA0AEBED579CDFCA6 /* Pods_Miru.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6F083AB091248CA06C4FD880 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				933CDA135441116C9FD57533 /* Pods-Miru.debug.xcconfig */,
+				0D339C64A2D27B2D5418B6F6 /* Pods-Miru.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		7831622117D0CE14C48E9357 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BF0BF946466754992A97F8B6 /* Pods_Miru.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8A5D58F31FE0B92E00304B91 = {
+			isa = PBXGroup;
+			children = (
+				8A5D58FE1FE0B92E00304B91 /* Miru */,
+				8A5D58FD1FE0B92E00304B91 /* Products */,
+				6F083AB091248CA06C4FD880 /* Pods */,
+				7831622117D0CE14C48E9357 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		8A5D58FD1FE0B92E00304B91 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8A5D58FC1FE0B92E00304B91 /* Miru.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8A5D58FE1FE0B92E00304B91 /* Miru */ = {
+			isa = PBXGroup;
+			children = (
+				8A5D58FF1FE0B92E00304B91 /* AppDelegate.swift */,
+				8A5D59011FE0B92E00304B91 /* LoginViewController.swift */,
+				8A5D59031FE0B92E00304B91 /* Main.storyboard */,
+				8A5D59061FE0B92E00304B91 /* Assets.xcassets */,
+				8A5D59081FE0B92E00304B91 /* LaunchScreen.storyboard */,
+				8A5D590B1FE0B92F00304B91 /* Info.plist */,
+				8A5D59111FE0C47400304B91 /* Anime.swift */,
+				8AEE73541FE1DEBE0044B216 /* Util.swift */,
+				8AEE73561FE1E3420044B216 /* AnimeListViewController.swift */,
+				8AEE73581FE1ECA40044B216 /* MangaListViewController.swift */,
+				8AEE735A1FE1ECBE0044B216 /* BrowseViewController.swift */,
+				8AEE735C1FE1ECD30044B216 /* SettingsViewController.swift */,
+				8AEE735E1FE1F2A20044B216 /* MiruGlobals.swift */,
+				8AEE73601FE1F4F60044B216 /* Manga.swift */,
+				8AEE73621FE231AA0044B216 /* ProfileViewController.swift */,
+				8A3D3C821FE38348000D2573 /* TableViewSeriesCell.swift */,
+			);
+			path = Miru;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8A5D58FB1FE0B92E00304B91 /* Miru */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8A5D590E1FE0B92F00304B91 /* Build configuration list for PBXNativeTarget "Miru" */;
+			buildPhases = (
+				B12E0C4288E2DA9572C138E9 /* [CP] Check Pods Manifest.lock */,
+				8A5D58F81FE0B92E00304B91 /* Sources */,
+				8A5D58F91FE0B92E00304B91 /* Frameworks */,
+				8A5D58FA1FE0B92E00304B91 /* Resources */,
+				FB6AFBBD369353D0DC68167F /* [CP] Embed Pods Frameworks */,
+				991BD86785FD85E547A41CF3 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Miru;
+			productName = Miru;
+			productReference = 8A5D58FC1FE0B92E00304B91 /* Miru.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8A5D58F41FE0B92E00304B91 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0910;
+				LastUpgradeCheck = 0910;
+				ORGANIZATIONNAME = "Angus Yuen";
+				TargetAttributes = {
+					8A5D58FB1FE0B92E00304B91 = {
+						CreatedOnToolsVersion = 9.1;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 8A5D58F71FE0B92E00304B91 /* Build configuration list for PBXProject "Miru" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 8A5D58F31FE0B92E00304B91;
+			productRefGroup = 8A5D58FD1FE0B92E00304B91 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8A5D58FB1FE0B92E00304B91 /* Miru */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8A5D58FA1FE0B92E00304B91 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8A5D590A1FE0B92E00304B91 /* LaunchScreen.storyboard in Resources */,
+				8A5D59071FE0B92E00304B91 /* Assets.xcassets in Resources */,
+				8A5D59051FE0B92E00304B91 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		991BD86785FD85E547A41CF3 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Miru/Pods-Miru-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B12E0C4288E2DA9572C138E9 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Miru-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FB6AFBBD369353D0DC68167F /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Miru/Pods-Miru-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/EHHorizontalSelectionView/EHHorizontalSelectionView.framework",
+				"${BUILT_PRODUCTS_DIR}/MalKit/MalKit.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EHHorizontalSelectionView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MalKit.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Miru/Pods-Miru-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8A5D58F81FE0B92E00304B91 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8A5D59021FE0B92E00304B91 /* LoginViewController.swift in Sources */,
+				8AEE73591FE1ECA40044B216 /* MangaListViewController.swift in Sources */,
+				8AEE73611FE1F4F60044B216 /* Manga.swift in Sources */,
+				8A5D59001FE0B92E00304B91 /* AppDelegate.swift in Sources */,
+				8AEE735F1FE1F2A20044B216 /* MiruGlobals.swift in Sources */,
+				8A5D59121FE0C47400304B91 /* Anime.swift in Sources */,
+				8AEE73551FE1DEBE0044B216 /* Util.swift in Sources */,
+				8AEE73571FE1E3420044B216 /* AnimeListViewController.swift in Sources */,
+				8AEE73631FE231AA0044B216 /* ProfileViewController.swift in Sources */,
+				8AEE735B1FE1ECBE0044B216 /* BrowseViewController.swift in Sources */,
+				8A3D3C831FE38348000D2573 /* TableViewSeriesCell.swift in Sources */,
+				8AEE735D1FE1ECD30044B216 /* SettingsViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		8A5D59031FE0B92E00304B91 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8A5D59041FE0B92E00304B91 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		8A5D59081FE0B92E00304B91 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8A5D59091FE0B92E00304B91 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		8A5D590C1FE0B92F00304B91 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		8A5D590D1FE0B92F00304B91 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8A5D590F1FE0B92F00304B91 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 933CDA135441116C9FD57533 /* Pods-Miru.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4GLUXJ545N;
+				INFOPLIST_FILE = Miru/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = au.edu.unsw.5020953.Miru;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8A5D59101FE0B92F00304B91 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0D339C64A2D27B2D5418B6F6 /* Pods-Miru.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4GLUXJ545N;
+				INFOPLIST_FILE = Miru/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = au.edu.unsw.5020953.Miru;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8A5D58F71FE0B92E00304B91 /* Build configuration list for PBXProject "Miru" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8A5D590C1FE0B92F00304B91 /* Debug */,
+				8A5D590D1FE0B92F00304B91 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8A5D590E1FE0B92F00304B91 /* Build configuration list for PBXNativeTarget "Miru" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8A5D590F1FE0B92F00304B91 /* Debug */,
+				8A5D59101FE0B92F00304B91 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8A5D58F41FE0B92E00304B91 /* Project object */;
+}
