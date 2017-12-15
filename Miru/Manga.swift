@@ -12,9 +12,10 @@ class Manga {
     var series_mangadb_id: Int?
     var series_title: String?
     var series_synonyms: String?
-    var series_type: String?
+    var series_type: Int?
     var series_chapters: Int?
     var series_volumes: Int?
+    var series_status: Int?
     var series_start: Date?
     var series_end: Date?
     var series_image: String?

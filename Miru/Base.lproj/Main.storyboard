@@ -215,10 +215,11 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="airingStatus" destination="PiQ-Yp-fKZ" id="tgk-P6-f0z"/>
-                                            <outlet property="episodesWatched" destination="tml-2d-Zer" id="cRp-id-pMV"/>
                                             <outlet property="imageThumbnail" destination="FkJ-MK-rLf" id="tjW-JR-G2O"/>
                                             <outlet property="myScore" destination="Ufd-4u-mh7" id="Tdg-Ec-H7F"/>
+                                            <outlet property="numCompleted" destination="tml-2d-Zer" id="IIl-cR-xTQ"/>
                                             <outlet property="title" destination="Xvr-It-5eg" id="OKV-0L-ET1"/>
+                                            <outlet property="watchedReadConstantLabel" destination="HBo-cb-uCu" id="Mpc-IM-hSr"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -348,15 +349,15 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VRm-1W-Lph">
-                                                            <rect key="frame" x="75" y="5" width="290" height="21"/>
+                                                            <rect key="frame" x="85" y="5" width="280" height="21"/>
                                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="EBv-lj-VVw">
-                                                            <rect key="frame" x="5" y="5" width="60" height="89.666666666666671"/>
+                                                            <rect key="frame" x="5" y="5" width="70" height="89.666666666666671"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="width" constant="60" id="1e6-zk-5jt"/>
+                                                                <constraint firstAttribute="width" constant="70" id="1e6-zk-5jt"/>
                                                                 <constraint firstAttribute="height" constant="89.670000000000002" id="Bcu-yo-BNY"/>
                                                             </constraints>
                                                         </imageView>
@@ -376,13 +377,13 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Airing Status" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LvQ-e0-dLs">
-                                                            <rect key="frame" x="75" y="34" width="72.666666666666686" height="14.333333333333336"/>
+                                                            <rect key="frame" x="85" y="34" width="72.666666666666686" height="14.333333333333336"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Watched eps: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9vv-7h-jSa">
-                                                            <rect key="frame" x="75" y="56.333333333333336" width="81" height="14.333333333333336"/>
+                                                            <rect key="frame" x="85" y="56.333333333333336" width="81" height="14.333333333333336"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -416,10 +417,11 @@
                                                 </tableViewCellContentView>
                                                 <connections>
                                                     <outlet property="airingStatus" destination="LvQ-e0-dLs" id="jt3-Gi-TYE"/>
-                                                    <outlet property="episodesWatched" destination="EQ7-a5-q17" id="LPO-dI-EKm"/>
                                                     <outlet property="imageThumbnail" destination="EBv-lj-VVw" id="4hR-MW-Y7A"/>
                                                     <outlet property="myScore" destination="eVu-pu-Owp" id="Yby-Bm-6hv"/>
+                                                    <outlet property="numCompleted" destination="EQ7-a5-q17" id="1Zl-QJ-qo2"/>
                                                     <outlet property="title" destination="VRm-1W-Lph" id="F5b-Ct-kmG"/>
+                                                    <outlet property="watchedReadConstantLabel" destination="9vv-7h-jSa" id="iwQ-Sm-DxJ"/>
                                                 </connections>
                                             </tableViewCell>
                                         </prototypes>

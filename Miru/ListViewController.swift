@@ -10,7 +10,7 @@ import EHHorizontalSelectionView
 import Foundation
 import UIKit
 
-class ListViewController: UIViewController, EHHorizontalSelectionViewProtocol {
+class ListViewController: UIViewController, EHHorizontalSelectionViewProtocol, XMLParserDelegate {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var horizontalView: EHHorizontalSelectionView!
     
@@ -30,6 +30,25 @@ class ListViewController: UIViewController, EHHorizontalSelectionViewProtocol {
         EHHorizontalLineViewCell.updateFont(UIFont.systemFont(ofSize: 14))
         EHHorizontalLineViewCell.updateFontMedium(UIFont.boldSystemFont(ofSize: 16))
         EHHorizontalLineViewCell.updateColorHeight(2)
+    }
+    
+    // Get list for that type
+    func getList(type: String) {
+        guard let username = MiruGlobals.username else { return }
+        let url = URL(string: "https://myanimelist.net/malappinfo.php?u=" + username + "&status=all&type=" + type)
+        
+        let sem = DispatchSemaphore.init(value: 0)
+        URLSession.shared.dataTask(with: url!) {(data, response, error) in
+            print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue))
+            if let data = data {
+                let parser = XMLParser(data: data)
+                parser.delegate = self
+                parser.parse()
+                sem.signal()
+            }
+            }.resume()
+        
+        sem.wait()
     }
     
     // EHHorizontal Protocol

@@ -10,7 +10,7 @@ import EHHorizontalSelectionView
 import UIKit
 import Foundation
 
-class AnimeListViewController: ListViewController, UINavigationBarDelegate, XMLParserDelegate, UITableViewDelegate, UITableViewDataSource {
+class AnimeListViewController: ListViewController, UINavigationBarDelegate, UITableViewDelegate, UITableViewDataSource {
     
     // anime arrays
     var currentlyWatching = [Anime]()
@@ -30,7 +30,7 @@ class AnimeListViewController: ListViewController, UINavigationBarDelegate, XMLP
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         // make API call
-        getAnimeList()
+        getList(type: "anime")
         
         // sort by alphabetical order
         currentlyWatching = currentlyWatching.sorted(by: { $0.series_title! < $1.series_title! })
@@ -41,24 +41,6 @@ class AnimeListViewController: ListViewController, UINavigationBarDelegate, XMLP
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
-    }
-    
-    func getAnimeList() {
-        guard let username = MiruGlobals.username else { return }
-        let url = URL(string: "https://myanimelist.net/malappinfo.php?u=" + username + "&status=all&type=anime")
-
-        let sem = DispatchSemaphore.init(value: 0)
-        URLSession.shared.dataTask(with: url!) {(data, response, error) in
-            print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue))
-            if let data = data {
-                let parser = XMLParser(data: data)
-                parser.delegate = self
-                parser.parse()
-                sem.signal()
-            }
-        }.resume()
-        
-        sem.wait()
     }
     
     func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
@@ -149,7 +131,8 @@ class AnimeListViewController: ListViewController, UINavigationBarDelegate, XMLP
         // if score is 0, set the text to -, otherwise take the score we stored
         cell.myScore.text = selectedAnime.my_score! == 0 ? "-" : String(describing: selectedAnime.my_score!)
         
-        cell.episodesWatched.text = selectedAnime.series_episodes! == 0 ? String(describing: selectedAnime.my_watched_episodes!) : String(describing: selectedAnime.my_watched_episodes!) + "/" + String(describing: selectedAnime.series_episodes!)
+        cell.watchedReadConstantLabel.text = "Watched: "
+        cell.numCompleted.text = selectedAnime.series_episodes! == 0 ? String(describing: selectedAnime.my_watched_episodes!) : String(describing: selectedAnime.my_watched_episodes!) + "/" + String(describing: selectedAnime.series_episodes!)
         cell.imageThumbnail.image = nil
         
         // set airing status text
