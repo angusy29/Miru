@@ -131,7 +131,6 @@ class AnimeListViewController: ListViewController, UINavigationBarDelegate, UITa
         // if score is 0, set the text to -, otherwise take the score we stored
         cell.myScore.text = selectedAnime.my_score! == 0 ? "-" : String(describing: selectedAnime.my_score!)
         
-        cell.watchedReadConstantLabel.text = "Watched: "
         cell.numCompleted.text = selectedAnime.series_episodes! == 0 ? String(describing: selectedAnime.my_watched_episodes!) : String(describing: selectedAnime.my_watched_episodes!) + "/" + String(describing: selectedAnime.series_episodes!)
         cell.imageThumbnail.image = nil
         

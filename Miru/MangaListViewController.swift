@@ -129,9 +129,7 @@ class MangaListViewController: ListViewController, UINavigationBarDelegate, UITa
         
         // if score is 0, set the text to -, otherwise take the score we stored
         cell.myScore.text = selectedManga.my_score! == 0 ? "-" : String(describing: selectedManga.my_score!)
-        
-        cell.watchedReadConstantLabel.text = "Chapters: "
-        
+                
         cell.numCompleted.text = selectedManga.series_chapters! == 0 ? String(describing: selectedManga.my_read_chapters!) : String(describing: selectedManga.my_read_chapters!) + "/" + String(describing: selectedManga.series_chapters!)
         cell.imageThumbnail.image = nil
         
