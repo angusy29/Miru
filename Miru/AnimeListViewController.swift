@@ -49,6 +49,13 @@ class AnimeListViewController: UIViewController, UINavigationBarDelegate, XMLPar
         // make API call
         getAnimeList()
         
+        // sort by alphabetical order
+        currentlyWatching = currentlyWatching.sorted(by: { $0.series_title! < $1.series_title! })
+        completed = completed.sorted(by: { $0.series_title! < $1.series_title! })
+        onHold = onHold.sorted(by: { $0.series_title! < $1.series_title! })
+        dropped = dropped.sorted(by: { $0.series_title! < $1.series_title! })
+        planToWatch = planToWatch.sorted(by: { $0.series_title! < $1.series_title! })
+        
         // self.tableView.register(TableViewSeriesCell.self, forCellReuseIdentifier: "CustomCell")
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -165,11 +172,11 @@ class AnimeListViewController: UIViewController, UINavigationBarDelegate, XMLPar
         
         // set airing status text
         if selectedAnime.series_status == MiruGlobals.CURRENTLY_ONGOING {
-            cell.airingStatus.text = "Currently ongoing"
+            cell.airingStatus.text = "Airing"
         } else if selectedAnime.series_status == MiruGlobals.FINISHED_AIRING {
             cell.airingStatus.text = "Finished airing"
         } else if selectedAnime.series_status == MiruGlobals.NOT_YET_RELEASED {
-            cell.airingStatus.text = "Not yet released"
+            cell.airingStatus.text = "Not yet airing"
         }
         
         // checks the cache, and downloads the image or uses the one in the cache
