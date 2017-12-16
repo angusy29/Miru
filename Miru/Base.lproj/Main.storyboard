@@ -946,11 +946,11 @@
                             <outlet property="daysSpentReading" destination="90b-oE-RaK" id="RS8-fG-Ekg"/>
                             <outlet property="daysSpentWatching" destination="yk9-AQ-jTG" id="jUT-sI-DKk"/>
                             <outlet property="dropped" destination="VfF-rV-YkR" id="0WW-vS-W6s"/>
-                            <outlet property="mangaCompleted" destination="Yqa-rD-xWF" id="W0j-tr-l1P"/>
+                            <outlet property="mangaCompleted" destination="QDE-4c-VQQ" id="UpH-rj-n1B"/>
                             <outlet property="mangaDropped" destination="c9J-ME-y8x" id="nfS-ie-oYZ"/>
                             <outlet property="mangaOnHold" destination="YdG-tE-wd3" id="pWT-87-9n2"/>
                             <outlet property="mangaPlanToRead" destination="LD1-T0-OgM" id="OT4-yo-6lQ"/>
-                            <outlet property="mangaReading" destination="LD1-T0-OgM" id="mg3-sd-YNz"/>
+                            <outlet property="mangaReading" destination="Yqa-rD-xWF" id="6nh-Ei-cZA"/>
                             <outlet property="onHold" destination="PdA-6R-ZQT" id="zm1-h0-Afi"/>
                             <outlet property="planToWatch" destination="dgg-9M-sdm" id="zRk-Kp-49T"/>
                             <outlet property="watching" destination="4JA-9M-e4L" id="6Qx-al-Vkd"/>
