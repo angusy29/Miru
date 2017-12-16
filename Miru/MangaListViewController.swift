@@ -10,6 +10,7 @@ import UIKit
 import Foundation
 
 class MangaListViewController: ListViewController, UINavigationBarDelegate, UITableViewDelegate, UITableViewDataSource {
+    var idToManga = [Int: Manga]()
     var currentlyReading = [Manga]()
     var completed = [Manga]()
     var onHold = [Manga]()
@@ -48,43 +49,56 @@ class MangaListViewController: ListViewController, UINavigationBarDelegate, UITa
     }
     
     func parser(_ parser: XMLParser, foundCharacters string: String) {
-        guard let mangaObj = currentMangaObj else { return }
+        var mangaObj = currentMangaObj
+        if mangaObj?.series_mangadb_id != nil {
+            guard let id = mangaObj?.series_mangadb_id else { return }
+            if idToManga[id] != nil {
+                mangaObj = idToManga[id]
+            }
+        }
+        
         if (currentXMLElement == "series_mangadb_id") {
-            mangaObj.series_mangadb_id = Int(string)
+            mangaObj?.series_mangadb_id = Int(string)
         } else if (currentXMLElement == "series_title") {
-            mangaObj.series_title = mangaObj.series_title == nil ? string : mangaObj.series_title! + string
+            guard let id = mangaObj?.series_mangadb_id else { return }
+            if idToManga[id] == nil {
+                mangaObj?.series_title = mangaObj?.series_title == nil ? string : (mangaObj?.series_title)! + string
+            }
         } else if (currentXMLElement == "series_synonyms") {
-            mangaObj.series_synonyms?.append(string)
+            guard let id = mangaObj?.series_mangadb_id else { return }
+            if idToManga[id] == nil {
+                mangaObj?.series_synonyms?.append(string)
+            }
         } else if (currentXMLElement == "series_type") {
-            mangaObj.series_type = Int(string)
+            mangaObj?.series_type = Int(string)
         } else if (currentXMLElement == "series_chapters") {
-            mangaObj.series_chapters = Int(string)
+            mangaObj?.series_chapters = Int(string)
         } else if (currentXMLElement == "series_volumes") {
-            mangaObj.series_volumes = Int(string)
+            mangaObj?.series_volumes = Int(string)
         } else if (currentXMLElement == "series_status") {
-            mangaObj.series_status = Int(string)
+            mangaObj?.series_status = Int(string)
         } else if (currentXMLElement == "series_start") {
             
         } else if (currentXMLElement == "series_end") {
             
         } else if (currentXMLElement == "series_image") {
-            mangaObj.series_image = string
+            mangaObj?.series_image = string
         } else if (currentXMLElement == "my_read_chapters") {
-            mangaObj.my_read_chapters = Int(string)
+            mangaObj?.my_read_chapters = Int(string)
         } else if (currentXMLElement == "my_read_volumes") {
-            mangaObj.my_read_volumes = Int(string)
+            mangaObj?.my_read_volumes = Int(string)
         } else if (currentXMLElement == "my_start_date") {
             
         } else if (currentXMLElement == "my_finish_date") {
             
         } else if (currentXMLElement == "my_score") {
-            mangaObj.my_score = Int(string)
+            mangaObj?.my_score = Int(string)
         } else if (currentXMLElement == "my_status") {
-            mangaObj.my_status = Int(string)
+            mangaObj?.my_status = Int(string)
         } else if (currentXMLElement == "my_rereadingg") {
-            mangaObj.my_rereadingg = Int(string)
+            mangaObj?.my_rereadingg = Int(string)
         } else if (currentXMLElement == "my_rereading_chap") {
-            mangaObj.my_rereading_chap = Int(string)
+            mangaObj?.my_rereading_chap = Int(string)
         } else if (currentXMLElement == "my_last_updated") {
             
         } else if (currentXMLElement == "my_tags") {
@@ -96,6 +110,14 @@ class MangaListViewController: ListViewController, UINavigationBarDelegate, UITa
         if (elementName == "manga") {
             guard let mangaObj = currentMangaObj else { return }
             guard let status = currentMangaObj?.my_status else { return }
+            guard let id = mangaObj.series_mangadb_id else { return }
+            
+            // if the anime already exists, we update it
+            if idToManga[id] != nil {
+                idToManga[id] = mangaObj
+                currentMangaObj = nil
+                return
+            }
             
             if (status == MiruGlobals.WATCHING_OR_READING) {
                 currentlyReading.append(mangaObj)
@@ -108,6 +130,7 @@ class MangaListViewController: ListViewController, UINavigationBarDelegate, UITa
             } else if (status == MiruGlobals.PLAN_TO_WATCH_OR_READ) {
                 planToRead.append(mangaObj)
             }
+            idToManga[id] = mangaObj
             currentMangaObj = nil
         }
     }
@@ -128,7 +151,8 @@ class MangaListViewController: ListViewController, UINavigationBarDelegate, UITa
         cell.title.text = selectedManga.series_title
         
         // if score is 0, set the text to -, otherwise take the score we stored
-        cell.myScore.text = selectedManga.my_score! == 0 ? "-" : String(describing: selectedManga.my_score!)
+        let scoreTitle = selectedManga.my_score! == 0 ? "-" : String(describing: selectedManga.my_score!)
+        cell.myScore.setTitle(scoreTitle, for: UIControlState.normal)
                 
         cell.numCompleted.text = selectedManga.series_chapters! == 0 ? String(describing: selectedManga.my_read_chapters!) : String(describing: selectedManga.my_read_chapters!) + "/" + String(describing: selectedManga.series_chapters!)
         cell.imageThumbnail.image = nil

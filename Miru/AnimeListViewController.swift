@@ -13,6 +13,7 @@ import Foundation
 class AnimeListViewController: ListViewController, UINavigationBarDelegate, UITableViewDelegate, UITableViewDataSource {
     
     // anime arrays
+    var idToAnime = [Int: Anime]()
     var currentlyWatching = [Anime]()
     var completed = [Anime]()
     var onHold = [Anime]()
@@ -53,39 +54,53 @@ class AnimeListViewController: ListViewController, UINavigationBarDelegate, UITa
     }
     
     func parser(_ parser: XMLParser, foundCharacters string: String) {
-        guard let animeObj = currentAnimeObj else { return }
+        var animeObj = currentAnimeObj
+        
+        if animeObj?.series_animedb_id != nil {
+            guard let id = animeObj?.series_animedb_id else { return }
+            if idToAnime[id] != nil {
+                animeObj = idToAnime[id]
+            }
+        }
+        
         if (currentXMLElement == "series_animedb_id") {
-            animeObj.series_animedb_id = Int(string)
+            animeObj?.series_animedb_id = Int(string)
         } else if (currentXMLElement == "series_title") {
-            animeObj.series_title = animeObj.series_title == nil ? string : animeObj.series_title! + string
+            guard let id = animeObj?.series_animedb_id else { return }
+            if idToAnime[id] == nil {
+                animeObj?.series_title = animeObj?.series_title == nil ? string : (animeObj?.series_title)! + string
+            }
         } else if (currentXMLElement == "series_synonyms") {
-            animeObj.series_synonyms?.append(string)
+            guard let id = animeObj?.series_animedb_id else { return }
+            if idToAnime[id] == nil {
+                animeObj?.series_synonyms?.append(string)
+            }
         } else if (currentXMLElement == "series_type") {
-            animeObj.series_type = Int(string)
+            animeObj?.series_type = Int(string)
         } else if (currentXMLElement == "series_episodes") {
-            animeObj.series_episodes = Int(string)
+            animeObj?.series_episodes = Int(string)
         } else if (currentXMLElement == "series_status") {
-            animeObj.series_status = Int(string)
+            animeObj?.series_status = Int(string)
         } else if (currentXMLElement == "series_start") {
             
         } else if (currentXMLElement == "series_end") {
             
         } else if (currentXMLElement == "series_image") {
-            animeObj.series_image = string
+            animeObj?.series_image = string
         } else if (currentXMLElement == "my_watched_episodes") {
-            animeObj.my_watched_episodes = Int(string)
+            animeObj?.my_watched_episodes = Int(string)
         } else if (currentXMLElement == "my_start_date") {
             
         } else if (currentXMLElement == "my_finish_date") {
             
         } else if (currentXMLElement == "my_score") {
-            animeObj.my_score = Int(string)
+            animeObj?.my_score = Int(string)
         } else if (currentXMLElement == "my_status") {
-            animeObj.my_status = Int(string)
+            animeObj?.my_status = Int(string)
         } else if (currentXMLElement == "my_rewatching") {
-            animeObj.my_rewatching = Int(string)
+            animeObj?.my_rewatching = Int(string)
         } else if (currentXMLElement == "my_rewatching_ep") {
-            animeObj.my_rewatching_ep = Int(string)
+            animeObj?.my_rewatching_ep = Int(string)
         } else if (currentXMLElement == "my_last_updated") {
             
         } else if (currentXMLElement == "my_tags") {
@@ -97,7 +112,16 @@ class AnimeListViewController: ListViewController, UINavigationBarDelegate, UITa
         if (elementName == "anime") {
             guard let animeObj = currentAnimeObj else { return }
             guard let status = currentAnimeObj?.my_status else { return }
+            guard let id = animeObj.series_animedb_id else { return }
             
+            // if the anime already exists, we update it
+            if idToAnime[id] != nil {
+                idToAnime[id] = animeObj
+                currentAnimeObj = nil
+                return
+            }
+            
+            // otherwise we append the anime
             if (status == MiruGlobals.WATCHING_OR_READING) {
                 currentlyWatching.append(animeObj)
             } else if (status == MiruGlobals.COMPLETED) {
@@ -109,6 +133,7 @@ class AnimeListViewController: ListViewController, UINavigationBarDelegate, UITa
             } else if (status == MiruGlobals.PLAN_TO_WATCH_OR_READ) {
                 planToWatch.append(animeObj)
             }
+            idToAnime[id] = animeObj
             currentAnimeObj = nil
         }
     }
@@ -129,7 +154,8 @@ class AnimeListViewController: ListViewController, UINavigationBarDelegate, UITa
         cell.title.text = selectedAnime.series_title
         
         // if score is 0, set the text to -, otherwise take the score we stored
-        cell.myScore.text = selectedAnime.my_score! == 0 ? "-" : String(describing: selectedAnime.my_score!)
+        let scoreTitle = selectedAnime.my_score! == 0 ? "-" : String(describing: selectedAnime.my_score!)
+        cell.myScore.setTitle(scoreTitle, for: UIControlState.normal)
         
         cell.numCompleted.text = selectedAnime.series_episodes! == 0 ? String(describing: selectedAnime.my_watched_episodes!) : String(describing: selectedAnime.my_watched_episodes!) + "/" + String(describing: selectedAnime.series_episodes!)
         cell.imageThumbnail.image = nil

@@ -17,7 +17,7 @@ class TableViewSeriesCell: UITableViewCell {
 
     @IBOutlet weak var numCompleted: UILabel! // number of episodes or chapters completed
     
-    @IBOutlet weak var myScore: UILabel!
+    @IBOutlet weak var myScore: UIButton!
     
     @IBOutlet weak var incrementChapterEpisodeButton: UIButton!
     
@@ -120,6 +120,20 @@ class TableViewSeriesCell: UITableViewCell {
                     }
                 }
             }
+        }
+    }
+    
+    // rip encapsulation
+    @IBAction func scoreButtonPressed(_ sender: Any) {
+        let tableView = self.superview as! UITableView
+        let vc = tableView.dataSource as! ListViewController
+        
+        if manga == nil {
+            guard let anime = self.anime else { return }
+            vc.showPickerView(anime: anime, cell: self)
+        } else {
+            guard let manga = self.manga else { return }
+            vc.showPickerView(manga: manga, cell: self)
         }
     }
 }

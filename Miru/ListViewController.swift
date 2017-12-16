@@ -10,31 +10,75 @@ import EHHorizontalSelectionView
 import Foundation
 import UIKit
 
-class ListViewController: UIViewController, EHHorizontalSelectionViewProtocol, XMLParserDelegate {
+class ListViewController: UIViewController, EHHorizontalSelectionViewProtocol, XMLParserDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var horizontalView: EHHorizontalSelectionView!
     
-    var states = [MiruGlobals.WATCHING_OR_READING, MiruGlobals.COMPLETED, MiruGlobals.ON_HOLD, MiruGlobals.DROPPED, MiruGlobals.PLAN_TO_WATCH_OR_READ]
+    @IBOutlet weak var pickerView: UIPickerView!
+    @IBOutlet weak var pickerToolbar: UIToolbar!
+    @IBOutlet weak var pickerSaveButton: UIBarButtonItem!
+    
+    // horizontal view states
+    var states = [MiruGlobals.WATCHING_OR_READING,
+                  MiruGlobals.COMPLETED,
+                  MiruGlobals.ON_HOLD,
+                  MiruGlobals.DROPPED,
+                  MiruGlobals.PLAN_TO_WATCH_OR_READ]
     var selectedState = MiruGlobals.WATCHING_OR_READING
+    
+    // picker view selected item
+    var selectedPickerViewItem: Int?
     
     // cache for images
     var imageCache = NSCache<NSString, UIImage>()
     
     // XML parsing variables
     var currentXMLElement: String?   // xml element we are looking at in XML file eg. <my_status>
+    var type: String?
+    
+    // picker view data source
+    var scores = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    var scoreString = ["-", "(1) Appalling", "(2) Horrible", "(3) Very bad", "(4) Bad", "(5) Average", "(6) Fine", "(7) Good", "(8) Very good", "(9) Great", "(10) Masterpiece"]
+    
+    // Used for changing scores for the anime/manga
+    // this is actually so bad practice.....
+    var anime: Anime?
+    var manga: Manga?
+    var cell: TableViewSeriesCell?      // cell to modify
     
     override func viewDidLoad() {
         self.navigationController?.navigationBar.prefersLargeTitles = true
         
+        // horizontal view initialise
         self.horizontalView.delegate = self
         EHHorizontalLineViewCell.updateFont(UIFont.systemFont(ofSize: 14))
         EHHorizontalLineViewCell.updateFontMedium(UIFont.boldSystemFont(ofSize: 16))
         EHHorizontalLineViewCell.updateColorHeight(2)
+        
+        // refresh initialise
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refreshList), for: .valueChanged)
+        refreshControl.attributedTitle = NSAttributedString(string: "Fetching data from myanimelist.net")
+        tableView.refreshControl = refreshControl
+        
+        // picker view initialise
+        self.pickerView.delegate = self
+        self.pickerView.dataSource = self
+        hidePickerView()
+    }
+    
+    @objc func refreshList(refreshControl: UIRefreshControl) {
+        guard let type = self.type else { return }
+        getList(type: type)
+        tableView.reloadData()
+        // somewhere in your code you might need to call:
+        refreshControl.endRefreshing()
     }
     
     // Get list for that type
     func getList(type: String) {
         guard let username = MiruGlobals.username else { return }
+        self.type = type
         let url = URL(string: "https://myanimelist.net/malappinfo.php?u=" + username + "&status=all&type=" + type)
         
         let sem = DispatchSemaphore.init(value: 0)
@@ -59,6 +103,76 @@ class ListViewController: UIViewController, EHHorizontalSelectionViewProtocol, X
     
     func numberOfItems(inHorizontalSelection hSelView: EHHorizontalSelectionView) -> UInt {
         return UInt(states.count)
+    }
+    
+    // PickerView protocol
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return scores.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        self.selectedPickerViewItem = scores[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return scoreString[row]
+    }
+    
+    @IBAction func pickerSavePress(_ sender: Any) {
+        guard let score = self.selectedPickerViewItem else { return }
+        if self.manga == nil {
+            guard let id = self.anime?.series_animedb_id else { return }
+            malkit.updateAnime(id, params:["score": score], completionHandler: { (result, status, err) in
+                if (result!) {
+                    DispatchQueue.main.async {
+                        self.cell?.myScore.setTitle(String(score), for: UIControlState.normal)
+                    }
+                    self.anime?.my_score = score
+                }
+            })
+        } else {
+            guard let id = self.manga?.series_mangadb_id else { return }
+            malkit.updateManga(id, params:["score": score], completionHandler: { (result, status, err) in
+                if (result!) {
+                    DispatchQueue.main.async {
+                        self.cell?.myScore.setTitle(String(score), for: UIControlState.normal)
+                    }
+                    self.manga?.my_score = score
+                }
+            })
+        }
+        
+        hidePickerView()
+    }
+    
+    // Saves the manga, then hides the picker view
+    func showPickerView(manga: Manga, cell: TableViewSeriesCell) {
+        self.manga = manga
+        self.anime = nil
+        self.cell = cell
+        self.pickerView.isHidden = false
+        self.pickerToolbar.isHidden = false
+        self.tabBarController?.tabBar.isHidden = true
+    }
+    
+    // Saves the anime, then hides the picker view
+    func showPickerView(anime: Anime, cell: TableViewSeriesCell) {
+        self.anime = anime
+        self.manga = nil
+        self.cell = cell
+        self.pickerView.isHidden = false
+        self.pickerToolbar.isHidden = false
+        self.tabBarController?.tabBar.isHidden = true
+    }
+    
+    func hidePickerView() {
+        self.pickerToolbar.isHidden = true
+        self.pickerView.isHidden = true
+        self.tabBarController?.tabBar.isHidden = false
     }
     
     func titleForItem(at index: UInt, forHorisontalSelection hSelView: EHHorizontalSelectionView) -> String? {
