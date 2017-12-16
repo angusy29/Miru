@@ -11,6 +11,8 @@ import Foundation
 
 class SettingsViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationController?.navigationBar.topItem?.title = "Settings"
     }
     

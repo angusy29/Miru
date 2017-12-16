@@ -16,7 +16,14 @@ class ProfileViewController: UIViewController {
     var cache = NSCache<NSString, UIImage>()
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.navigationController?.navigationBar.prefersLargeTitles = false
         self.navigationController?.navigationBar.topItem?.title = "Profile"
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
     }
     
     override func viewDidLoad() {

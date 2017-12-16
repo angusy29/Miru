@@ -24,6 +24,7 @@ class AnimeListViewController: ListViewController, UINavigationBarDelegate, UITa
     var currentAnimeObj: Anime?     // keeps track of the current anime to populate/create
 
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         self.navigationController?.navigationBar.topItem?.title = "Anime list"
     }
     

@@ -19,4 +19,11 @@ class User {
     var user_dropped: Int?
     var user_plantowatch: Int?
     var user_days_spent_watching: Double?
+    
+    var user_manga_reading: Int?
+    var user_manga_completed: Int?
+    var user_manga_onhold: Int?
+    var user_manga_dropped: Int?
+    var user_manga_plantoread: Int?
+    var user_manga_days_spent_reading: Double? // API calls it user_days_spent_watching
 }

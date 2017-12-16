@@ -20,6 +20,7 @@ class MangaListViewController: ListViewController, UINavigationBarDelegate, UITa
     var currentMangaObj: Manga?
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         self.navigationController?.navigationBar.topItem?.title = "Manga list"
     }
     
@@ -103,6 +104,20 @@ class MangaListViewController: ListViewController, UINavigationBarDelegate, UITa
             
         } else if (currentXMLElement == "my_tags") {
             
+        }
+        
+        if (currentXMLElement == "user_reading") {
+            MiruGlobals.user.user_manga_reading = Int(string)
+        } else if (currentXMLElement == "user_completed") {
+            MiruGlobals.user.user_manga_completed = Int(string)
+        } else if (currentXMLElement == "user_onhold") {
+            MiruGlobals.user.user_manga_onhold = Int(string)
+        } else if (currentXMLElement == "user_dropped") {
+            MiruGlobals.user.user_manga_dropped = Int(string)
+        } else if (currentXMLElement == "user_plantoread") {
+            MiruGlobals.user.user_manga_plantoread = Int(string)
+        } else if (currentXMLElement == "user_days_spent_watching") {
+            MiruGlobals.user.user_manga_days_spent_reading = Double(string)
         }
     }
     

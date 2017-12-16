@@ -11,6 +11,8 @@ import Foundation
 
 class BrowseViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationController?.navigationBar.topItem?.title = "Browse"
     }
     

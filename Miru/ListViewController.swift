@@ -47,9 +47,13 @@ class ListViewController: UIViewController, EHHorizontalSelectionViewProtocol, X
     var cell: TableViewSeriesCell?      // cell to modify
     var pickerViewModifyType: Int?   // "score" or "episode", denotes which one to change in pickerview
     
-    override func viewDidLoad() {
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         self.navigationController?.navigationBar.prefersLargeTitles = true
-        
+    }
+    
+    override func viewDidLoad() {
         // horizontal view initialise
         self.horizontalView.delegate = self
         EHHorizontalLineViewCell.updateFont(UIFont.systemFont(ofSize: 14))
