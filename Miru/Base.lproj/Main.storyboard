@@ -237,6 +237,11 @@
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ek7-lB-bxm">
                                 <rect key="frame" x="0.0" y="588" width="375" height="49"/>
                                 <items>
+                                    <barButtonItem systemItem="cancel" id="AFC-sb-b4Q">
+                                        <connections>
+                                            <action selector="pickerCancelPress:" destination="CLk-Zh-vhZ" id="chf-Gb-ThL"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="WJ8-jU-XMq"/>
                                     <barButtonItem style="plain" systemItem="save" id="rup-HP-1ul">
                                         <connections>
@@ -302,7 +307,6 @@
                     <tabBarItem key="tabBarItem" title="Anime list" image="AnimeTabBarIcon" id="tcs-8a-X2g"/>
                     <connections>
                         <outlet property="horizontalView" destination="wAF-oF-IaM" id="qGg-Ga-s7N"/>
-                        <outlet property="pickerSaveButton" destination="rup-HP-1ul" id="s68-JC-Zpj"/>
                         <outlet property="pickerToolbar" destination="Ek7-lB-bxm" id="E7Y-Wg-Fft"/>
                         <outlet property="pickerView" destination="id0-PS-EaB" id="d73-3J-YHK"/>
                         <outlet property="tableView" destination="Oam-iT-Mhu" id="wEp-Lp-C6R"/>
@@ -322,7 +326,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="259-wU-IQv"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Browse" id="c5N-1F-dzF"/>
+                    <tabBarItem key="tabBarItem" title="Browse" image="BrowseTabBarIcon" id="c5N-1F-dzF"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CkC-fW-KkN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -360,11 +364,11 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="3qY-Iv-eGG"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Settings" id="WH9-Aq-xOI" userLabel="Settings"/>
+                    <tabBarItem key="tabBarItem" title="Settings" image="SettingsTabBarIcon" id="WH9-Aq-xOI" userLabel="Settings"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rFR-Ra-NNA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="828" y="957"/>
+            <point key="canvasLocation" x="828" y="956.89655172413802"/>
         </scene>
         <!--Manga list-->
         <scene sceneID="Sro-Dh-6eW">
@@ -472,7 +476,6 @@
                                                     <outlet property="myScore" destination="z54-Bk-RBI" id="d7y-tp-DwD"/>
                                                     <outlet property="numCompleted" destination="ttL-IY-Zka" id="WDn-Ug-ijv"/>
                                                     <outlet property="title" destination="VRm-1W-Lph" id="F5b-Ct-kmG"/>
-                                                    <outlet property="watchedReadButtonPressed" destination="ttL-IY-Zka" id="FCb-ph-VJm"/>
                                                 </connections>
                                             </tableViewCell>
                                         </prototypes>
@@ -505,6 +508,11 @@
                                     <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KaD-9j-dnR">
                                         <rect key="frame" x="0.0" y="588" width="375" height="49"/>
                                         <items>
+                                            <barButtonItem title="Item" systemItem="cancel" id="lj8-6o-VJp">
+                                                <connections>
+                                                    <action selector="pickerCancelPress:" destination="G6L-v0-fer" id="Unr-hK-698"/>
+                                                </connections>
+                                            </barButtonItem>
                                             <barButtonItem style="plain" systemItem="flexibleSpace" id="qU1-bN-3aL"/>
                                             <barButtonItem style="plain" systemItem="save" id="jWd-9O-A8f">
                                                 <connections>
@@ -552,7 +560,6 @@
                     <tabBarItem key="tabBarItem" title="Manga list" image="MangaTabBarIcon" id="heO-3n-XOZ"/>
                     <connections>
                         <outlet property="horizontalView" destination="Le8-tX-nk2" id="tbA-VR-C4f"/>
-                        <outlet property="pickerSaveButton" destination="jWd-9O-A8f" id="VZc-0h-E9U"/>
                         <outlet property="pickerToolbar" destination="KaD-9j-dnR" id="xAZ-U0-4fS"/>
                         <outlet property="pickerView" destination="mfw-dD-1RM" id="yb2-Qn-P6d"/>
                         <outlet property="tableView" destination="CqE-ds-2FT" id="vWJ-ao-h7o"/>
@@ -569,19 +576,47 @@
                     <view key="view" contentMode="scaleToFill" id="SLX-ZM-uiM">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zEM-iA-Axa">
+                                <rect key="frame" x="15" y="103" width="110" height="160"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="160" id="1tx-hJ-hwi"/>
+                                    <constraint firstAttribute="width" constant="110" id="8XR-QE-atJ"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BZt-Rs-Pal">
+                                <rect key="frame" x="150" y="103" width="196" height="21"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="BZt-Rs-Pal" firstAttribute="top" secondItem="eBW-eH-CZH" secondAttribute="top" constant="15" id="0nV-3l-y2s"/>
+                            <constraint firstItem="BZt-Rs-Pal" firstAttribute="leading" secondItem="zEM-iA-Axa" secondAttribute="trailing" constant="25" id="IjB-Kh-cB2"/>
+                            <constraint firstItem="zEM-iA-Axa" firstAttribute="leading" secondItem="eBW-eH-CZH" secondAttribute="leading" constant="15" id="gRG-Xv-wmm"/>
+                            <constraint firstItem="zEM-iA-Axa" firstAttribute="top" secondItem="eBW-eH-CZH" secondAttribute="top" constant="15" id="xCL-sq-yW7"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="eBW-eH-CZH"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Profile" id="HEZ-Jq-s0W"/>
+                    <tabBarItem key="tabBarItem" title="Profile" image="ProfileTabBarIcon" id="HEZ-Jq-s0W"/>
+                    <connections>
+                        <outlet property="profileImageView" destination="zEM-iA-Axa" id="smz-2b-lPS"/>
+                        <outlet property="userNameLabel" destination="BZt-Rs-Pal" id="qBr-TJ-cVr"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4YN-NR-qxn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2362" y="1173"/>
+            <point key="canvasLocation" x="2472.8000000000002" y="1080.2955665024631"/>
         </scene>
     </scenes>
     <resources>
         <image name="AnimeTabBarIcon" width="25" height="25"/>
+        <image name="BrowseTabBarIcon" width="25" height="25"/>
         <image name="MangaTabBarIcon" width="25" height="25"/>
+        <image name="ProfileTabBarIcon" width="25" height="25"/>
+        <image name="SettingsTabBarIcon" width="25" height="25"/>
         <image name="Wallpaper" width="736" height="1308"/>
     </resources>
 </document>

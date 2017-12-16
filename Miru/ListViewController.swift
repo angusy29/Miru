@@ -16,7 +16,6 @@ class ListViewController: UIViewController, EHHorizontalSelectionViewProtocol, X
     
     @IBOutlet weak var pickerView: UIPickerView!
     @IBOutlet weak var pickerToolbar: UIToolbar!
-    @IBOutlet weak var pickerSaveButton: UIBarButtonItem!
     
     // horizontal view states
     var states = [MiruGlobals.WATCHING_OR_READING,
@@ -196,6 +195,11 @@ class ListViewController: UIViewController, EHHorizontalSelectionViewProtocol, X
         hidePickerView()
     }
     
+    @IBAction func pickerCancelPress(_ sender: Any) {
+        hidePickerView()
+    }
+    
+    
     // Saves the manga, then hides the picker view
     func showPickerView(manga: Manga, cell: TableViewSeriesCell, type: Int) {
         self.manga = manga
@@ -208,9 +212,21 @@ class ListViewController: UIViewController, EHHorizontalSelectionViewProtocol, X
         
         if type == MiruGlobals.CHANGE_EPISODE_OR_CHAPTER {
             episodesOrChapters.removeAll()
-            episodesOrChapters = manga.series_chapters != 0 ? (1...manga.series_chapters!).map{ $0 } : (1...manga.my_read_chapters!).map{ $0 }
+            episodesOrChapters = manga.series_chapters != 0 ? (0...manga.series_chapters!).map{ $0 } : (0...manga.my_read_chapters!).map{ $0 }
         }
+        
         self.pickerView.reloadAllComponents()
+
+        // set default row of pickerview
+        if type == MiruGlobals.CHANGE_EPISODE_OR_CHAPTER {
+            if let read_chapters = manga.my_read_chapters {
+                self.pickerView.selectRow(read_chapters, inComponent: 0, animated: false)
+            }
+        } else {
+            if let score = manga.my_score {
+                self.pickerView.selectRow(score, inComponent: 0, animated: false)
+            }
+        }
     }
     
     // Saves the anime, then hides the picker view
@@ -225,9 +241,20 @@ class ListViewController: UIViewController, EHHorizontalSelectionViewProtocol, X
         
         if type == MiruGlobals.CHANGE_EPISODE_OR_CHAPTER {
             episodesOrChapters.removeAll()
-            episodesOrChapters = anime.series_episodes != 0 ? (1...anime.series_episodes!).map{ $0 } : (1...anime.my_watched_episodes!).map{ $0 }
+            episodesOrChapters = anime.series_episodes != 0 ? (0...anime.series_episodes!).map{ $0 } : (0...anime.my_watched_episodes!).map{ $0 }
         }
         self.pickerView.reloadAllComponents()
+        
+        // set default row of pickerview
+        if type == MiruGlobals.CHANGE_EPISODE_OR_CHAPTER {
+            if let watched_episodes = anime.my_watched_episodes {
+                self.pickerView.selectRow(watched_episodes, inComponent: 0, animated: false)
+            }
+        } else {
+            if let score = anime.my_score {
+                self.pickerView.selectRow(score, inComponent: 0, animated: false)
+            }
+        }
     }
     
     func hidePickerView() {

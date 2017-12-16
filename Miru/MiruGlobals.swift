@@ -10,6 +10,7 @@ import Foundation
 
 class MiruGlobals {
     static var username: String?
+    static var user = User()
     
     // my list statuses
     static var WATCHING_OR_READING = 1

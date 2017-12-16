@@ -19,7 +19,7 @@ class AnimeListViewController: ListViewController, UINavigationBarDelegate, UITa
     var onHold = [Anime]()
     var dropped = [Anime]()
     var planToWatch = [Anime]()
-    
+        
     // Used to parse through XML, we know which anime to populate
     var currentAnimeObj: Anime?     // keeps track of the current anime to populate/create
 
@@ -106,6 +106,25 @@ class AnimeListViewController: ListViewController, UINavigationBarDelegate, UITa
         } else if (currentXMLElement == "my_tags") {
             
         }
+        
+        if (currentXMLElement == "user_id") {
+            MiruGlobals.user.user_id = Int(string)
+            MiruGlobals.user.user_picture = "https://myanimelist.cdn-dena.com/images/userimages/" + string + ".jpg"
+        } else if (currentXMLElement == "user_name") {
+            MiruGlobals.user.user_name = string
+        } else if (currentXMLElement == "user_watching") {
+            MiruGlobals.user.user_watching = Int(string)
+        } else if (currentXMLElement == "user_completed") {
+            MiruGlobals.user.user_completed = Int(string)
+        } else if (currentXMLElement == "user_onhold") {
+            MiruGlobals.user.user_onhold = Int(string)
+        } else if (currentXMLElement == "user_dropped") {
+            MiruGlobals.user.user_dropped = Int(string)
+        } else if (currentXMLElement == "user_plantowatch") {
+            MiruGlobals.user.user_plantowatch = Int(string)
+        } else if (currentXMLElement == "user_days_spent_watching") {
+            MiruGlobals.user.user_days_spent_watching = Double(string)
+        }
     }
     
     func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
@@ -159,7 +178,6 @@ class AnimeListViewController: ListViewController, UINavigationBarDelegate, UITa
         
         let numCompletedTitle = selectedAnime.series_episodes! == 0 ? String(describing: selectedAnime.my_watched_episodes!) : String(describing: selectedAnime.my_watched_episodes!) + "/" + String(describing: selectedAnime.series_episodes!)
         cell.numCompleted.setTitle(numCompletedTitle, for: UIControlState.normal)
-        cell.imageThumbnail.image = nil
         
         // set airing status text
         if selectedAnime.series_status == MiruGlobals.CURRENTLY_ONGOING {
@@ -170,6 +188,8 @@ class AnimeListViewController: ListViewController, UINavigationBarDelegate, UITa
             cell.airingStatus.text = "Not yet airing"
         }
         
+        cell.imageThumbnail.image = nil
+
         // checks the cache, and downloads the image or uses the one in the cache
         let img = imageCache.object(forKey: selectedAnime.series_image! as NSString)
         cell.configureCell(anime: selectedAnime, image: img, cache: imageCache)
