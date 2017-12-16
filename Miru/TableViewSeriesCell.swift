@@ -15,7 +15,7 @@ class TableViewSeriesCell: UITableViewCell {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var airingStatus: UILabel!
 
-    @IBOutlet weak var numCompleted: UILabel! // number of episodes or chapters completed
+    @IBOutlet weak var numCompleted: UIButton! // number of episodes or chapters completed
     
     @IBOutlet weak var myScore: UIButton!
     
@@ -37,7 +37,8 @@ class TableViewSeriesCell: UITableViewCell {
             //your process
             if (result!) {
                 DispatchQueue.main.async {
-                    self.numCompleted.text = self.anime?.series_episodes! == 0 ? String(describing: nextEpisode) : String(describing: nextEpisode) + "/" + String(describing: (self.anime?.series_episodes)!)
+                    let numCompletedTitle = self.anime?.series_episodes! == 0 ? String(describing: nextEpisode) : String(describing: nextEpisode) + "/" + String(describing: (self.anime?.series_episodes)!)
+                    self.numCompleted.setTitle(numCompletedTitle, for: UIControlState.normal)
                 }
                 self.anime?.my_watched_episodes = self.anime?.my_watched_episodes.map({ $0 + 1 })
             }
@@ -56,7 +57,8 @@ class TableViewSeriesCell: UITableViewCell {
             //your process
             if (result!) {
                 DispatchQueue.main.async {
-                    self.numCompleted.text = self.manga?.series_chapters! == 0 ? String(describing: nextChapter) : String(describing: nextChapter) + "/" + String(describing: (self.manga?.series_chapters)!)
+                    let numCompletedTitle = self.manga?.series_chapters! == 0 ? String(describing: nextChapter) : String(describing: nextChapter) + "/" + String(describing: (self.manga?.series_chapters)!)
+                    self.numCompleted.setTitle(numCompletedTitle, for: UIControlState.normal)
                 }
                 self.manga?.my_read_chapters = self.manga?.my_read_chapters.map({ $0 + 1 })
             }
@@ -123,6 +125,19 @@ class TableViewSeriesCell: UITableViewCell {
         }
     }
     
+    @IBAction func watchedReadButtonPressed(_ sender: Any) {
+        let tableView = self.superview as! UITableView
+        let vc = tableView.dataSource as! ListViewController
+        
+        if manga == nil {
+            guard let anime = self.anime else { return }
+            vc.showPickerView(anime: anime, cell: self, type: MiruGlobals.CHANGE_EPISODE_OR_CHAPTER)
+        } else {
+            guard let manga = self.manga else { return }
+            vc.showPickerView(manga: manga, cell: self, type: MiruGlobals.CHANGE_EPISODE_OR_CHAPTER)
+        }
+    }
+    
     // rip encapsulation
     @IBAction func scoreButtonPressed(_ sender: Any) {
         let tableView = self.superview as! UITableView
@@ -130,10 +145,10 @@ class TableViewSeriesCell: UITableViewCell {
         
         if manga == nil {
             guard let anime = self.anime else { return }
-            vc.showPickerView(anime: anime, cell: self)
+            vc.showPickerView(anime: anime, cell: self, type: MiruGlobals.CHANGE_SCORE)
         } else {
             guard let manga = self.manga else { return }
-            vc.showPickerView(manga: manga, cell: self)
+            vc.showPickerView(manga: manga, cell: self, type: MiruGlobals.CHANGE_SCORE)
         }
     }
 }

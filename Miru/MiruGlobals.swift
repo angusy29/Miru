@@ -22,4 +22,8 @@ class MiruGlobals {
     static var CURRENTLY_ONGOING = 1
     static var FINISHED_AIRING = 2
     static var NOT_YET_RELEASED = 3
+    
+    // picker view modify type
+    static var CHANGE_SCORE = 0
+    static var CHANGE_EPISODE_OR_CHAPTER = 1
 }

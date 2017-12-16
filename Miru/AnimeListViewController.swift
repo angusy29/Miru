@@ -157,7 +157,8 @@ class AnimeListViewController: ListViewController, UINavigationBarDelegate, UITa
         let scoreTitle = selectedAnime.my_score! == 0 ? "-" : String(describing: selectedAnime.my_score!)
         cell.myScore.setTitle(scoreTitle, for: UIControlState.normal)
         
-        cell.numCompleted.text = selectedAnime.series_episodes! == 0 ? String(describing: selectedAnime.my_watched_episodes!) : String(describing: selectedAnime.my_watched_episodes!) + "/" + String(describing: selectedAnime.series_episodes!)
+        let numCompletedTitle = selectedAnime.series_episodes! == 0 ? String(describing: selectedAnime.my_watched_episodes!) : String(describing: selectedAnime.my_watched_episodes!) + "/" + String(describing: selectedAnime.series_episodes!)
+        cell.numCompleted.setTitle(numCompletedTitle, for: UIControlState.normal)
         cell.imageThumbnail.image = nil
         
         // set airing status text

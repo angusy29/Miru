@@ -154,7 +154,8 @@ class MangaListViewController: ListViewController, UINavigationBarDelegate, UITa
         let scoreTitle = selectedManga.my_score! == 0 ? "-" : String(describing: selectedManga.my_score!)
         cell.myScore.setTitle(scoreTitle, for: UIControlState.normal)
                 
-        cell.numCompleted.text = selectedManga.series_chapters! == 0 ? String(describing: selectedManga.my_read_chapters!) : String(describing: selectedManga.my_read_chapters!) + "/" + String(describing: selectedManga.series_chapters!)
+        let numCompletedTitle = selectedManga.series_chapters! == 0 ? String(describing: selectedManga.my_read_chapters!) : String(describing: selectedManga.my_read_chapters!) + "/" + String(describing: selectedManga.series_chapters!)
+        cell.numCompleted.setTitle(numCompletedTitle, for: UIControlState.normal)
         cell.imageThumbnail.image = nil
         
         // set airing status text

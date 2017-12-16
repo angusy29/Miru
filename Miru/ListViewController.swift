@@ -39,12 +39,14 @@ class ListViewController: UIViewController, EHHorizontalSelectionViewProtocol, X
     // picker view data source
     var scores = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     var scoreString = ["-", "(1) Appalling", "(2) Horrible", "(3) Very bad", "(4) Bad", "(5) Average", "(6) Fine", "(7) Good", "(8) Very good", "(9) Great", "(10) Masterpiece"]
+    var episodesOrChapters = [Int]()
     
     // Used for changing scores for the anime/manga
     // this is actually so bad practice.....
     var anime: Anime?
     var manga: Manga?
     var cell: TableViewSeriesCell?      // cell to modify
+    var pickerViewModifyType: Int?   // "score" or "episode", denotes which one to change in pickerview
     
     override func viewDidLoad() {
         self.navigationController?.navigationBar.prefersLargeTitles = true
@@ -111,62 +113,121 @@ class ListViewController: UIViewController, EHHorizontalSelectionViewProtocol, X
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return scores.count
+        if pickerViewModifyType == MiruGlobals.CHANGE_SCORE {
+            return scores.count
+        }
+        return episodesOrChapters.count
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        self.selectedPickerViewItem = scores[row]
+        if pickerViewModifyType == MiruGlobals.CHANGE_SCORE {
+            self.selectedPickerViewItem = scores[row]
+        } else {
+            self.selectedPickerViewItem = episodesOrChapters[row]
+        }
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return scoreString[row]
+        if pickerViewModifyType == MiruGlobals.CHANGE_SCORE {
+            return scoreString[row]
+        }
+        return String(episodesOrChapters[row])
     }
     
     @IBAction func pickerSavePress(_ sender: Any) {
-        guard let score = self.selectedPickerViewItem else { return }
-        if self.manga == nil {
-            guard let id = self.anime?.series_animedb_id else { return }
-            malkit.updateAnime(id, params:["score": score], completionHandler: { (result, status, err) in
-                if (result!) {
-                    DispatchQueue.main.async {
-                        self.cell?.myScore.setTitle(String(score), for: UIControlState.normal)
+        if pickerViewModifyType == MiruGlobals.CHANGE_SCORE {
+            guard let score = self.selectedPickerViewItem else { return }
+            if self.manga == nil {
+                // UPDATE ANIME SCORE
+                guard let id = self.anime?.series_animedb_id else { return }
+                malkit.updateAnime(id, params:["score": score], completionHandler: { (result, status, err) in
+                    if (result!) {
+                        DispatchQueue.main.async {
+                            let scoreTitle = score == 0 ? "-" : String(describing: score)
+                            self.cell?.myScore.setTitle(scoreTitle, for: UIControlState.normal)
+                        }
+                        self.anime?.my_score = score
                     }
-                    self.anime?.my_score = score
-                }
-            })
-        } else {
-            guard let id = self.manga?.series_mangadb_id else { return }
-            malkit.updateManga(id, params:["score": score], completionHandler: { (result, status, err) in
-                if (result!) {
-                    DispatchQueue.main.async {
-                        self.cell?.myScore.setTitle(String(score), for: UIControlState.normal)
+                })
+            } else {
+                // UPDATE MANGA SCORE
+                guard let id = self.manga?.series_mangadb_id else { return }
+                malkit.updateManga(id, params:["score": score], completionHandler: { (result, status, err) in
+                    if (result!) {
+                        DispatchQueue.main.async {
+                            let scoreTitle = score == 0 ? "-" : String(describing: score)
+                            self.cell?.myScore.setTitle(scoreTitle, for: UIControlState.normal)
+                        }
+                        self.manga?.my_score = score
                     }
-                    self.manga?.my_score = score
-                }
-            })
+                })
+            }
+        } else if pickerViewModifyType == MiruGlobals.CHANGE_EPISODE_OR_CHAPTER {
+            guard let change = self.selectedPickerViewItem else { return }
+            if self.manga == nil {
+                // UPDATE ANIME EPISODE
+                guard let id = self.anime?.series_animedb_id else { return }
+                guard let anime = self.anime else { return }
+                malkit.updateAnime(id, params:["episode": change], completionHandler: { (result, status, err) in
+                    if (result!) {
+                        DispatchQueue.main.async {
+                            let numCompletedTitle = anime.series_episodes! == 0 ? String(describing: anime.my_watched_episodes!) : String(describing: anime.my_watched_episodes!) + "/" + String(describing: anime.series_episodes!)
+                            self.cell?.numCompleted.setTitle(numCompletedTitle, for: UIControlState.normal)
+                        }
+                        self.anime?.my_watched_episodes = change
+                    }
+                })
+            } else {
+                // UPDATE MANGA CHAPTER
+                guard let id = self.manga?.series_mangadb_id else { return }
+                guard let manga = self.manga else { return }
+                malkit.updateAnime(id, params:["chapter": change], completionHandler: { (result, status, err) in
+                    if (result!) {
+                        DispatchQueue.main.async {
+                            let numCompletedTitle = manga.series_chapters! == 0 ? String(describing: manga.my_read_chapters!) : String(describing: manga.my_read_chapters!) + "/" + String(describing: manga.series_chapters!)
+                            self.cell?.numCompleted.setTitle(numCompletedTitle, for: UIControlState.normal)
+                        }
+                        self.manga?.my_read_chapters = change
+                    }
+                })
+            }
         }
         
         hidePickerView()
     }
     
     // Saves the manga, then hides the picker view
-    func showPickerView(manga: Manga, cell: TableViewSeriesCell) {
+    func showPickerView(manga: Manga, cell: TableViewSeriesCell, type: Int) {
         self.manga = manga
         self.anime = nil
         self.cell = cell
+        self.pickerViewModifyType = type
         self.pickerView.isHidden = false
         self.pickerToolbar.isHidden = false
         self.tabBarController?.tabBar.isHidden = true
+        
+        if type == MiruGlobals.CHANGE_EPISODE_OR_CHAPTER {
+            episodesOrChapters.removeAll()
+            episodesOrChapters = manga.series_chapters != 0 ? (1...manga.series_chapters!).map{ $0 } : (1...manga.my_read_chapters!).map{ $0 }
+        }
+        self.pickerView.reloadAllComponents()
     }
     
     // Saves the anime, then hides the picker view
-    func showPickerView(anime: Anime, cell: TableViewSeriesCell) {
+    func showPickerView(anime: Anime, cell: TableViewSeriesCell, type: Int) {
         self.anime = anime
         self.manga = nil
         self.cell = cell
+        self.pickerViewModifyType = type
         self.pickerView.isHidden = false
         self.pickerToolbar.isHidden = false
         self.tabBarController?.tabBar.isHidden = true
+        
+        if type == MiruGlobals.CHANGE_EPISODE_OR_CHAPTER {
+            episodesOrChapters.removeAll()
+            episodesOrChapters = anime.series_episodes != 0 ? (1...anime.series_episodes!).map{ $0 } : (1...anime.my_watched_episodes!).map{ $0 }
+        }
+        self.pickerView.reloadAllComponents()
     }
     
     func hidePickerView() {
