@@ -428,6 +428,7 @@
                     <tabBarItem key="tabBarItem" title="Browse" image="BrowseTabBarIcon" id="c5N-1F-dzF"/>
                     <connections>
                         <outlet property="searchDisplayController" destination="Spu-p8-0wD" id="E6C-DZ-7O8"/>
+                        <outlet property="searchResultTableView" destination="QIW-Os-cKH" id="yY8-Xt-TGj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CkC-fW-KkN" userLabel="First Responder" sceneMemberID="firstResponder"/>

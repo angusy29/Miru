@@ -9,12 +9,21 @@
 import UIKit
 import Foundation
 
-class BrowseViewController: UIViewController, UISearchResultsUpdating, UISearchBarDelegate {
+class BrowseViewController: UIViewController, UISearchResultsUpdating, UISearchBarDelegate, XMLParserDelegate, UITableViewDelegate, UITableViewDataSource {
     var animeSearchResults = [Anime]()
     var mangaSearchResults = [Manga]()
     
+    @IBOutlet weak var searchResultTableView: UITableView!
+    
     let searchController = UISearchController(searchResultsController: nil)
 
+    // XML parsing attributes
+    var currentXMLElement: String?
+    var currentAnimeObj: Anime?
+    var currentMangaObj: Manga?
+    
+    var searchType: Int?        // MiruGlobal.ANIME or MiruGlobals.MANGA
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.navigationController?.navigationBar.prefersLargeTitles = true
@@ -35,6 +44,11 @@ class BrowseViewController: UIViewController, UISearchResultsUpdating, UISearchB
         searchController.searchBar.searchBarStyle = UISearchBarStyle.minimal
         searchController.searchBar.placeholder = "Search"
         searchController.searchBar.tintColor = UIColor.white
+        
+        self.searchResultTableView.register(UITableViewCell.self, forCellReuseIdentifier: "browseCell")
+        self.searchResultTableView.delegate = self
+        self.searchResultTableView.dataSource = self
+        
     }
     
     func updateSearchResults(for searchController: UISearchController) {
@@ -44,31 +58,183 @@ class BrowseViewController: UIViewController, UISearchResultsUpdating, UISearchB
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let searchText = self.searchController.searchBar.text else { return }
+        if (searchText.count < 3) {
+            // need to let user know to input more than 3 chars
+            return
+        }
+        
+        searchType = self.searchController.searchBar.selectedScopeButtonIndex
         if searchController.searchBar.selectedScopeButtonIndex == MiruGlobals.ANIME {
+            let sem = DispatchSemaphore(value: 0)
             // search for anime
             malkit.searchAnime(searchText, completionHandler: { (items, status, err) in
                 //result is Data(XML). You need to parse XML.
                 //status is HTTPURLResponse
                 //your process
                 if (status?.statusCode == 200) {
+                    self.animeSearchResults.removeAll()
+
                     print(NSString(data: items!, encoding: String.Encoding.utf8.rawValue))
+                    if let data = items {
+                        let parser = XMLParser(data: data)
+                        parser.delegate = self
+                        parser.parse()
+                        sem.signal()
+                    }
                 }
             })
+            sem.wait()
+            self.searchResultTableView.reloadData()
+
         } else if searchController.searchBar.selectedScopeButtonIndex == MiruGlobals.MANGA {
             // search for manga
-            malkit.searchManga("naruto", completionHandler: { (items, status, err) in
+            let sem = DispatchSemaphore(value: 0)
+
+            malkit.searchManga(searchText, completionHandler: { (items, status, err) in
                 //result is Data(XML). You need to parse XML.
                 //status is HTTPURLResponse
                 //your process
                 if (status?.statusCode == 200) {
+                    self.mangaSearchResults.removeAll()
+
                     print(NSString(data: items!, encoding: String.Encoding.utf8.rawValue))
+                    if let data = items {
+                        let parser = XMLParser(data: data)
+                        parser.delegate = self
+                        parser.parse()
+                        sem.signal()
+                    }
                 }
             })
+            sem.wait()
+            
+            self.searchResultTableView.reloadData()
         }
-        
         searchController.searchBar.resignFirstResponder()
     }
     
+    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
+        
+        if (elementName == "entry") {
+            // create depending on which one we want
+            if searchType == MiruGlobals.ANIME {
+                currentAnimeObj = Anime()
+            } else {
+                currentMangaObj = Manga()
+            }
+        }
+        currentXMLElement = elementName
+    }
+    
+    func parser(_ parser: XMLParser, foundCharacters string: String) {
+        if (currentXMLElement == "id") {
+            if searchType == MiruGlobals.ANIME {
+                currentAnimeObj?.series_animedb_id = Int(string)
+            } else {
+                currentMangaObj?.series_mangadb_id = Int(string)
+            }
+        } else if (currentXMLElement == "title") {
+            if (searchType == MiruGlobals.ANIME) {
+                currentAnimeObj?.series_title = currentAnimeObj?.series_title == nil ? string : (currentAnimeObj?.series_title)! + string
+            } else {
+                currentMangaObj?.series_title = currentMangaObj?.series_title == nil ? string : (currentMangaObj?.series_title)! + string
+            }
+        } else if (currentXMLElement == "english") {
+            if (searchType == MiruGlobals.ANIME) {
+                currentAnimeObj?.english = currentAnimeObj?.english == nil ? string : (currentAnimeObj?.english)! + string
+            } else {
+                currentMangaObj?.series_title = currentMangaObj?.series_title == nil ? string : (currentMangaObj?.series_title)! + string
+            }
+        } else if (currentXMLElement == "synonyms") {
+            if (searchType == MiruGlobals.ANIME) {
+                currentAnimeObj?.series_synonyms?.append(string)
+            } else {
+                currentMangaObj?.series_synonyms?.append(string)
+            }
+        } else if (currentXMLElement == "episodes") {
+            currentAnimeObj?.series_episodes = Int(string)
+        } else if (currentXMLElement == "chapters") {
+            currentMangaObj?.series_chapters = Int(string)
+        } else if (currentXMLElement == "volumes") {
+            currentMangaObj?.series_volumes = Int(string)
+        } else if (currentXMLElement == "score") {
+            if (searchType == MiruGlobals.ANIME) {
+                currentAnimeObj?.mal_score = Double(string)
+            } else {
+                currentMangaObj?.mal_score = Double(string)
+            }
+        } else if (currentXMLElement == "type") {
+            if (searchType == MiruGlobals.ANIME) {
+                currentAnimeObj?.search_result_type = string
+            } else {
+                currentMangaObj?.search_result_type = string
+            }
+        } else if (currentXMLElement == "status") {
+            if (searchType == MiruGlobals.ANIME) {
+                currentAnimeObj?.search_result_status = string
+            } else {
+                currentMangaObj?.search_result_type = string
+            }
+        } else if (currentXMLElement == "start_date") {
+            
+        } else if (currentXMLElement == "end_date") {
+            
+        } else if (currentXMLElement == "synopsis") {
+            if (searchType == MiruGlobals.ANIME) {
+                currentAnimeObj?.synopsis = currentAnimeObj?.synopsis == nil ? string : (currentAnimeObj?.synopsis)! + string
+            } else {
+                currentMangaObj?.synopsis = currentMangaObj?.synopsis == nil ? string : (currentMangaObj?.synopsis)! + string
+            }
+        } else if (currentXMLElement == "image") {
+            if (searchType == MiruGlobals.ANIME) {
+                currentAnimeObj?.series_image = string
+            } else {
+                currentMangaObj?.series_image = string
+            }
+        }
+    }
+    
+    func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
+        if (elementName == "entry") {
+            if searchType == MiruGlobals.ANIME {
+                guard let animeObj = currentAnimeObj else { return }
+                animeSearchResults.append(animeObj)
+                currentAnimeObj = nil
+            } else {
+                guard let mangaObj = currentMangaObj else { return }
+                mangaSearchResults.append(mangaObj)
+                currentMangaObj = nil
+            }
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if searchType == MiruGlobals.ANIME {
+            return animeSearchResults.count
+        } else {
+            return mangaSearchResults.count
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // create a new cell if needed or reuse an old one
+        let cell = self.searchResultTableView.dequeueReusableCell(withIdentifier: "browseCell")
+        
+        if (searchType == MiruGlobals.ANIME) {
+            cell?.textLabel?.text = animeSearchResults[indexPath.row].series_title
+        } else {
+            cell?.textLabel?.text = mangaSearchResults[indexPath.row].series_title
+        }
+        return cell!
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if (searchType == MiruGlobals.ANIME) {
+            print("Selected: " + animeSearchResults[indexPath.row].series_title!)
+        } else {
+            print("Selected: " + mangaSearchResults[indexPath.row].series_title!)
+        }
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

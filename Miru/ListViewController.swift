@@ -92,7 +92,7 @@ class ListViewController: UIViewController, EHHorizontalSelectionViewProtocol, X
         
         let sem = DispatchSemaphore.init(value: 0)
         URLSession.shared.dataTask(with: url!) {(data, response, error) in
-            print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue))
+            // print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue))
             if let data = data {
                 let parser = XMLParser(data: data)
                 parser.delegate = self

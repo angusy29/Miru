@@ -9,6 +9,7 @@
 import Foundation
 
 class Manga {
+    // populated from getList in ListViewController
     var series_mangadb_id: Int?
     var series_title: String?
     var series_synonyms: String?
@@ -28,4 +29,24 @@ class Manga {
     var my_rereadingg: Int?
     var my_rereading_chap: Int?
     var my_last_updated: Int?
+    
+    // Populated from search results in browse
+    // id (as above)
+    // title (as above)
+    // english
+    // synonyms (as above)
+    // chapters (as above)
+    // volumes (as above)
+    // score
+    // type (we'll make it a string)
+    // status (we'll make it a string)
+    // start date (as above)
+    // end date (as above)
+    // synopsis
+    // image (as above)
+    var english: String?
+    var mal_score: Double?
+    var search_result_type: String?
+    var search_result_status: String?
+    var synopsis: String?
 }
