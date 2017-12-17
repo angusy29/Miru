@@ -32,6 +32,12 @@ class BrowseViewController: UIViewController, UISearchResultsUpdating, UISearchB
         
         // place search controller in navigation bar
         self.navigationController?.navigationBar.topItem?.searchController = searchController
+        self.navigationController?.navigationBar.topItem?.hidesSearchBarWhenScrolling = false
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.navigationBar.topItem?.searchController = nil
     }
     
     override func viewDidLoad() {
@@ -49,12 +55,14 @@ class BrowseViewController: UIViewController, UISearchResultsUpdating, UISearchB
         self.searchResultTableView.register(UINib(nibName: "TableViewSeriesCell", bundle: nil), forCellReuseIdentifier: "TableViewSeriesCell")
         self.searchResultTableView.delegate = self
         self.searchResultTableView.dataSource = self
-        
     }
     
     func updateSearchResults(for searchController: UISearchController) {
         // print("Update")
         // do nothing
+        
+        let textFieldInsideSearchBar = searchController.searchBar.value(forKey: "searchField") as? UITextField
+        textFieldInsideSearchBar?.textColor = UIColor.white
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {

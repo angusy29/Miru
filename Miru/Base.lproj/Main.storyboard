@@ -36,7 +36,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" alpha="0.80000000000000004" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="73h-Ga-9bY">
-                                <rect key="frame" x="67" y="343.66666666666669" width="241" height="50"/>
+                                <rect key="frame" x="67" y="250" width="241" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="D2S-TW-GOe"/>
                                 </constraints>
@@ -45,7 +45,7 @@
                                 <textInputTraits key="textInputTraits" spellCheckingType="no"/>
                             </textField>
                             <textField opaque="NO" alpha="0.80000000000000004" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6o5-4K-Mis">
-                                <rect key="frame" x="67" y="403.66666666666669" width="241" height="50"/>
+                                <rect key="frame" x="67" y="310" width="241" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="Ndq-KA-XDa"/>
                                 </constraints>
@@ -54,7 +54,7 @@
                                 <textInputTraits key="textInputTraits" spellCheckingType="no" secureTextEntry="YES"/>
                             </textField>
                             <button opaque="NO" alpha="0.80000000000000004" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="coL-Bk-jaz">
-                                <rect key="frame" x="67" y="583" width="241" height="40"/>
+                                <rect key="frame" x="67" y="400" width="241" height="40"/>
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="vJN-nR-DHy"/>
@@ -72,12 +72,12 @@
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="coL-Bk-jaz" secondAttribute="trailing" constant="67" id="0PO-Qx-uzW"/>
                             <constraint firstItem="7fH-tk-9Wc" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="109" id="3z8-yU-jkm"/>
-                            <constraint firstItem="73h-Ga-9bY" firstAttribute="top" secondItem="7fH-tk-9Wc" secondAttribute="bottom" constant="145" id="9Xd-ff-S3L"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="73h-Ga-9bY" secondAttribute="trailing" constant="67" id="CLG-r2-4Ot"/>
                             <constraint firstItem="Ray-0e-vp0" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="F7s-IV-x5h"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="6o5-4K-Mis" secondAttribute="trailing" constant="67" id="FFQ-21-MB3"/>
                             <constraint firstItem="coL-Bk-jaz" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="67" id="IxE-Xy-nut"/>
                             <constraint firstItem="73h-Ga-9bY" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="67" id="JrU-qM-WFw"/>
+                            <constraint firstItem="coL-Bk-jaz" firstAttribute="top" secondItem="6o5-4K-Mis" secondAttribute="bottom" constant="40" id="Mg3-lk-JgT"/>
                             <constraint firstAttribute="bottom" secondItem="Aas-7r-Ogw" secondAttribute="bottom" id="NWD-ww-Yww"/>
                             <constraint firstItem="Aas-7r-Ogw" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="WWY-4V-y9F"/>
                             <constraint firstItem="Ray-0e-vp0" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="b5O-va-VUo"/>
@@ -85,10 +85,10 @@
                             <constraint firstItem="Aas-7r-Ogw" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="eMS-Kx-rM5"/>
                             <constraint firstItem="7fH-tk-9Wc" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="92" id="ej6-l1-UPN"/>
                             <constraint firstItem="Ray-0e-vp0" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="fBC-9r-HJ2"/>
+                            <constraint firstItem="73h-Ga-9bY" firstAttribute="top" secondItem="7fH-tk-9Wc" secondAttribute="bottom" constant="51.329999999999998" id="mOc-HI-BIK"/>
                             <constraint firstItem="6o5-4K-Mis" firstAttribute="top" secondItem="73h-Ga-9bY" secondAttribute="bottom" constant="10" id="o89-4m-Yu5"/>
                             <constraint firstItem="Aas-7r-Ogw" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="rkL-0D-MAN"/>
                             <constraint firstAttribute="bottom" secondItem="Ray-0e-vp0" secondAttribute="bottom" id="u0v-mQ-5dy"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="coL-Bk-jaz" secondAttribute="bottom" constant="155" id="vjh-Wm-G8b"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="7fH-tk-9Wc" secondAttribute="trailing" constant="109" id="w6N-VQ-702"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>

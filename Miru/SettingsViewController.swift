@@ -14,7 +14,6 @@ class SettingsViewController: UIViewController {
         super.viewDidAppear(animated)
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationController?.navigationBar.topItem?.title = "Settings"
-        self.navigationController?.navigationBar.topItem?.searchController = nil
     }
     
     override func viewDidLoad() {

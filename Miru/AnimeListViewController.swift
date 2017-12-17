@@ -168,11 +168,6 @@ class AnimeListViewController: ListViewController, UINavigationBarDelegate, UITa
         // create a new cell if needed or reuse an old one
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "TableViewSeriesCell") as! TableViewSeriesCell
         
-        /*if (cell == nil) {
-            self.tableView.register(UINib("TableViewSeriesCell"), forCellReuseIdentifier: "cell")
-            
-        }*/
-        
         // set the text from the data model
         // cell.textLabel?.text = self.currentlyWatching[indexPath.row].series_title
         let selectedAnimeArray = getSelectedAnimeArray()
