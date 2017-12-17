@@ -12,6 +12,10 @@ class MiruGlobals {
     static var username: String?
     static var user = User()
     
+    // media constants
+    static var ANIME = 0
+    static var MANGA = 1
+    
     // my list statuses
     static var WATCHING_OR_READING = 1
     static var COMPLETED = 2

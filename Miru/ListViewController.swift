@@ -51,9 +51,13 @@ class ListViewController: UIViewController, EHHorizontalSelectionViewProtocol, X
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.navigationController?.navigationBar.prefersLargeTitles = true
+        self.navigationController?.navigationItem.searchController = nil
     }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        self.navigationController?.navigationBar.prefersLargeTitles = true
+
         // horizontal view initialise
         self.horizontalView.delegate = self
         EHHorizontalLineViewCell.updateFont(UIFont.systemFont(ofSize: 14))

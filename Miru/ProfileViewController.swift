@@ -20,6 +20,7 @@ class ProfileViewController: UIViewController {
         self.navigationController?.navigationBar.prefersLargeTitles = false
         self.navigationController?.navigationBar.topItem?.title = "Profile"
         self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.topItem?.searchController = nil
     }
     
     override func viewDidLoad() {
