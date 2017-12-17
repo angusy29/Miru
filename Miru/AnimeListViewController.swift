@@ -41,6 +41,7 @@ class AnimeListViewController: ListViewController, UINavigationBarDelegate, UITa
         dropped = dropped.sorted(by: { $0.series_title! < $1.series_title! })
         planToWatch = planToWatch.sorted(by: { $0.series_title! < $1.series_title! })
         
+        self.tableView.register(UINib(nibName: "TableViewSeriesCell", bundle: nil), forCellReuseIdentifier: "TableViewSeriesCell")
         self.tableView.delegate = self
         self.tableView.dataSource = self
     }
@@ -165,7 +166,12 @@ class AnimeListViewController: ListViewController, UINavigationBarDelegate, UITa
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // create a new cell if needed or reuse an old one
-        let cell = self.tableView.dequeueReusableCell(withIdentifier: "CustomCell") as! TableViewSeriesCell
+        let cell = self.tableView.dequeueReusableCell(withIdentifier: "TableViewSeriesCell") as! TableViewSeriesCell
+        
+        /*if (cell == nil) {
+            self.tableView.register(UINib("TableViewSeriesCell"), forCellReuseIdentifier: "cell")
+            
+        }*/
         
         // set the text from the data model
         // cell.textLabel?.text = self.currentlyWatching[indexPath.row].series_title

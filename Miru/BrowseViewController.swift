@@ -22,6 +22,7 @@ class BrowseViewController: UIViewController, UISearchResultsUpdating, UISearchB
     var currentAnimeObj: Anime?
     var currentMangaObj: Manga?
     
+    var imageCache = NSCache<NSString, UIImage>()
     var searchType: Int?        // MiruGlobal.ANIME or MiruGlobals.MANGA
     
     override func viewDidAppear(_ animated: Bool) {
@@ -45,7 +46,7 @@ class BrowseViewController: UIViewController, UISearchResultsUpdating, UISearchB
         searchController.searchBar.placeholder = "Search"
         searchController.searchBar.tintColor = UIColor.white
         
-        self.searchResultTableView.register(UITableViewCell.self, forCellReuseIdentifier: "browseCell")
+        self.searchResultTableView.register(UINib(nibName: "TableViewSeriesCell", bundle: nil), forCellReuseIdentifier: "TableViewSeriesCell")
         self.searchResultTableView.delegate = self
         self.searchResultTableView.dataSource = self
         
@@ -167,13 +168,13 @@ class BrowseViewController: UIViewController, UISearchResultsUpdating, UISearchB
             if (searchType == MiruGlobals.ANIME) {
                 currentAnimeObj?.search_result_type = string
             } else {
-                currentMangaObj?.search_result_type = string
+                currentAnimeObj?.search_result_status = string
             }
         } else if (currentXMLElement == "status") {
             if (searchType == MiruGlobals.ANIME) {
                 currentAnimeObj?.search_result_status = string
             } else {
-                currentMangaObj?.search_result_type = string
+                currentMangaObj?.search_result_status = string
             }
         } else if (currentXMLElement == "start_date") {
             
@@ -206,6 +207,8 @@ class BrowseViewController: UIViewController, UISearchResultsUpdating, UISearchB
                 currentMangaObj = nil
             }
         }
+        
+        currentXMLElement = nil
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -218,14 +221,45 @@ class BrowseViewController: UIViewController, UISearchResultsUpdating, UISearchB
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // create a new cell if needed or reuse an old one
-        let cell = self.searchResultTableView.dequeueReusableCell(withIdentifier: "browseCell")
+        let cell = self.searchResultTableView.dequeueReusableCell(withIdentifier: "TableViewSeriesCell") as! TableViewSeriesCell
         
         if (searchType == MiruGlobals.ANIME) {
-            cell?.textLabel?.text = animeSearchResults[indexPath.row].series_title
+            cell.title.text = animeSearchResults[indexPath.row].series_title
+            cell.airingStatus.text = animeSearchResults[indexPath.row].search_result_status
+            cell.numCompleted.setTitle(String(describing: animeSearchResults[indexPath.row].series_episodes!) + " episodes", for: UIControlState.normal)
+
+            cell.MALMyScoreLabel.text = "MAL Score"
+            if let malScore = animeSearchResults[indexPath.row].mal_score {
+                cell.myScore.setTitle(String(describing: malScore), for: UIControlState.normal)
+            }
+            cell.imageThumbnail.image = nil
+            
+            // checks the cache, and downloads the image or uses the one in the cache
+            let img = imageCache.object(forKey: animeSearchResults[indexPath.row].series_image! as NSString)
+            cell.configureCell(anime: animeSearchResults[indexPath.row], image: img, cache: imageCache)
         } else {
-            cell?.textLabel?.text = mangaSearchResults[indexPath.row].series_title
+            cell.title.text = mangaSearchResults[indexPath.row].series_title
+            cell.airingStatus.text = mangaSearchResults[indexPath.row].search_result_status
+            cell.numCompleted.setTitle(String(describing: mangaSearchResults[indexPath.row].series_chapters!) + " chapters", for: UIControlState.normal)
+            
+            cell.MALMyScoreLabel.text = "MAL Score"
+           
+            if let malScore = mangaSearchResults[indexPath.row].mal_score {
+                cell.myScore.setTitle(String(describing: malScore), for: UIControlState.normal)
+            }
+            cell.imageThumbnail.image = nil
+            
+            // checks the cache, and downloads the image or uses the one in the cache
+            let img = imageCache.object(forKey: mangaSearchResults[indexPath.row].series_image! as NSString)
+            cell.configureCell(manga: mangaSearchResults[indexPath.row], image: img, cache: imageCache)
         }
-        return cell!
+        
+        cell.numCompleted.tintColor = UIColor.black
+        cell.myScore.tintColor = UIColor.black
+        cell.numCompleted.isUserInteractionEnabled = false
+        cell.myScore.isUserInteractionEnabled = false
+        
+        return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

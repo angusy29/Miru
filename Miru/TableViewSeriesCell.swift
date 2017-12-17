@@ -17,12 +17,13 @@ class TableViewSeriesCell: UITableViewCell {
 
     @IBOutlet weak var numCompleted: UIButton! // number of episodes or chapters completed
     
+    @IBOutlet weak var MALMyScoreLabel: UILabel!
     @IBOutlet weak var myScore: UIButton!
     
     @IBOutlet weak var incrementChapterEpisodeButton: UIButton!
     
-    var anime: Anime?
-    var manga: Manga?
+    var anime: Anime?       // if nil, this cell is manga
+    var manga: Manga?       // if nil, this cell is anime
     
     // increments the chapter or episode
     @IBAction func incEpisode(_ sender: Any) {
@@ -68,12 +69,15 @@ class TableViewSeriesCell: UITableViewCell {
     func configureCell(anime: Anime, image: UIImage?, cache: NSCache<NSString, UIImage>){
         self.anime = anime
         
-        if anime.my_watched_episodes! == anime.series_episodes!
-            || anime.series_status == MiruGlobals.NOT_YET_RELEASED {
-            incrementChapterEpisodeButton.isHidden = true
+        if let watched_eps = anime.my_watched_episodes {
+            if watched_eps == anime.series_episodes!
+                || anime.series_status == MiruGlobals.NOT_YET_RELEASED {
+                incrementChapterEpisodeButton.isHidden = true
+            } else {
+                showIncrementButton()
+            }
         } else {
-            incrementChapterEpisodeButton.isHidden = false
-            incrementChapterEpisodeButton.layer.cornerRadius = 8
+            incrementChapterEpisodeButton.isHidden = true
         }
         
         if image != nil{
@@ -83,12 +87,17 @@ class TableViewSeriesCell: UITableViewCell {
             //Create the request to download the image
             if let seriesImage = anime.series_image {
                 let url = URL(string: seriesImage)
+                if url == nil {
+                    return
+                }
                 
                 DispatchQueue.global().async {
                     let data = try? Data(contentsOf: url!) //make sure your image in this url does exist, otherwise unwrap in a if let check / try-catch
                     DispatchQueue.main.async {
-                        self.imageThumbnail.image = UIImage(data: data!)
-                        cache.setObject(self.imageThumbnail.image!, forKey: anime.series_image! as NSString)
+                        if let unwrapData = data {
+                            self.imageThumbnail.image = UIImage(data: unwrapData)
+                            cache.setObject(self.imageThumbnail.image!, forKey: anime.series_image! as NSString)
+                        }
                     }
                 }
             }
@@ -98,12 +107,15 @@ class TableViewSeriesCell: UITableViewCell {
     func configureCell(manga: Manga, image: UIImage?, cache: NSCache<NSString, UIImage>){
         self.manga = manga
         
-        if manga.my_read_chapters! == manga.series_chapters!
-            || manga.series_status == MiruGlobals.NOT_YET_RELEASED {
-            incrementChapterEpisodeButton.isHidden = true
+        if let read_chapters = manga.my_read_chapters {
+            if manga.my_read_chapters! == manga.series_chapters!
+                || manga.series_status == MiruGlobals.NOT_YET_RELEASED {
+                incrementChapterEpisodeButton.isHidden = true
+            } else {
+                showIncrementButton()
+            }
         } else {
-            incrementChapterEpisodeButton.isHidden = false
-            incrementChapterEpisodeButton.layer.cornerRadius = 8
+            incrementChapterEpisodeButton.isHidden = true
         }
 
         if image != nil{
@@ -113,12 +125,16 @@ class TableViewSeriesCell: UITableViewCell {
             //Create the request to download the image
             if let seriesImage = manga.series_image {
                 let url = URL(string: seriesImage)
-                
+                if url == nil {
+                    return
+                }
                 DispatchQueue.global().async {
                     let data = try? Data(contentsOf: url!) //make sure your image in this url does exist, otherwise unwrap in a if let check / try-catch
                     DispatchQueue.main.async {
-                        self.imageThumbnail.image = UIImage(data: data!)
-                        cache.setObject(self.imageThumbnail.image!, forKey: manga.series_image! as NSString)
+                        if let unwrapData = data {
+                            self.imageThumbnail.image = UIImage(data: unwrapData)
+                            cache.setObject(self.imageThumbnail.image!, forKey: manga.series_image! as NSString)
+                        }
                     }
                 }
             }
@@ -150,5 +166,10 @@ class TableViewSeriesCell: UITableViewCell {
             guard let manga = self.manga else { return }
             vc.showPickerView(manga: manga, cell: self, type: MiruGlobals.CHANGE_SCORE)
         }
+    }
+    
+    func showIncrementButton() {
+        incrementChapterEpisodeButton.isHidden = false
+        incrementChapterEpisodeButton.layer.cornerRadius = 8
     }
 }
