@@ -25,6 +25,7 @@ class TableViewSeriesCell: UITableViewCell {
     var anime: Anime?       // if nil, this cell is manga
     var manga: Manga?       // if nil, this cell is anime
     
+    
     // increments the chapter or episode
     @IBAction func incEpisode(_ sender: Any) {
         guard let watchedEpisodes = anime?.my_watched_episodes else { return }

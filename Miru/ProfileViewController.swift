@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 class ProfileViewController: UIViewController {    
-        
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.navigationController?.navigationBar.prefersLargeTitles = true

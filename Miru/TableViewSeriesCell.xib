@@ -105,7 +105,7 @@
                 <outlet property="numCompleted" destination="VNf-yg-LC7" id="GJA-Ml-1eR"/>
                 <outlet property="title" destination="iBv-3Z-QuQ" id="xKI-XR-RsT"/>
             </connections>
-            <point key="canvasLocation" x="-257" y="-185"/>
+            <point key="canvasLocation" x="-2791" y="-107"/>
         </tableViewCell>
     </objects>
 </document>

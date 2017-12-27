@@ -13,12 +13,12 @@ import Foundation
 class AnimeListViewController: ListViewController, UINavigationBarDelegate, UITableViewDelegate, UITableViewDataSource {
     
     // anime arrays
-    var idToAnime = [Int: Anime]()
-    var currentlyWatching = [Anime]()
-    var completed = [Anime]()
-    var onHold = [Anime]()
-    var dropped = [Anime]()
-    var planToWatch = [Anime]()
+    var idToAnime = MiruGlobals.user.idToAnime
+    var currentlyWatching = MiruGlobals.user.currentlyWatching
+    var completed = MiruGlobals.user.completedAnime
+    var onHold = MiruGlobals.user.onHoldAnime
+    var dropped = MiruGlobals.user.droppedAnime
+    var planToWatch = MiruGlobals.user.planToWatch
         
     // Used to parse through XML, we know which anime to populate
     var currentAnimeObj: Anime?     // keeps track of the current anime to populate/create
@@ -197,6 +197,15 @@ class AnimeListViewController: ListViewController, UINavigationBarDelegate, UITa
         cell.configureCell(anime: selectedAnime, image: img, cache: imageCache)
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(self.getSelectedAnimeArray()[indexPath.row].series_title)
+        
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "MediaDetailsViewController") as! MediaDetailsViewController
+        vc.anime = self.getSelectedAnimeArray()[indexPath.row]
+        vc.imageCache = self.imageCache
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     /*

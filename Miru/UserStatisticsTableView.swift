@@ -11,7 +11,8 @@ import UIKit
 
 class UserStatisticsTableView: UITableView, XMLParserDelegate {
     var cache = NSCache<NSString, UIImage>()
-
+    var rootNavigationController: RootNavigationController?
+    
     @IBOutlet weak var profileImageView: UIImageView!
     
     @IBOutlet weak var userNameLabel: UILabel!
@@ -35,6 +36,7 @@ class UserStatisticsTableView: UITableView, XMLParserDelegate {
     override func awakeFromNib() {
         super.awakeFromNib()
         print("Awake")
+        
         // get anime statistics
         // let's assume it's already loaded from animeListViewController, as that was landing page
         

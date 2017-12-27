@@ -271,11 +271,20 @@ class BrowseViewController: UIViewController, UISearchResultsUpdating, UISearchB
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "MediaDetailsViewController") as! MediaDetailsViewController
+        
         if (searchType == MiruGlobals.ANIME) {
             print("Selected: " + animeSearchResults[indexPath.row].series_title!)
+            vc.anime = animeSearchResults[indexPath.row]
         } else {
             print("Selected: " + mangaSearchResults[indexPath.row].series_title!)
+            vc.manga = mangaSearchResults[indexPath.row]
         }
+        
+        
+        vc.imageCache = self.imageCache
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     override func didReceiveMemoryWarning() {

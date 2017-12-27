@@ -20,10 +20,26 @@ class User {
     var user_plantowatch: Int?
     var user_days_spent_watching: Double?
     
+    // user anime
+    var idToAnime = [Int: Anime]()
+    var currentlyWatching = [Anime]()
+    var completedAnime = [Anime]()
+    var onHoldAnime = [Anime]()
+    var droppedAnime = [Anime]()
+    var planToWatch = [Anime]()
+    
     var user_manga_reading: Int?
     var user_manga_completed: Int?
     var user_manga_onhold: Int?
     var user_manga_dropped: Int?
     var user_manga_plantoread: Int?
     var user_manga_days_spent_reading: Double? // API calls it user_days_spent_watching
+    
+    // user manga
+    var idToManga = [Int: Manga]()
+    var currentlyReading = [Manga]()
+    var completedManga = [Manga]()
+    var onHoldManga = [Manga]()
+    var droppedManga = [Manga]()
+    var planToRead = [Manga]()
 }

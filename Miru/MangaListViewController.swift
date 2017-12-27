@@ -10,12 +10,12 @@ import UIKit
 import Foundation
 
 class MangaListViewController: ListViewController, UINavigationBarDelegate, UITableViewDelegate, UITableViewDataSource {
-    var idToManga = [Int: Manga]()
-    var currentlyReading = [Manga]()
-    var completed = [Manga]()
-    var onHold = [Manga]()
-    var dropped = [Manga]()
-    var planToRead = [Manga]()
+    var idToManga = MiruGlobals.user.idToManga
+    var currentlyReading = MiruGlobals.user.currentlyReading
+    var completed = MiruGlobals.user.completedManga
+    var onHold = MiruGlobals.user.onHoldManga
+    var dropped = MiruGlobals.user.droppedManga
+    var planToRead = MiruGlobals.user.planToRead
     
     var currentMangaObj: Manga?
     
@@ -187,6 +187,15 @@ class MangaListViewController: ListViewController, UINavigationBarDelegate, UITa
         cell.configureCell(manga: selectedManga, image: img, cache: imageCache)
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(self.getSelectedMangaArray()[indexPath.row].series_title)
+        
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "MediaDetailsViewController") as! MediaDetailsViewController
+        vc.manga = self.getSelectedMangaArray()[indexPath.row]
+        vc.imageCache = self.imageCache
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     /*
