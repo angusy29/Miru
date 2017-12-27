@@ -37,11 +37,12 @@ class TableViewSeriesCell: UITableViewCell {
             //status is HTTPURLResponse
             //your process
             if (result!) {
+                self.anime?.my_watched_episodes = self.anime?.my_watched_episodes.map({ $0 + 1 })
+
                 DispatchQueue.main.async {
                     let numCompletedTitle = self.anime?.series_episodes! == 0 ? String(describing: nextEpisode) : String(describing: nextEpisode) + "/" + String(describing: (self.anime?.series_episodes)!)
                     self.numCompleted.setTitle(numCompletedTitle, for: UIControlState.normal)
                 }
-                self.anime?.my_watched_episodes = self.anime?.my_watched_episodes.map({ $0 + 1 })
             }
         })
     }
@@ -57,11 +58,12 @@ class TableViewSeriesCell: UITableViewCell {
             //status is HTTPURLResponse
             //your process
             if (result!) {
+                self.manga?.my_read_chapters = self.manga?.my_read_chapters.map({ $0 + 1 })
+
                 DispatchQueue.main.async {
                     let numCompletedTitle = self.manga?.series_chapters! == 0 ? String(describing: nextChapter) : String(describing: nextChapter) + "/" + String(describing: (self.manga?.series_chapters)!)
                     self.numCompleted.setTitle(numCompletedTitle, for: UIControlState.normal)
                 }
-                self.manga?.my_read_chapters = self.manga?.my_read_chapters.map({ $0 + 1 })
             }
         })
     }
@@ -108,7 +110,7 @@ class TableViewSeriesCell: UITableViewCell {
         self.manga = manga
         
         if let read_chapters = manga.my_read_chapters {
-            if manga.my_read_chapters! == manga.series_chapters!
+            if read_chapters == manga.series_chapters!
                 || manga.series_status == MiruGlobals.NOT_YET_RELEASED {
                 incrementChapterEpisodeButton.isHidden = true
             } else {
