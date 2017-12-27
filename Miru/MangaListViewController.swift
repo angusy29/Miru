@@ -10,13 +10,6 @@ import UIKit
 import Foundation
 
 class MangaListViewController: ListViewController, UINavigationBarDelegate, UITableViewDelegate, UITableViewDataSource {
-    var idToManga = MiruGlobals.user.idToManga
-    var currentlyReading = MiruGlobals.user.currentlyReading
-    var completed = MiruGlobals.user.completedManga
-    var onHold = MiruGlobals.user.onHoldManga
-    var dropped = MiruGlobals.user.droppedManga
-    var planToRead = MiruGlobals.user.planToRead
-    
     var currentMangaObj: Manga?
     
     override func viewDidAppear(_ animated: Bool) {
@@ -30,11 +23,11 @@ class MangaListViewController: ListViewController, UINavigationBarDelegate, UITa
         getList(type: "manga")
         
         // sort by alphabetical order
-        currentlyReading = currentlyReading.sorted(by: { $0.series_title! < $1.series_title! })
-        completed = completed.sorted(by: { $0.series_title! < $1.series_title! })
-        onHold = onHold.sorted(by: { $0.series_title! < $1.series_title! })
-        dropped = dropped.sorted(by: { $0.series_title! < $1.series_title! })
-        planToRead = planToRead.sorted(by: { $0.series_title! < $1.series_title! })
+        MiruGlobals.user.currentlyReading = MiruGlobals.user.currentlyReading.sorted(by: { $0.series_title! < $1.series_title! })
+        MiruGlobals.user.completedManga = MiruGlobals.user.completedManga.sorted(by: { $0.series_title! < $1.series_title! })
+        MiruGlobals.user.onHoldManga = MiruGlobals.user.onHoldManga.sorted(by: { $0.series_title! < $1.series_title! })
+        MiruGlobals.user.droppedManga = MiruGlobals.user.droppedManga.sorted(by: { $0.series_title! < $1.series_title! })
+        MiruGlobals.user.planToRead = MiruGlobals.user.planToRead.sorted(by: { $0.series_title! < $1.series_title! })
         
         self.tableView.register(UINib(nibName: "TableViewSeriesCell", bundle: nil), forCellReuseIdentifier: "TableViewSeriesCell")
         self.tableView.delegate = self
@@ -54,8 +47,8 @@ class MangaListViewController: ListViewController, UINavigationBarDelegate, UITa
         var mangaObj = currentMangaObj
         if mangaObj?.series_mangadb_id != nil {
             guard let id = mangaObj?.series_mangadb_id else { return }
-            if idToManga[id] != nil {
-                mangaObj = idToManga[id]
+            if MiruGlobals.user.idToManga[id] != nil {
+                mangaObj = MiruGlobals.user.idToManga[id]
             }
         }
         
@@ -63,12 +56,12 @@ class MangaListViewController: ListViewController, UINavigationBarDelegate, UITa
             mangaObj?.series_mangadb_id = Int(string)
         } else if (currentXMLElement == "series_title") {
             guard let id = mangaObj?.series_mangadb_id else { return }
-            if idToManga[id] == nil {
+            if MiruGlobals.user.idToManga[id] == nil {
                 mangaObj?.series_title = mangaObj?.series_title == nil ? string : (mangaObj?.series_title)! + string
             }
         } else if (currentXMLElement == "series_synonyms") {
             guard let id = mangaObj?.series_mangadb_id else { return }
-            if idToManga[id] == nil {
+            if MiruGlobals.user.idToManga[id] == nil {
                 mangaObj?.series_synonyms?.append(string)
             }
         } else if (currentXMLElement == "series_type") {
@@ -129,24 +122,24 @@ class MangaListViewController: ListViewController, UINavigationBarDelegate, UITa
             guard let id = mangaObj.series_mangadb_id else { return }
             
             // if the anime already exists, we update it
-            if idToManga[id] != nil {
-                idToManga[id] = mangaObj
+            if MiruGlobals.user.idToManga[id] != nil {
+                MiruGlobals.user.idToManga[id] = mangaObj
                 currentMangaObj = nil
                 return
             }
             
             if (status == MiruGlobals.WATCHING_OR_READING) {
-                currentlyReading.append(mangaObj)
+                MiruGlobals.user.currentlyReading.append(mangaObj)
             } else if (status == MiruGlobals.COMPLETED) {
-                completed.append(mangaObj)
+                MiruGlobals.user.completedManga.append(mangaObj)
             } else if (status == MiruGlobals.DROPPED) {
-                dropped.append(mangaObj)
+                MiruGlobals.user.droppedManga.append(mangaObj)
             } else if (status == MiruGlobals.ON_HOLD) {
-                onHold.append(mangaObj)
+                MiruGlobals.user.onHoldManga.append(mangaObj)
             } else if (status == MiruGlobals.PLAN_TO_WATCH_OR_READ) {
-                planToRead.append(mangaObj)
+                MiruGlobals.user.planToRead.append(mangaObj)
             }
-            idToManga[id] = mangaObj
+            MiruGlobals.user.idToManga[id] = mangaObj
             currentMangaObj = nil
         }
     }
@@ -204,15 +197,15 @@ class MangaListViewController: ListViewController, UINavigationBarDelegate, UITa
      */
     func getSelectedMangaArray() -> [Manga] {
         if self.selectedState == MiruGlobals.WATCHING_OR_READING {
-            return self.currentlyReading
+            return MiruGlobals.user.currentlyReading
         } else if self.selectedState == MiruGlobals.COMPLETED {
-            return self.completed
+            return MiruGlobals.user.completedManga
         } else if self.selectedState == MiruGlobals.ON_HOLD {
-            return self.onHold
+            return MiruGlobals.user.onHoldManga
         } else if self.selectedState == MiruGlobals.DROPPED {
-            return self.dropped
+            return MiruGlobals.user.droppedManga
         } else {
-            return self.planToRead
+            return MiruGlobals.user.planToRead
         }
     }
     

@@ -21,6 +21,8 @@ class MediaDetailsViewController: UIViewController {
     var anime: Anime?
     var manga: Manga?
     
+    var isInList = false
+    
     var imageCache = NSCache<NSString, UIImage>()
     
     override func viewDidAppear(_ animated: Bool) {
@@ -32,15 +34,34 @@ class MediaDetailsViewController: UIViewController {
         self.mediaNameLabel.text = manga == nil ? anime?.series_title : manga?.series_title
         //self.mediaNameLabel.lineBreakMode = .byWordWrapping
         
+        addToListButton.layer.cornerRadius = 8
+        
         if manga == nil {
+            // it is anime
             let img = imageCache.object(forKey: anime?.series_image! as! NSString)
             self.setImage(anime: anime, image: img, cache: imageCache)
+            
+            guard let id = anime?.series_animedb_id else { return }
+            if MiruGlobals.user.idToAnime[id] != nil {
+                isInList = true
+                setAddToListToRemove()
+            }
         } else {
+            // it is a manga
             let img = imageCache.object(forKey: manga?.series_image! as! NSString)
             self.setImage(manga: manga, image: img, cache: imageCache)
+            
+            guard let id = manga?.series_mangadb_id else { return }
+            if MiruGlobals.user.idToManga[id] != nil {
+                isInList = true
+                setAddToListToRemove()
+            }
         }
-        
-        addToListButton.layer.cornerRadius = 8
+    }
+    
+    func setAddToListToRemove() {
+        addToListButton.backgroundColor = UIColor.red
+        addToListButton.setTitle("Remove", for: UIControlState.normal)
     }
     
     func setImage(anime: Anime?, image: UIImage?, cache: NSCache<NSString, UIImage>){
@@ -97,40 +118,57 @@ class MediaDetailsViewController: UIViewController {
     }
     
     @IBAction func addToListButtonPressed(_ sender: Any) {
-        let actionController = UIAlertController(title: nil, message: "Add to list", preferredStyle: .actionSheet)
-        
-        let currentlyWatchingAction = UIAlertAction(title: "Currently watching", style: .default, handler: { (alert: UIAlertAction!) -> Void in
-            //  Do some action here.
-        })
-        
-        let completedAction = UIAlertAction(title: "Completed", style: .default, handler: { (alert: UIAlertAction!) -> Void in
-            //  Do some destructive action here.
-        })
-        
-        let onHoldAction = UIAlertAction(title: "On hold", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+        if isInList {
+            let actionController = UIAlertController(title: nil, message: "Remove", preferredStyle: .actionSheet)
             
-        })
-        
-        let droppedAction = UIAlertAction(title: "Dropped", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+            let removeAction = UIAlertAction(title: "Remove from list", style: .destructive, handler: { (alert: UIAlertAction!) -> Void in
+                
+            })
             
-        })
-        
-        let planToWatchAction = UIAlertAction(title: "Plan to watch", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: { (alert: UIAlertAction!) -> Void in
+                //  Do something here upon cancellation.
+            })
             
-        })
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: { (alert: UIAlertAction!) -> Void in
-            //  Do something here upon cancellation.
-        })
-        
-        actionController.addAction(currentlyWatchingAction)
-        actionController.addAction(completedAction)
-        actionController.addAction(onHoldAction)
-        actionController.addAction(droppedAction)
-        actionController.addAction(planToWatchAction)
-        actionController.addAction(cancelAction)
-        
-        self.present(actionController, animated: true, completion: nil)
+            actionController.addAction(removeAction)
+            actionController.addAction(cancelAction)
+            
+            self.present(actionController, animated: true, completion: nil)
+        } else {
+            let actionController = UIAlertController(title: nil, message: "Add to list", preferredStyle: .actionSheet)
+            
+            let currentlyWatchingAction = UIAlertAction(title: "Currently watching", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+                //  Do some action here.
+            })
+            
+            let completedAction = UIAlertAction(title: "Completed", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+                //  Do some destructive action here.
+            })
+            
+            let onHoldAction = UIAlertAction(title: "On hold", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+                
+            })
+            
+            let droppedAction = UIAlertAction(title: "Dropped", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+                
+            })
+            
+            let planToWatchAction = UIAlertAction(title: "Plan to watch", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+                
+            })
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: { (alert: UIAlertAction!) -> Void in
+                //  Do something here upon cancellation.
+            })
+            
+            actionController.addAction(currentlyWatchingAction)
+            actionController.addAction(completedAction)
+            actionController.addAction(onHoldAction)
+            actionController.addAction(droppedAction)
+            actionController.addAction(planToWatchAction)
+            actionController.addAction(cancelAction)
+            
+            self.present(actionController, animated: true, completion: nil)
+        }
     }
     
     override func didReceiveMemoryWarning() {
