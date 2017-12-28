@@ -21,25 +21,12 @@ class MangaListViewController: ListViewController, UINavigationBarDelegate, UITa
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.        
         getList(type: "manga")
-        
-        guard let currentlyReading = self.rootNavigationController?.user?.currentlyReading else { return }
-        guard let completedManga = self.rootNavigationController?.user?.completedManga else { return }
-        guard let onHoldManga = self.rootNavigationController?.user?.onHoldManga else { return }
-        guard let droppedManga = self.rootNavigationController?.user?.droppedManga else { return }
-        guard let planToRead = self.rootNavigationController?.user?.planToRead else { return }
-        
-        // sort by alphabetical order
-        self.rootNavigationController?.user?.currentlyReading = currentlyReading.sorted(by: { $0.series_title! < $1.series_title! })
-        self.rootNavigationController?.user?.completedManga = completedManga.sorted(by: { $0.series_title! < $1.series_title! })
-        self.rootNavigationController?.user?.onHoldManga = onHoldManga.sorted(by: { $0.series_title! < $1.series_title! })
-        self.rootNavigationController?.user?.droppedManga = droppedManga.sorted(by: { $0.series_title! < $1.series_title! })
-        self.rootNavigationController?.user?.planToRead = planToRead.sorted(by: { $0.series_title! < $1.series_title! })
+        sortMedia(type: "manga")
         
         self.tableView.register(UINib(nibName: "TableViewSeriesCell", bundle: nil), forCellReuseIdentifier: "TableViewSeriesCell")
         self.tableView.delegate = self
         self.tableView.dataSource = self
-    }
-    
+    }    
     
     func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
         
@@ -189,9 +176,7 @@ class MangaListViewController: ListViewController, UINavigationBarDelegate, UITa
         return cell
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(self.getSelectedMangaArray()[indexPath.row].series_title)
-        
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {        
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "MediaDetailsViewController") as! MediaDetailsViewController
         vc.manga = self.getSelectedMangaArray()[indexPath.row]
         vc.imageCache = self.imageCache

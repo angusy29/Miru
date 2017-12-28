@@ -46,6 +46,9 @@ class LoginViewController: UIViewController {
         })
     }
     
+    /*
+     * Before perform segue to RootNavigationController, we set the user
+     */
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let username = usernameInput.text else { return }
         

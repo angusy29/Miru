@@ -9,6 +9,10 @@
 import Foundation
 import UIKit
 
+/*
+ * RootNavigationController is the root controller of all viewcontrollers
+ * Contains the user
+ */
 class RootNavigationController: UINavigationController {
     var user: User?
 }

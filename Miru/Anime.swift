@@ -23,7 +23,7 @@ class Anime {
     var my_start_date: Date?
     var my_finish_date: Date?
     var my_score: Int?
-    var my_status: Int?
+    var my_status: Int?     // 1, 2, 3, 4, 6
     var my_rewatching: Int?
     var my_rewatching_ep: Int?
     var my_last_updated: Int?

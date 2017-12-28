@@ -98,9 +98,40 @@ class ListViewController: UIViewController, EHHorizontalSelectionViewProtocol, X
         }
         
         getList(type: type)
+        sortMedia(type: type)
         tableView.reloadData()
         // somewhere in your code you might need to call:
         refreshControl.endRefreshing()
+    }
+    
+    func sortMedia(type: String) {
+        if type == "anime" {
+            guard let currentlyWatching = self.rootNavigationController?.user?.currentlyWatching else { return }
+            guard let completedAnime = self.rootNavigationController?.user?.completedAnime else { return }
+            guard let onHoldAnime = self.rootNavigationController?.user?.onHoldAnime else { return }
+            guard let droppedAnime = self.rootNavigationController?.user?.droppedAnime else { return }
+            guard let planToWatch = self.rootNavigationController?.user?.planToWatch else { return }
+            
+            // sort by alphabetical order
+            self.rootNavigationController?.user?.currentlyWatching = currentlyWatching.sorted(by: { $0.series_title! < $1.series_title! })
+            self.rootNavigationController?.user?.completedAnime = completedAnime.sorted(by: { $0.series_title! < $1.series_title! })
+            self.rootNavigationController?.user?.onHoldAnime = onHoldAnime.sorted(by: { $0.series_title! < $1.series_title! })
+            self.rootNavigationController?.user?.droppedAnime = droppedAnime.sorted(by: { $0.series_title! < $1.series_title! })
+            self.rootNavigationController?.user?.planToWatch = planToWatch.sorted(by: { $0.series_title! < $1.series_title! })
+        } else {
+            guard let currentlyReading = self.rootNavigationController?.user?.currentlyReading else { return }
+            guard let completedManga = self.rootNavigationController?.user?.completedManga else { return }
+            guard let onHoldManga = self.rootNavigationController?.user?.onHoldManga else { return }
+            guard let droppedManga = self.rootNavigationController?.user?.droppedManga else { return }
+            guard let planToRead = self.rootNavigationController?.user?.planToRead else { return }
+            
+            // sort by alphabetical order
+            self.rootNavigationController?.user?.currentlyReading = currentlyReading.sorted(by: { $0.series_title! < $1.series_title! })
+            self.rootNavigationController?.user?.completedManga = completedManga.sorted(by: { $0.series_title! < $1.series_title! })
+            self.rootNavigationController?.user?.onHoldManga = onHoldManga.sorted(by: { $0.series_title! < $1.series_title! })
+            self.rootNavigationController?.user?.droppedManga = droppedManga.sorted(by: { $0.series_title! < $1.series_title! })
+            self.rootNavigationController?.user?.planToRead = planToRead.sorted(by: { $0.series_title! < $1.series_title! })
+        }
     }
     
     // Get list for that type

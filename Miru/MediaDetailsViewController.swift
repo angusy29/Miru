@@ -22,8 +22,6 @@ class MediaDetailsViewController: UIViewController {
     var manga: Manga?
     var rootNavigationController: RootNavigationController?
     
-    var isInList = false
-    
     var imageCache = NSCache<NSString, UIImage>()
     
     override func viewDidLoad() {
@@ -42,7 +40,6 @@ class MediaDetailsViewController: UIViewController {
             
             guard let id = anime?.series_animedb_id else { return }
             if self.rootNavigationController?.user?.idToAnime[id] != nil {
-                isInList = true
                 setAddToListToMove()
             }
         } else {
@@ -52,7 +49,6 @@ class MediaDetailsViewController: UIViewController {
             
             guard let id = manga?.series_mangadb_id else { return }
             if self.rootNavigationController?.user?.idToManga[id] != nil {
-                isInList = true
                 setAddToListToMove()
             }
         }
@@ -65,29 +61,29 @@ class MediaDetailsViewController: UIViewController {
     @IBAction func addToListButtonPressed(_ sender: Any) {
         let actionController = UIAlertController(title: nil, message: "Add to list", preferredStyle: .actionSheet)
         
+        var listWhichContainsMedia: [Any]?
+        if manga == nil {
+            guard let anime = self.anime else { return }
+            listWhichContainsMedia = listContainsMedia(anime: anime)
+        } else {
+            guard let manga = self.manga else { return }
+            listWhichContainsMedia = listContainsMedia(manga: manga)
+        }
+        
         let currentlyWatchingAction = UIAlertAction(title: "Currently watching", style: .default, handler: { (alert: UIAlertAction!) -> Void in
             //  Do some action here.
             if self.manga == nil {
-                // guard let unwrapAnime = self.anime else { return }
-                // self.rootNavigationController?.user?.currentlyWatching.append(unwrapAnime)
                 self.addMediaToList(anime: self.anime, type: MiruGlobals.WATCHING_OR_READING)
             } else {
-                // guard let unwrapManga = self.manga else { return }
-                // self.rootNavigationController?.user?.currentlyReading.append(unwrapManga)
                 self.addMediaToList(manga: self.manga, type: MiruGlobals.WATCHING_OR_READING)
 
             }
         })
         
         let completedAction = UIAlertAction(title: "Completed", style: .default, handler: { (alert: UIAlertAction!) -> Void in
-            //  Do some destructive action here.
             if self.manga == nil {
-                // guard let unwrapAnime = self.anime else { return }
-                // self.rootNavigationController?.user?.completedAnime.append(unwrapAnime)
                 self.addMediaToList(anime: self.anime, type: MiruGlobals.COMPLETED)
             } else {
-                // guard let unwrapManga = self.manga else { return }
-                // self.rootNavigationController?.user?.completedManga.append(unwrapManga)
                 self.addMediaToList(manga: self.manga, type: MiruGlobals.COMPLETED)
 
             }
@@ -95,12 +91,8 @@ class MediaDetailsViewController: UIViewController {
         
         let onHoldAction = UIAlertAction(title: "On hold", style: .default, handler: { (alert: UIAlertAction!) -> Void in
             if self.manga == nil {
-                // guard let unwrapAnime = self.anime else { return }
-                // self.rootNavigationController?.user?.onHoldAnime.append(unwrapAnime)
                 self.addMediaToList(anime: self.anime, type: MiruGlobals.ON_HOLD)
             } else {
-                // guard let unwrapManga = self.manga else { return }
-                // self.rootNavigationController?.user?.onHoldManga.append(unwrapManga)
                 self.addMediaToList(manga: self.manga, type: MiruGlobals.ON_HOLD)
 
             }
@@ -108,12 +100,8 @@ class MediaDetailsViewController: UIViewController {
         
         let droppedAction = UIAlertAction(title: "Dropped", style: .default, handler: { (alert: UIAlertAction!) -> Void in
             if self.manga == nil {
-                // guard let unwrapAnime = self.anime else { return }
-                // self.rootNavigationController?.user?.droppedAnime.append(unwrapAnime)
                 self.addMediaToList(anime: self.anime, type: MiruGlobals.DROPPED)
             } else {
-                // guard let unwrapManga = self.manga else { return }
-                // self.rootNavigationController?.user?.droppedManga.append(unwrapManga)
                 self.addMediaToList(manga: self.manga, type: MiruGlobals.DROPPED)
 
             }
@@ -121,12 +109,8 @@ class MediaDetailsViewController: UIViewController {
         
         let planToWatchAction = UIAlertAction(title: "Plan to watch", style: .default, handler: { (alert: UIAlertAction!) -> Void in
             if self.manga == nil {
-                // guard let unwrapAnime = self.anime else { return }
-                // self.rootNavigationController?.user?.planToWatch.append(unwrapAnime)
                 self.addMediaToList(anime: self.anime, type: MiruGlobals.PLAN_TO_WATCH_OR_READ)
             } else {
-                // guard let unwrapManga = self.manga else { return }
-                // self.rootNavigationController?.user?.planToRead.append(unwrapManga)
                 self.addMediaToList(manga: self.manga, type: MiruGlobals.PLAN_TO_WATCH_OR_READ)
 
             }
@@ -136,7 +120,6 @@ class MediaDetailsViewController: UIViewController {
             //  Do something here upon cancellation.
         })
         
-        
         actionController.addAction(currentlyWatchingAction)
         actionController.addAction(completedAction)
         actionController.addAction(onHoldAction)
@@ -144,7 +127,7 @@ class MediaDetailsViewController: UIViewController {
         actionController.addAction(planToWatchAction)
         actionController.addAction(cancelAction)
         
-        if isInList {
+        if listWhichContainsMedia != nil {
             actionController.message = "Move to list"
             let removeAction = UIAlertAction(title: "Remove from list", style: .destructive, handler: { (alert: UIAlertAction!) -> Void in
                 if self.manga == nil {
@@ -171,7 +154,6 @@ class MediaDetailsViewController: UIViewController {
             if (result!) {
                 DispatchQueue.main.async {
                     self.setAddToListToMove()
-                    self.isInList = true
                 }
             }
         })
@@ -189,7 +171,6 @@ class MediaDetailsViewController: UIViewController {
             if (result!) {
                 DispatchQueue.main.async {
                     self.setAddToListToMove()
-                    self.isInList = true
                 }
             }
         })
@@ -206,7 +187,6 @@ class MediaDetailsViewController: UIViewController {
             if (result!) {
                 DispatchQueue.main.async {
                     self.addToListButton.setTitle("Add to list", for: UIControlState.normal)
-                    self.isInList = false
                 }
             }
         })
@@ -223,58 +203,45 @@ class MediaDetailsViewController: UIViewController {
             if (result!) {
                 DispatchQueue.main.async {
                     self.addToListButton.setTitle("Add to list", for: UIControlState.normal)
-                    self.isInList = false
                 }
             }
         })
     }
     
-    // Find the list which contains the media
-    func findListContainsMedia() -> [Any]? {
-        if manga == nil {
-            // check anime
-            if (rootNavigationController?.user?.currentlyWatching.contains(where: { $0.series_animedb_id == anime?.series_animedb_id }))! {
-                return rootNavigationController?.user?.currentlyWatching
-            }
-            
-            if (rootNavigationController?.user?.completedAnime.contains(where: { $0.series_animedb_id == anime?.series_animedb_id }))! {
-                return rootNavigationController?.user?.completedAnime
-            }
-            
-            if (rootNavigationController?.user?.onHoldAnime.contains(where: { $0.series_animedb_id == anime?.series_animedb_id }))! {
-                return rootNavigationController?.user?.onHoldAnime
-            }
-            
-            if (rootNavigationController?.user?.droppedAnime.contains(where: { $0.series_animedb_id == anime?.series_animedb_id }))! {
-                return rootNavigationController?.user?.droppedAnime
-            }
-            
-            if (rootNavigationController?.user?.planToWatch.contains(where: { $0.series_animedb_id == anime?.series_animedb_id }))! {
-                return rootNavigationController?.user?.planToWatch
-            }
-        } else {
-            // check manga
-            if (rootNavigationController?.user?.currentlyReading.contains(where: { $0.series_mangadb_id == manga?.series_mangadb_id }))! {
-                return rootNavigationController?.user?.currentlyReading
-            }
-            
-            if (rootNavigationController?.user?.completedManga.contains(where: { $0.series_mangadb_id == manga?.series_mangadb_id }))! {
-                return rootNavigationController?.user?.completedManga
-            }
-            
-            if (rootNavigationController?.user?.onHoldManga.contains(where: { $0.series_mangadb_id == manga?.series_mangadb_id }))! {
-                return rootNavigationController?.user?.onHoldManga
-            }
-            
-            if (rootNavigationController?.user?.droppedManga.contains(where: { $0.series_mangadb_id == manga?.series_mangadb_id }))! {
-                return rootNavigationController?.user?.droppedManga
-            }
-            
-            if (rootNavigationController?.user?.planToRead.contains(where: { $0.series_mangadb_id == manga?.series_mangadb_id }))! {
-                return rootNavigationController?.user?.planToRead
-            }
+    func listContainsMedia(anime: Anime) -> [Anime]? {
+        if anime.my_status == nil {
+            return nil
         }
-        return nil
+        
+        if anime.my_status == MiruGlobals.WATCHING_OR_READING {
+            return rootNavigationController?.user?.currentlyWatching
+        } else if anime.my_status == MiruGlobals.COMPLETED {
+            return rootNavigationController?.user?.completedAnime
+        } else if anime.my_status == MiruGlobals.ON_HOLD {
+            return rootNavigationController?.user?.onHoldAnime
+        } else if anime.my_status == MiruGlobals.DROPPED {
+            return rootNavigationController?.user?.droppedAnime
+        } else {
+            return rootNavigationController?.user?.planToWatch
+        }
+    }
+    
+    func listContainsMedia(manga: Manga) -> [Manga]? {
+        if manga.my_status == nil {
+            return nil
+        }
+        
+        if manga.my_status == MiruGlobals.WATCHING_OR_READING {
+            return rootNavigationController?.user?.currentlyReading
+        } else if manga.my_status == MiruGlobals.COMPLETED {
+            return rootNavigationController?.user?.completedManga
+        } else if manga.my_status == MiruGlobals.ON_HOLD {
+            return rootNavigationController?.user?.onHoldManga
+        } else if manga.my_status == MiruGlobals.DROPPED {
+            return rootNavigationController?.user?.droppedManga
+        } else {
+            return rootNavigationController?.user?.planToRead
+        }
     }
     
     override func didReceiveMemoryWarning() {
