@@ -40,6 +40,7 @@ class MangaListViewController: ListViewController, UINavigationBarDelegate, UITa
         self.tableView.dataSource = self
     }
     
+    
     func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
         
         if (elementName == "manga") {

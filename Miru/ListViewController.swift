@@ -80,6 +80,23 @@ class ListViewController: UIViewController, EHHorizontalSelectionViewProtocol, X
     
     @objc func refreshList(refreshControl: UIRefreshControl) {
         guard let type = self.type else { return }
+        
+        if type == "anime" {
+            rootNavigationController?.user?.idToAnime.removeAll()
+            rootNavigationController?.user?.currentlyWatching.removeAll()
+            rootNavigationController?.user?.completedAnime.removeAll()
+            rootNavigationController?.user?.onHoldAnime.removeAll()
+            rootNavigationController?.user?.droppedAnime.removeAll()
+            rootNavigationController?.user?.planToWatch.removeAll()
+        } else {
+            rootNavigationController?.user?.idToManga.removeAll()
+            rootNavigationController?.user?.currentlyReading.removeAll()
+            rootNavigationController?.user?.completedManga.removeAll()
+            rootNavigationController?.user?.onHoldManga.removeAll()
+            rootNavigationController?.user?.droppedManga.removeAll()
+            rootNavigationController?.user?.planToRead.removeAll()
+        }
+        
         getList(type: type)
         tableView.reloadData()
         // somewhere in your code you might need to call:

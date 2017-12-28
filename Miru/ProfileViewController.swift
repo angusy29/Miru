@@ -27,7 +27,6 @@ class ProfileViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        print("PREPARE")
         self.rootNavigationController = self.navigationController as? RootNavigationController
         let destVC = segue.destination as? UserStatisticsTableView
         destVC?.user = self.rootNavigationController?.user

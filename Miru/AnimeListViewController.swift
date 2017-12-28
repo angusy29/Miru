@@ -172,11 +172,15 @@ class AnimeListViewController: ListViewController, UINavigationBarDelegate, UITa
         cell.title.text = selectedAnime.series_title
         
         // if score is 0, set the text to -, otherwise take the score we stored
-        let scoreTitle = selectedAnime.my_score! == 0 ? "-" : String(describing: selectedAnime.my_score!)
-        cell.myScore.setTitle(scoreTitle, for: UIControlState.normal)
+        if let my_score = selectedAnime.my_score {
+            let scoreTitle = my_score == 0 ? "-" : String(describing: my_score)
+            cell.myScore.setTitle(scoreTitle, for: UIControlState.normal)
+        }
         
-        let numCompletedTitle = selectedAnime.series_episodes! == 0 ? String(describing: selectedAnime.my_watched_episodes!) : String(describing: selectedAnime.my_watched_episodes!) + "/" + String(describing: selectedAnime.series_episodes!)
-        cell.numCompleted.setTitle(numCompletedTitle, for: UIControlState.normal)
+        if let series_epsiodes = selectedAnime.series_episodes {
+            let numCompletedTitle = series_epsiodes == 0 ? String(describing: selectedAnime.my_watched_episodes!) : String(describing: selectedAnime.my_watched_episodes!) + "/" + String(describing: series_epsiodes)
+            cell.numCompleted.setTitle(numCompletedTitle, for: UIControlState.normal)
+        }
         
         // set airing status text
         if selectedAnime.series_status == MiruGlobals.CURRENTLY_ONGOING {
@@ -190,9 +194,10 @@ class AnimeListViewController: ListViewController, UINavigationBarDelegate, UITa
         cell.imageThumbnail.image = nil
 
         // checks the cache, and downloads the image or uses the one in the cache
-        let img = imageCache.object(forKey: selectedAnime.series_image! as NSString)
-        cell.configureCell(anime: selectedAnime, image: img, cache: imageCache)
-        
+        if let series_image = selectedAnime.series_image {
+            let img = imageCache.object(forKey: series_image as NSString)
+            cell.configureCell(anime: selectedAnime, image: img, cache: imageCache)
+        }
         return cell
     }
     

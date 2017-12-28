@@ -55,6 +55,7 @@ class BrowseViewController: UIViewController, UISearchResultsUpdating, UISearchB
         self.searchResultTableView.register(UINib(nibName: "TableViewSeriesCell", bundle: nil), forCellReuseIdentifier: "TableViewSeriesCell")
         self.searchResultTableView.delegate = self
         self.searchResultTableView.dataSource = self
+        
     }
     
     func updateSearchResults(for searchController: UISearchController) {

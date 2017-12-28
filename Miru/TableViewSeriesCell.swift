@@ -76,6 +76,7 @@ class TableViewSeriesCell: UITableViewCell {
             if watched_eps == anime.series_episodes!
                 || anime.series_status == MiruGlobals.NOT_YET_RELEASED {
                 incrementChapterEpisodeButton.isHidden = true
+                // numCompleted.isEnabled = false
             } else {
                 showIncrementButton()
             }
@@ -83,28 +84,7 @@ class TableViewSeriesCell: UITableViewCell {
             incrementChapterEpisodeButton.isHidden = true
         }
         
-        if image != nil{
-            //The image exist so you assign it to your UIImageView
-            imageThumbnail.image = image
-        } else {
-            //Create the request to download the image
-            if let seriesImage = anime.series_image {
-                let url = URL(string: seriesImage)
-                if url == nil {
-                    return
-                }
-                
-                DispatchQueue.global().async {
-                    let data = try? Data(contentsOf: url!) //make sure your image in this url does exist, otherwise unwrap in a if let check / try-catch
-                    DispatchQueue.main.async {
-                        if let unwrapData = data {
-                            self.imageThumbnail.image = UIImage(data: unwrapData)
-                            cache.setObject(self.imageThumbnail.image!, forKey: anime.series_image! as NSString)
-                        }
-                    }
-                }
-            }
-        }
+        Util.setImage(anime: anime, imageViewToSet: self.imageThumbnail, image: image, cache: cache)
     }
     
     func configureCell(manga: Manga, image: UIImage?, cache: NSCache<NSString, UIImage>){
@@ -114,6 +94,7 @@ class TableViewSeriesCell: UITableViewCell {
             if read_chapters == manga.series_chapters!
                 || manga.series_status == MiruGlobals.NOT_YET_RELEASED {
                 incrementChapterEpisodeButton.isHidden = true
+                // numCompleted.isEnabled = false
             } else {
                 showIncrementButton()
             }
@@ -121,27 +102,7 @@ class TableViewSeriesCell: UITableViewCell {
             incrementChapterEpisodeButton.isHidden = true
         }
 
-        if image != nil{
-            //The image exist so you assign it to your UIImageView
-            imageThumbnail.image = image
-        } else {
-            //Create the request to download the image
-            if let seriesImage = manga.series_image {
-                let url = URL(string: seriesImage)
-                if url == nil {
-                    return
-                }
-                DispatchQueue.global().async {
-                    let data = try? Data(contentsOf: url!) //make sure your image in this url does exist, otherwise unwrap in a if let check / try-catch
-                    DispatchQueue.main.async {
-                        if let unwrapData = data {
-                            self.imageThumbnail.image = UIImage(data: unwrapData)
-                            cache.setObject(self.imageThumbnail.image!, forKey: manga.series_image! as NSString)
-                        }
-                    }
-                }
-            }
-        }
+        Util.setImage(manga: manga, imageViewToSet: self.imageThumbnail, image: image, cache: cache)
     }
     
     @IBAction func watchedReadButtonPressed(_ sender: Any) {
