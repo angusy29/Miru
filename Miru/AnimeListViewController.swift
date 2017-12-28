@@ -25,12 +25,18 @@ class AnimeListViewController: ListViewController, UINavigationBarDelegate, UITa
         // make API call
         getList(type: "anime")
         
+        guard let currentlyWatching = self.rootNavigationController?.user?.currentlyWatching else { return }
+        guard let completedAnime = self.rootNavigationController?.user?.completedAnime else { return }
+        guard let onHoldAnime = self.rootNavigationController?.user?.onHoldAnime else { return }
+        guard let droppedAnime = self.rootNavigationController?.user?.droppedAnime else { return }
+        guard let planToWatch = self.rootNavigationController?.user?.planToWatch else { return }
+        
         // sort by alphabetical order
-        MiruGlobals.user.currentlyWatching = MiruGlobals.user.currentlyWatching.sorted(by: { $0.series_title! < $1.series_title! })
-        MiruGlobals.user.completedAnime = MiruGlobals.user.completedAnime.sorted(by: { $0.series_title! < $1.series_title! })
-        MiruGlobals.user.onHoldAnime = MiruGlobals.user.onHoldAnime.sorted(by: { $0.series_title! < $1.series_title! })
-        MiruGlobals.user.droppedAnime = MiruGlobals.user.droppedAnime.sorted(by: { $0.series_title! < $1.series_title! })
-        MiruGlobals.user.planToWatch = MiruGlobals.user.planToWatch.sorted(by: { $0.series_title! < $1.series_title! })
+        self.rootNavigationController?.user?.currentlyWatching = currentlyWatching.sorted(by: { $0.series_title! < $1.series_title! })
+        self.rootNavigationController?.user?.completedAnime = completedAnime.sorted(by: { $0.series_title! < $1.series_title! })
+        self.rootNavigationController?.user?.onHoldAnime = onHoldAnime.sorted(by: { $0.series_title! < $1.series_title! })
+        self.rootNavigationController?.user?.droppedAnime = droppedAnime.sorted(by: { $0.series_title! < $1.series_title! })
+        self.rootNavigationController?.user?.planToWatch = planToWatch.sorted(by: { $0.series_title! < $1.series_title! })
         
         self.tableView.register(UINib(nibName: "TableViewSeriesCell", bundle: nil), forCellReuseIdentifier: "TableViewSeriesCell")
         self.tableView.delegate = self
@@ -51,8 +57,8 @@ class AnimeListViewController: ListViewController, UINavigationBarDelegate, UITa
         
         if animeObj?.series_animedb_id != nil {
             guard let id = animeObj?.series_animedb_id else { return }
-            if MiruGlobals.user.idToAnime[id] != nil {
-                animeObj = MiruGlobals.user.idToAnime[id]
+            if self.rootNavigationController?.user?.idToAnime[id] != nil {
+                animeObj = self.rootNavigationController?.user?.idToAnime[id]
             }
         }
         
@@ -60,12 +66,12 @@ class AnimeListViewController: ListViewController, UINavigationBarDelegate, UITa
             animeObj?.series_animedb_id = Int(string)
         } else if (currentXMLElement == "series_title") {
             guard let id = animeObj?.series_animedb_id else { return }
-            if MiruGlobals.user.idToAnime[id] == nil {
+            if self.rootNavigationController?.user?.idToAnime[id] == nil {
                 animeObj?.series_title = animeObj?.series_title == nil ? string : (animeObj?.series_title)! + string
             }
         } else if (currentXMLElement == "series_synonyms") {
             guard let id = animeObj?.series_animedb_id else { return }
-            if MiruGlobals.user.idToAnime[id] == nil {
+            if self.rootNavigationController?.user?.idToAnime[id] == nil {
                 animeObj?.series_synonyms?.append(string)
             }
         } else if (currentXMLElement == "series_type") {
@@ -101,22 +107,22 @@ class AnimeListViewController: ListViewController, UINavigationBarDelegate, UITa
         }
         
         if (currentXMLElement == "user_id") {
-            MiruGlobals.user.user_id = Int(string)
-            MiruGlobals.user.user_picture = "https://myanimelist.cdn-dena.com/images/userimages/" + string + ".jpg"
+            self.rootNavigationController?.user?.user_id = Int(string)
+            self.rootNavigationController?.user?.user_picture = "https://myanimelist.cdn-dena.com/images/userimages/" + string + ".jpg"
         } else if (currentXMLElement == "user_name") {
-            MiruGlobals.user.user_name = string
+            self.rootNavigationController?.user?.user_name = string
         } else if (currentXMLElement == "user_watching") {
-            MiruGlobals.user.user_watching = Int(string)
+            self.rootNavigationController?.user?.user_watching = Int(string)
         } else if (currentXMLElement == "user_completed") {
-            MiruGlobals.user.user_completed = Int(string)
+            self.rootNavigationController?.user?.user_completed = Int(string)
         } else if (currentXMLElement == "user_onhold") {
-            MiruGlobals.user.user_onhold = Int(string)
+            self.rootNavigationController?.user?.user_onhold = Int(string)
         } else if (currentXMLElement == "user_dropped") {
-            MiruGlobals.user.user_dropped = Int(string)
+            self.rootNavigationController?.user?.user_dropped = Int(string)
         } else if (currentXMLElement == "user_plantowatch") {
-            MiruGlobals.user.user_plantowatch = Int(string)
+            self.rootNavigationController?.user?.user_plantowatch = Int(string)
         } else if (currentXMLElement == "user_days_spent_watching") {
-            MiruGlobals.user.user_days_spent_watching = Double(string)
+            self.rootNavigationController?.user?.user_days_spent_watching = Double(string)
         }
     }
     
@@ -127,25 +133,25 @@ class AnimeListViewController: ListViewController, UINavigationBarDelegate, UITa
             guard let id = animeObj.series_animedb_id else { return }
             
             // if the anime already exists, we update it
-            if MiruGlobals.user.idToAnime[id] != nil {
-                MiruGlobals.user.idToAnime[id] = animeObj
+            if self.rootNavigationController?.user?.idToAnime[id] != nil {
+                self.rootNavigationController?.user?.idToAnime[id] = animeObj
                 currentAnimeObj = nil
                 return
             }
             
             // otherwise we append the anime
             if (status == MiruGlobals.WATCHING_OR_READING) {
-                MiruGlobals.user.currentlyWatching.append(animeObj)
+                self.rootNavigationController?.user?.currentlyWatching.append(animeObj)
             } else if (status == MiruGlobals.COMPLETED) {
-                MiruGlobals.user.completedAnime.append(animeObj)
+                self.rootNavigationController?.user?.completedAnime.append(animeObj)
             } else if (status == MiruGlobals.DROPPED) {
-                MiruGlobals.user.droppedAnime.append(animeObj)
+                self.rootNavigationController?.user?.droppedAnime.append(animeObj)
             } else if (status == MiruGlobals.ON_HOLD) {
-                MiruGlobals.user.onHoldAnime.append(animeObj)
+                self.rootNavigationController?.user?.onHoldAnime.append(animeObj)
             } else if (status == MiruGlobals.PLAN_TO_WATCH_OR_READ) {
-                MiruGlobals.user.planToWatch.append(animeObj)
+                self.rootNavigationController?.user?.planToWatch.append(animeObj)
             }
-            MiruGlobals.user.idToAnime[id] = animeObj
+            self.rootNavigationController?.user?.idToAnime[id] = animeObj
             currentAnimeObj = nil
         }
     }
@@ -160,7 +166,7 @@ class AnimeListViewController: ListViewController, UINavigationBarDelegate, UITa
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "TableViewSeriesCell") as! TableViewSeriesCell
         
         // set the text from the data model
-        // cell.textLabel?.text = self.MiruGlobals.user.currentlyWatching[indexPath.row].series_title
+        // cell.textLabel?.text = self.self.rootNavigationController?.user?.currentlyWatching[indexPath.row].series_title
         let selectedAnimeArray = getSelectedAnimeArray()
         let selectedAnime = selectedAnimeArray[indexPath.row]
         cell.title.text = selectedAnime.series_title
@@ -191,7 +197,7 @@ class AnimeListViewController: ListViewController, UINavigationBarDelegate, UITa
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(self.getSelectedAnimeArray()[indexPath.row].series_title)
+        // print(self.getSelectedAnimeArray()[indexPath.row].series_title)
         
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "MediaDetailsViewController") as! MediaDetailsViewController
         vc.anime = self.getSelectedAnimeArray()[indexPath.row]
@@ -205,15 +211,15 @@ class AnimeListViewController: ListViewController, UINavigationBarDelegate, UITa
      */
     func getSelectedAnimeArray() -> [Anime] {
         if self.selectedState == MiruGlobals.WATCHING_OR_READING {
-            return MiruGlobals.user.currentlyWatching
+            return (self.rootNavigationController?.user?.currentlyWatching)!
         } else if self.selectedState == MiruGlobals.COMPLETED {
-            return MiruGlobals.user.completedAnime
+            return (self.rootNavigationController?.user?.completedAnime)!
         } else if self.selectedState == MiruGlobals.ON_HOLD {
-            return MiruGlobals.user.onHoldAnime
+            return (self.rootNavigationController?.user?.onHoldAnime)!
         } else if self.selectedState == MiruGlobals.DROPPED {
-            return MiruGlobals.user.droppedAnime
+            return (self.rootNavigationController?.user?.droppedAnime)!
         } else {
-            return MiruGlobals.user.planToWatch
+            return (self.rootNavigationController?.user?.planToWatch)!
         }
     }
     

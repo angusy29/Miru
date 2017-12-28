@@ -16,7 +16,7 @@ class ListViewController: UIViewController, EHHorizontalSelectionViewProtocol, X
     
     @IBOutlet weak var pickerView: UIPickerView!
     @IBOutlet weak var pickerToolbar: UIToolbar!
-    
+        
     // horizontal view states
     var states = [MiruGlobals.WATCHING_OR_READING,
                   MiruGlobals.COMPLETED,
@@ -47,6 +47,8 @@ class ListViewController: UIViewController, EHHorizontalSelectionViewProtocol, X
     var cell: TableViewSeriesCell?      // cell to modify
     var pickerViewModifyType: Int?   // "score" or "episode", denotes which one to change in pickerview
     
+    var rootNavigationController: RootNavigationController?
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.navigationController?.navigationBar.prefersLargeTitles = true
@@ -56,6 +58,8 @@ class ListViewController: UIViewController, EHHorizontalSelectionViewProtocol, X
         super.viewDidLoad()
         self.navigationController?.navigationBar.prefersLargeTitles = true
 
+        self.rootNavigationController = self.navigationController as? RootNavigationController
+        
         // horizontal view initialise
         self.horizontalView.delegate = self
         EHHorizontalLineViewCell.updateFont(UIFont.systemFont(ofSize: 14))
@@ -84,7 +88,7 @@ class ListViewController: UIViewController, EHHorizontalSelectionViewProtocol, X
     
     // Get list for that type
     func getList(type: String) {
-        guard let username = MiruGlobals.username else { return }
+        guard let username = rootNavigationController?.user?.user_name else { return }
         self.type = type
         let url = URL(string: "https://myanimelist.net/malappinfo.php?u=" + username + "&status=all&type=" + type)
         

@@ -42,4 +42,8 @@ class User {
     var onHoldManga = [Manga]()
     var droppedManga = [Manga]()
     var planToRead = [Manga]()
+    
+    init(name: String) {
+        self.user_name = name
+    }
 }

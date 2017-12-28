@@ -553,12 +553,12 @@
             </objects>
             <point key="canvasLocation" x="2472.8000000000002" y="1080.2955665024631"/>
         </scene>
-        <!--Table View Controller-->
+        <!--User Statistics Table View-->
         <scene sceneID="LrK-rP-tbM">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QoD-fq-wb7" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tableViewController id="ivN-eG-UTy" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="LI0-kq-uIY" customClass="UserStatisticsTableView" customModule="Miru" customModuleProvider="target">
+                <tableViewController id="ivN-eG-UTy" customClass="UserStatisticsTableView" customModule="Miru" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="LI0-kq-uIY">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="724"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -896,23 +896,23 @@
                                 </cells>
                             </tableViewSection>
                         </sections>
-                        <connections>
-                            <outlet property="completed" destination="NFR-VW-X0l" id="4Gm-ko-OAu"/>
-                            <outlet property="daysSpentReading" destination="90b-oE-RaK" id="RS8-fG-Ekg"/>
-                            <outlet property="daysSpentWatching" destination="yk9-AQ-jTG" id="jUT-sI-DKk"/>
-                            <outlet property="dropped" destination="VfF-rV-YkR" id="0WW-vS-W6s"/>
-                            <outlet property="mangaCompleted" destination="QDE-4c-VQQ" id="UpH-rj-n1B"/>
-                            <outlet property="mangaDropped" destination="c9J-ME-y8x" id="nfS-ie-oYZ"/>
-                            <outlet property="mangaOnHold" destination="YdG-tE-wd3" id="pWT-87-9n2"/>
-                            <outlet property="mangaPlanToRead" destination="LD1-T0-OgM" id="OT4-yo-6lQ"/>
-                            <outlet property="mangaReading" destination="Yqa-rD-xWF" id="6nh-Ei-cZA"/>
-                            <outlet property="onHold" destination="PdA-6R-ZQT" id="zm1-h0-Afi"/>
-                            <outlet property="planToWatch" destination="dgg-9M-sdm" id="zRk-Kp-49T"/>
-                            <outlet property="profileImageView" destination="zEM-iA-Axa" id="Kd2-4E-v1E"/>
-                            <outlet property="userNameLabel" destination="BZt-Rs-Pal" id="ovM-OZ-Mte"/>
-                            <outlet property="watching" destination="4JA-9M-e4L" id="6Qx-al-Vkd"/>
-                        </connections>
                     </tableView>
+                    <connections>
+                        <outlet property="completed" destination="NFR-VW-X0l" id="xPF-pg-GUm"/>
+                        <outlet property="daysSpentReading" destination="90b-oE-RaK" id="K3h-xw-qcB"/>
+                        <outlet property="daysSpentWatching" destination="yk9-AQ-jTG" id="JTp-do-azU"/>
+                        <outlet property="dropped" destination="VfF-rV-YkR" id="Kuk-gC-WmO"/>
+                        <outlet property="mangaCompleted" destination="QDE-4c-VQQ" id="q5W-Z7-Rxr"/>
+                        <outlet property="mangaDropped" destination="c9J-ME-y8x" id="a4E-ht-GLX"/>
+                        <outlet property="mangaOnHold" destination="YdG-tE-wd3" id="NrD-NS-hPj"/>
+                        <outlet property="mangaPlanToRead" destination="LD1-T0-OgM" id="BGz-8z-XTC"/>
+                        <outlet property="mangaReading" destination="Yqa-rD-xWF" id="zLg-Gb-FVG"/>
+                        <outlet property="onHold" destination="PdA-6R-ZQT" id="iZi-d4-bpi"/>
+                        <outlet property="planToWatch" destination="dgg-9M-sdm" id="Yga-Xb-s7j"/>
+                        <outlet property="profileImageView" destination="zEM-iA-Axa" id="kDf-qc-ttY"/>
+                        <outlet property="userNameLabel" destination="BZt-Rs-Pal" id="oCN-Xv-szf"/>
+                        <outlet property="watching" destination="4JA-9M-e4L" id="GSk-sc-VJc"/>
+                    </connections>
                 </tableViewController>
             </objects>
             <point key="canvasLocation" x="3405.5999999999999" y="1318.9655172413793"/>

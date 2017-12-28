@@ -20,17 +20,16 @@ class MediaDetailsViewController: UIViewController {
     
     var anime: Anime?
     var manga: Manga?
+    var rootNavigationController: RootNavigationController?
     
     var isInList = false
     
     var imageCache = NSCache<NSString, UIImage>()
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        self.navigationController?.navigationBar.prefersLargeTitles = false
-    }
-    
     override func viewDidLoad() {
+        self.navigationController?.navigationBar.prefersLargeTitles = false
+        self.rootNavigationController = self.navigationController as? RootNavigationController
+        
         self.mediaNameLabel.text = manga == nil ? anime?.series_title : manga?.series_title
         //self.mediaNameLabel.lineBreakMode = .byWordWrapping
         
@@ -42,7 +41,7 @@ class MediaDetailsViewController: UIViewController {
             self.setImage(anime: anime, image: img, cache: imageCache)
             
             guard let id = anime?.series_animedb_id else { return }
-            if MiruGlobals.user.idToAnime[id] != nil {
+            if self.rootNavigationController?.user?.idToAnime[id] != nil {
                 isInList = true
                 setAddToListToRemove()
             }
@@ -52,7 +51,7 @@ class MediaDetailsViewController: UIViewController {
             self.setImage(manga: manga, image: img, cache: imageCache)
             
             guard let id = manga?.series_mangadb_id else { return }
-            if MiruGlobals.user.idToManga[id] != nil {
+            if self.rootNavigationController?.user?.idToManga[id] != nil {
                 isInList = true
                 setAddToListToRemove()
             }

@@ -11,6 +11,8 @@ import UIKit
 
 class ProfileViewController: UIViewController {    
 
+    var rootNavigationController: RootNavigationController?
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.navigationController?.navigationBar.prefersLargeTitles = true
@@ -22,6 +24,13 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         print("PROFILE LIST LOAD")
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print("PREPARE")
+        self.rootNavigationController = self.navigationController as? RootNavigationController
+        let destVC = segue.destination as? UserStatisticsTableView
+        destVC?.user = self.rootNavigationController?.user
     }
     
     override func didReceiveMemoryWarning() {

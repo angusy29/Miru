@@ -10,5 +10,5 @@ import Foundation
 import UIKit
 
 class RootNavigationController: UINavigationController {
-    var user = User()
+    var user: User?
 }

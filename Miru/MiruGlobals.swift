@@ -8,10 +8,7 @@
 
 import Foundation
 
-class MiruGlobals {
-    static var username: String?
-    static var user = User()
-    
+class MiruGlobals {    
     // media constants
     static var ANIME = 0
     static var MANGA = 1

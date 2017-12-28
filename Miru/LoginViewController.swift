@@ -37,7 +37,6 @@ class LoginViewController: UIViewController {
         malkit.setUserData(userId: username, passwd: password)
         malkit.verifyCredentials(completionHandler: { (result, status, err) in
             if (status?.statusCode == 200) {
-                MiruGlobals.username = username
                 DispatchQueue.main.async(execute: {
                     self.performSegue(withIdentifier: "LoginSuccess", sender: nil)
                 })
@@ -45,6 +44,17 @@ class LoginViewController: UIViewController {
                 print("LOGIN FAIL")
             }
         })
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let username = usernameInput.text else { return }
+        
+        // Create a variable that you want to send
+        let user = User(name: username)
+        
+        // Create a new variable to store the instance of PlayerTableViewController
+        let destVC = segue.destination as! RootNavigationController
+        destVC.user = user
     }
 
     //Calls this function when the tap is recognized.
