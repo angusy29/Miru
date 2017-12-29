@@ -15,4 +15,5 @@ import UIKit
  */
 class RootNavigationController: UINavigationController {
     var user: User?
+    var didChange = false
 }

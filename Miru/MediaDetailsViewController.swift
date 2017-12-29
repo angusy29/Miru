@@ -23,15 +23,18 @@ class MediaDetailsViewController: UIViewController {
     var rootNavigationController: RootNavigationController?
     
     var imageCache = NSCache<NSString, UIImage>()
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.navigationController?.navigationBar.topItem?.title = manga == nil ? anime?.series_title: manga?.series_title
+    }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
         self.navigationController?.navigationBar.prefersLargeTitles = false
         self.rootNavigationController = self.navigationController as? RootNavigationController
         
         self.mediaNameLabel.text = manga == nil ? anime?.series_title : manga?.series_title
-        //self.mediaNameLabel.lineBreakMode = .byWordWrapping
-        
-        addToListButton.layer.cornerRadius = 8
         
         if manga == nil {
             // it is anime
@@ -52,67 +55,99 @@ class MediaDetailsViewController: UIViewController {
                 setAddToListToMove()
             }
         }
+        
+        DispatchQueue.main.async {
+            self.getSynopsis()
+        }
+    }
+    
+    func getSynopsis() {
+        let id = manga == nil ? (anime?.series_animedb_id)! : (manga?.series_mangadb_id)!
+        let url = manga == nil ? URL(string: "https://myanimelist.net/anime/" + String(describing: id))! :
+            URL(string: "https://myanimelist.net/manga/" + String(describing: id))!
+        
+        var synopsis: String?
+        let sem = DispatchSemaphore.init(value: 0)
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let data = data, error == nil else {
+                print("\(error)")
+                return
+            }
+            
+            var string = String(data: data, encoding: .utf8)
+            print("\(string)")
+            synopsis = string?.slice(from: "<span itemprop=\"description\">", to: "</span>")
+            sem.signal()
+        }.resume()
+        
+        sem.wait()
+        
+        guard let unwrap = synopsis else { return }
+        do {
+            let at = try! NSAttributedString(data: unwrap.data(using: String.Encoding.utf8)!,
+                                                             options: [.documentType: NSAttributedString.DocumentType.html,
+                                                                       .characterEncoding: String.Encoding.utf8.rawValue],
+                                                             documentAttributes: nil)
+            self.synopsisLabel.text = at.string
+        }
     }
     
     func setAddToListToMove() {
-        addToListButton.setTitle("Move", for: UIControlState.normal)
+        addToListButton.setTitle("Move to list", for: UIControlState.normal)
     }
     
     @IBAction func addToListButtonPressed(_ sender: Any) {
-        let actionController = UIAlertController(title: nil, message: "Add to list", preferredStyle: .actionSheet)
-        
-        var listWhichContainsMedia: [Any]?
-        if manga == nil {
-            guard let anime = self.anime else { return }
-            listWhichContainsMedia = listContainsMedia(anime: anime)
+        var isInList = false
+        if anime != nil {
+            if rootNavigationController?.user?.idToAnime[(anime?.series_animedb_id)!] != nil {
+                isInList = true
+            }
         } else {
-            guard let manga = self.manga else { return }
-            listWhichContainsMedia = listContainsMedia(manga: manga)
+            if rootNavigationController?.user?.idToManga[(manga?.series_mangadb_id)!] != nil {
+                isInList = true
+            }
         }
+        
+        let actionController = UIAlertController(title: nil, message: "Add to list", preferredStyle: .actionSheet)
         
         let currentlyWatchingAction = UIAlertAction(title: "Currently watching", style: .default, handler: { (alert: UIAlertAction!) -> Void in
             //  Do some action here.
             if self.manga == nil {
-                self.addMediaToList(anime: self.anime, type: MiruGlobals.WATCHING_OR_READING)
+                self.updateOrAddMedia(isInList: isInList, anime: self.anime, type: MiruGlobals.WATCHING_OR_READING)
             } else {
-                self.addMediaToList(manga: self.manga, type: MiruGlobals.WATCHING_OR_READING)
-
+                self.updateOrAddMedia(isInList: isInList, manga: self.manga, type: MiruGlobals.WATCHING_OR_READING)
             }
         })
         
         let completedAction = UIAlertAction(title: "Completed", style: .default, handler: { (alert: UIAlertAction!) -> Void in
             if self.manga == nil {
-                self.addMediaToList(anime: self.anime, type: MiruGlobals.COMPLETED)
+                self.updateOrAddMedia(isInList: isInList, anime: self.anime, type: MiruGlobals.COMPLETED)
             } else {
-                self.addMediaToList(manga: self.manga, type: MiruGlobals.COMPLETED)
-
+                self.updateOrAddMedia(isInList: isInList, manga: self.manga, type: MiruGlobals.COMPLETED)
             }
         })
         
         let onHoldAction = UIAlertAction(title: "On hold", style: .default, handler: { (alert: UIAlertAction!) -> Void in
             if self.manga == nil {
-                self.addMediaToList(anime: self.anime, type: MiruGlobals.ON_HOLD)
+                self.updateOrAddMedia(isInList: isInList, anime: self.anime, type: MiruGlobals.ON_HOLD)
             } else {
-                self.addMediaToList(manga: self.manga, type: MiruGlobals.ON_HOLD)
-
+                self.updateOrAddMedia(isInList: isInList, manga: self.manga, type: MiruGlobals.ON_HOLD)
             }
         })
         
         let droppedAction = UIAlertAction(title: "Dropped", style: .default, handler: { (alert: UIAlertAction!) -> Void in
             if self.manga == nil {
-                self.addMediaToList(anime: self.anime, type: MiruGlobals.DROPPED)
+                self.updateOrAddMedia(isInList: isInList, anime: self.anime, type: MiruGlobals.DROPPED)
             } else {
-                self.addMediaToList(manga: self.manga, type: MiruGlobals.DROPPED)
-
+                self.updateOrAddMedia(isInList: isInList, manga: self.manga, type: MiruGlobals.DROPPED)
             }
         })
         
         let planToWatchAction = UIAlertAction(title: "Plan to watch", style: .default, handler: { (alert: UIAlertAction!) -> Void in
             if self.manga == nil {
-                self.addMediaToList(anime: self.anime, type: MiruGlobals.PLAN_TO_WATCH_OR_READ)
+                self.updateOrAddMedia(isInList: isInList, anime: self.anime, type: MiruGlobals.PLAN_TO_WATCH_OR_READ)
             } else {
-                self.addMediaToList(manga: self.manga, type: MiruGlobals.PLAN_TO_WATCH_OR_READ)
-
+                self.updateOrAddMedia(isInList: isInList, manga: self.manga, type: MiruGlobals.PLAN_TO_WATCH_OR_READ)
             }
         })
         
@@ -127,7 +162,7 @@ class MediaDetailsViewController: UIViewController {
         actionController.addAction(planToWatchAction)
         actionController.addAction(cancelAction)
         
-        if listWhichContainsMedia != nil {
+        if isInList {
             actionController.message = "Move to list"
             let removeAction = UIAlertAction(title: "Remove from list", style: .destructive, handler: { (alert: UIAlertAction!) -> Void in
                 if self.manga == nil {
@@ -140,6 +175,24 @@ class MediaDetailsViewController: UIViewController {
             actionController.addAction(removeAction)
         }
         self.present(actionController, animated: true, completion: nil)
+    }
+    
+    func updateOrAddMedia(isInList: Bool, anime: Anime?, type: Int) {
+        print("UPDATE OR ADD")
+        if isInList {
+            self.updateMedia(anime: anime, type: type)
+        } else {
+            self.addMediaToList(anime: anime, type: type)
+        }
+        self.rootNavigationController?.didChange = true
+    }
+    
+    func updateOrAddMedia(isInList: Bool, manga: Manga?, type: Int) {
+        if isInList {
+            self.updateMedia(manga: manga, type: type)
+        } else {
+            self.addMediaToList(manga: manga, type: type)
+        }
     }
     
     // Post request to MAL to add the media to list
@@ -156,6 +209,28 @@ class MediaDetailsViewController: UIViewController {
                     self.setAddToListToMove()
                 }
             }
+        })
+    }
+    
+    func updateMedia(anime: Anime?, type: Int) {
+        guard let id = anime?.series_animedb_id else { return }
+        
+        malkit.updateAnime(id, params:["status": type], completionHandler: { (result, status, err) in
+            //20 is anime_id
+            //result is Bool
+            //status is HTTPURLResponse
+            //your process
+        })
+    }
+    
+    func updateMedia(manga: Manga?, type: Int) {
+        guard let id = anime?.series_animedb_id else { return }
+        
+        malkit.updateManga(id, params:["status": type], completionHandler: { (result, status, err) in
+            //20 is anime_id
+            //result is Bool
+            //status is HTTPURLResponse
+            //your process
         })
     }
     
@@ -249,3 +324,4 @@ class MediaDetailsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 }
+

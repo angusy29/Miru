@@ -54,10 +54,19 @@ class ListViewController: UIViewController, EHHorizontalSelectionViewProtocol, X
         self.navigationController?.navigationBar.prefersLargeTitles = true
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if (self.rootNavigationController?.didChange)! {
+            print("DID CHANGE")
+            refresh()
+            self.rootNavigationController?.didChange = false
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.prefersLargeTitles = true
-
+        
         self.rootNavigationController = self.navigationController as? RootNavigationController
         
         // horizontal view initialise
@@ -79,6 +88,12 @@ class ListViewController: UIViewController, EHHorizontalSelectionViewProtocol, X
     }
     
     @objc func refreshList(refreshControl: UIRefreshControl) {
+        refresh()
+        // somewhere in your code you might need to call:
+        refreshControl.endRefreshing()
+    }
+    
+    func refresh() {
         guard let type = self.type else { return }
         
         if type == "anime" {
@@ -100,8 +115,6 @@ class ListViewController: UIViewController, EHHorizontalSelectionViewProtocol, X
         getList(type: type)
         sortMedia(type: type)
         tableView.reloadData()
-        // somewhere in your code you might need to call:
-        refreshControl.endRefreshing()
     }
     
     func sortMedia(type: String) {

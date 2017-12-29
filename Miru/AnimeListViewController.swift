@@ -189,9 +189,10 @@ class AnimeListViewController: ListViewController, UINavigationBarDelegate, UITa
         return cell
     }
     
+    /*
+     * On selecting a row, transition to MediaDetailsViewController
+     */
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // print(self.getSelectedAnimeArray()[indexPath.row].series_title)
-        
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "MediaDetailsViewController") as! MediaDetailsViewController
         vc.anime = self.getSelectedAnimeArray()[indexPath.row]
         vc.imageCache = self.imageCache

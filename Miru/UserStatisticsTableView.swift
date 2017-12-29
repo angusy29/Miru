@@ -38,29 +38,31 @@ class UserStatisticsTableView: UITableViewController, XMLParserDelegate {
         // let's assume it's already loaded from animeListViewController, as that was landing page
         
         profileImageView.image = nil
-         userNameLabel.text = self.user?.user_name
-         
-         // get manga statistics
-         getMangaStatistics()
-         
-         watching.detailTextLabel?.text = String(describing: (self.user?.user_watching)!)
-         completed.detailTextLabel?.text = String(describing: (self.user?.user_completed)!)
-         onHold.detailTextLabel?.text = String(describing: (self.user?.user_onhold)!)
-         dropped.detailTextLabel?.text = String(describing: (self.user?.user_dropped)!)
-         planToWatch.detailTextLabel?.text = String(describing: (self.user?.user_plantowatch)!)
-         daysSpentWatching.detailTextLabel?.text = String(describing: (self.user?.user_days_spent_watching)!)
-         
-         mangaReading.detailTextLabel?.text = String(describing: (self.user?.user_manga_reading)!)
-         mangaCompleted.detailTextLabel?.text = String(describing: (self.user?.user_manga_completed)!)
-         mangaOnHold.detailTextLabel?.text = String(describing: (self.user?.user_manga_onhold)!)
-         mangaDropped.detailTextLabel?.text = String(describing: (self.user?.user_manga_dropped)!)
-         mangaPlanToRead.detailTextLabel?.text = String(describing: (self.user?.user_manga_plantoread)!)
-         daysSpentReading.detailTextLabel?.text = String(describing: (self.user?.user_manga_days_spent_reading)!)
-         
-         
-         // checks the cache, and downloads the image or uses the one in the cache
-         let img = cache.object(forKey: self.user?.user_picture! as! NSString)
-         setProfileImage(image: img)
+        userNameLabel.text = self.user?.user_name
+
+        // get manga statistics
+        DispatchQueue.main.async {
+            self.getMangaStatistics()
+
+            self.watching.detailTextLabel?.text = String(describing: (self.user?.user_watching)!)
+            self.completed.detailTextLabel?.text = String(describing: (self.user?.user_completed)!)
+            self.onHold.detailTextLabel?.text = String(describing: (self.user?.user_onhold)!)
+            self.dropped.detailTextLabel?.text = String(describing: (self.user?.user_dropped)!)
+            self.planToWatch.detailTextLabel?.text = String(describing: (self.user?.user_plantowatch)!)
+            self.daysSpentWatching.detailTextLabel?.text = String(describing: (self.user?.user_days_spent_watching)!)
+
+            self.mangaReading.detailTextLabel?.text = String(describing: (self.user?.user_manga_reading)!)
+            self.mangaCompleted.detailTextLabel?.text = String(describing: (self.user?.user_manga_completed)!)
+            self.mangaOnHold.detailTextLabel?.text = String(describing: (self.user?.user_manga_onhold)!)
+            self.mangaDropped.detailTextLabel?.text = String(describing: (self.user?.user_manga_dropped)!)
+            self.mangaPlanToRead.detailTextLabel?.text = String(describing: (self.user?.user_manga_plantoread)!)
+            self.daysSpentReading.detailTextLabel?.text = String(describing: (self.user?.user_manga_days_spent_reading)!)
+
+
+            // checks the cache, and downloads the image or uses the one in the cache
+            let img = self.cache.object(forKey: self.user?.user_picture! as! NSString)
+            self.setProfileImage(image: img)
+        }
     }
     
     // get manga statistics, honestly same function as getList() from ListViewController
