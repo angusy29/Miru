@@ -56,13 +56,13 @@ class MediaDetailsViewController: UIViewController {
         }
         
         DispatchQueue.main.async {
-            let cacheObj = self.manga == nil ? self.rootNavigationController?.webscrapeCache.object(forKey: "anime" + String(describing: (self.anime?.series_animedb_id)!) as NSString) : self.rootNavigationController?.webscrapeCache.object(forKey: "manga" + String(describing: (self.manga?.series_mangadb_id)!) as NSString)
+            let cacheObj = self.manga == nil ? self.rootNavigationController?.mediaDetailsCache.object(forKey: "anime" + String(describing: (self.anime?.series_animedb_id)!) as NSString) : self.rootNavigationController?.mediaDetailsCache.object(forKey: "manga" + String(describing: (self.manga?.series_mangadb_id)!) as NSString)
             let type = self.manga == nil ? "anime" : "manga"
             self.getDetails(cacheObj: cacheObj, type: type)
         }
     }
     
-    func getDetails(cacheObj: WebscrapeMedia?, type: String) {
+    func getDetails(cacheObj: MediaDetails?, type: String) {
         if cacheObj != nil {
             print("CACHED")
             self.synopsisLabel.text = String(describing: (cacheObj?.synopsis)!)
@@ -106,8 +106,8 @@ class MediaDetailsViewController: UIViewController {
                                                           .characterEncoding: String.Encoding.utf8.rawValue],
                                                 documentAttributes: nil)
             
-            var newWebscrapeObject = WebscrapeMedia(synopsis: syn.string, malScore: score.string)
-            self.rootNavigationController?.webscrapeCache.setObject(newWebscrapeObject, forKey: type + String(describing: id) as NSString)
+            var newMediaObj = MediaDetails(synopsis: syn.string, malScore: score.string)
+            self.rootNavigationController?.mediaDetailsCache.setObject(newMediaObj, forKey: type + String(describing: id) as NSString)
             
             self.synopsisLabel.text = syn.string
             self.malScoreLabel.text = score.string
