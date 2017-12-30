@@ -22,8 +22,6 @@ class MediaDetailsViewController: UIViewController {
     var manga: Manga?
     var rootNavigationController: RootNavigationController?
     
-    var imageCache = NSCache<NSString, UIImage>()
-
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.navigationController?.navigationBar.topItem?.title = manga == nil ? anime?.series_title: manga?.series_title
@@ -38,8 +36,8 @@ class MediaDetailsViewController: UIViewController {
         
         if manga == nil {
             // it is anime
-            let img = imageCache.object(forKey: anime?.series_image! as! NSString)
-            Util.setImage(anime: anime, imageViewToSet: mediaImageView, image: img, cache: imageCache)
+            let img = rootNavigationController?.imageCache.object(forKey: anime?.series_image! as! NSString)
+            Util.setImage(anime: anime, imageViewToSet: mediaImageView, image: img, cache: (rootNavigationController?.imageCache)!)
             
             guard let id = anime?.series_animedb_id else { return }
             if self.rootNavigationController?.user?.idToAnime[id] != nil {
@@ -47,8 +45,8 @@ class MediaDetailsViewController: UIViewController {
             }
         } else {
             // it is a manga
-            let img = imageCache.object(forKey: manga?.series_image! as! NSString)
-            Util.setImage(manga: manga, imageViewToSet: mediaImageView, image: img, cache: imageCache)
+            let img = rootNavigationController?.imageCache.object(forKey: manga?.series_image! as! NSString)
+            Util.setImage(manga: manga, imageViewToSet: mediaImageView, image: img, cache: (rootNavigationController?.imageCache)!)
             
             guard let id = manga?.series_mangadb_id else { return }
             if self.rootNavigationController?.user?.idToManga[id] != nil {
@@ -57,11 +55,20 @@ class MediaDetailsViewController: UIViewController {
         }
         
         DispatchQueue.main.async {
-            self.getSynopsis()
+            let cacheSyn = self.manga == nil ? self.rootNavigationController?.synopsisCache.object(forKey: "anime" + String(describing: (self.anime?.series_animedb_id)!) as NSString) : self.rootNavigationController?.synopsisCache.object(forKey: "manga" + String(describing: (self.manga?.series_mangadb_id)!) as NSString)
+            let type = self.manga == nil ? "anime" : "manga"
+            self.getSynopsis(cacheSyn: cacheSyn, type: type)
         }
     }
     
-    func getSynopsis() {
+    func getSynopsis(cacheSyn: NSString?, type: String) {
+        if cacheSyn != nil {
+            print("CACHED")
+            self.synopsisLabel.text = String(describing: cacheSyn!)
+            return
+        }
+        
+        
         let id = manga == nil ? (anime?.series_animedb_id)! : (manga?.series_mangadb_id)!
         let url = manga == nil ? URL(string: "https://myanimelist.net/anime/" + String(describing: id))! :
             URL(string: "https://myanimelist.net/manga/" + String(describing: id))!
@@ -89,6 +96,8 @@ class MediaDetailsViewController: UIViewController {
                                                                        .characterEncoding: String.Encoding.utf8.rawValue],
                                                              documentAttributes: nil)
             self.synopsisLabel.text = at.string
+            
+            self.rootNavigationController?.synopsisCache.setObject(at.string as NSString, forKey: type + String(describing: id) as NSString)
         }
     }
     

@@ -28,9 +28,6 @@ class ListViewController: UIViewController, EHHorizontalSelectionViewProtocol, X
     // picker view selected item
     var selectedPickerViewItem: Int?
     
-    // cache for images
-    var imageCache = NSCache<NSString, UIImage>()
-    
     // XML parsing variables
     var currentXMLElement: String?   // xml element we are looking at in XML file eg. <my_status>
     var type: String?

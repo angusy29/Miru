@@ -283,8 +283,6 @@ class BrowseViewController: UIViewController, UISearchResultsUpdating, UISearchB
             vc.manga = mangaSearchResults[indexPath.row]
         }
         
-        
-        vc.imageCache = self.imageCache
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

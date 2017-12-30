@@ -170,8 +170,8 @@ class MangaListViewController: ListViewController, UINavigationBarDelegate, UITa
         }
         
         // checks the cache, and downloads the image or uses the one in the cache
-        let img = imageCache.object(forKey: selectedManga.series_image! as NSString)
-        cell.configureCell(manga: selectedManga, image: img, cache: imageCache)
+        let img = self.rootNavigationController?.imageCache.object(forKey: selectedManga.series_image! as NSString)
+        cell.configureCell(manga: selectedManga, image: img, cache: (self.rootNavigationController?.imageCache)!)
         
         return cell
     }
@@ -179,7 +179,6 @@ class MangaListViewController: ListViewController, UINavigationBarDelegate, UITa
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {        
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "MediaDetailsViewController") as! MediaDetailsViewController
         vc.manga = self.getSelectedMangaArray()[indexPath.row]
-        vc.imageCache = self.imageCache
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
