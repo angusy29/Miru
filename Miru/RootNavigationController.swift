@@ -17,5 +17,5 @@ class RootNavigationController: UINavigationController {
     var user: User?
     var didChange = false
     var imageCache = NSCache<NSString, UIImage>()       // map of image links to the actual image
-    var synopsisCache = NSCache<NSString, NSString>()   // map of id to synopsis
+    var webscrapeCache = NSCache<NSString, WebscrapeMedia>()   // map of "anime|manga"+id to synopsis
 }

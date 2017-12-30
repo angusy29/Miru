@@ -278,17 +278,31 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MAL Score" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sGb-jQ-5p4">
+                                                <rect key="frame" x="185" y="60" width="168" height="21"/>
+                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading synopsis..." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W85-VV-DVS">
                                                 <rect key="frame" x="19" y="323" width="331" height="17"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="my4-3X-T2F">
+                                                <rect key="frame" x="200" y="89" width="139" height="29"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
+                                            <constraint firstItem="my4-3X-T2F" firstAttribute="top" secondItem="sGb-jQ-5p4" secondAttribute="bottom" constant="8" id="1Al-zM-P5s"/>
                                             <constraint firstItem="bGg-se-e03" firstAttribute="leading" secondItem="RGO-no-tix" secondAttribute="leading" constant="19" id="8Nd-yf-usG"/>
                                             <constraint firstAttribute="trailing" secondItem="W85-VV-DVS" secondAttribute="trailing" constant="23" id="9Bg-y4-gV5"/>
+                                            <constraint firstItem="sGb-jQ-5p4" firstAttribute="leading" secondItem="pLX-ul-kNK" secondAttribute="trailing" constant="20" id="BaG-RB-OID"/>
                                             <constraint firstItem="1ea-VQ-lj1" firstAttribute="width" secondItem="RGO-no-tix" secondAttribute="width" multiplier="0.45" id="BvH-Fw-p3c"/>
                                             <constraint firstItem="W85-VV-DVS" firstAttribute="leading" secondItem="RGO-no-tix" secondAttribute="leading" constant="19" id="DNY-w3-KD0"/>
                                             <constraint firstItem="2Uh-qK-SA4" firstAttribute="top" secondItem="pLX-ul-kNK" secondAttribute="bottom" constant="20" id="Hhx-af-RaZ"/>
@@ -299,11 +313,15 @@
                                             <constraint firstItem="pLX-ul-kNK" firstAttribute="top" secondItem="RGO-no-tix" secondAttribute="top" constant="20" id="Ptt-Wz-fU8"/>
                                             <constraint firstItem="1ea-VQ-lj1" firstAttribute="top" secondItem="RGO-no-tix" secondAttribute="top" constant="20" id="RIx-m5-Ia2"/>
                                             <constraint firstAttribute="trailing" secondItem="1ea-VQ-lj1" secondAttribute="trailing" constant="20.329999999999998" id="T0A-hP-B4p"/>
+                                            <constraint firstItem="my4-3X-T2F" firstAttribute="leading" secondItem="pLX-ul-kNK" secondAttribute="trailing" constant="35" id="cJC-mU-Ykt"/>
                                             <constraint firstItem="pLX-ul-kNK" firstAttribute="leading" secondItem="RGO-no-tix" secondAttribute="leading" constant="20" id="cXX-Qr-Xq9"/>
+                                            <constraint firstAttribute="trailing" secondItem="my4-3X-T2F" secondAttribute="trailing" constant="34" id="dNu-gN-bnv"/>
                                             <constraint firstItem="bGg-se-e03" firstAttribute="top" secondItem="2Uh-qK-SA4" secondAttribute="bottom" constant="19" id="gt5-Vq-vm5"/>
                                             <constraint firstItem="W85-VV-DVS" firstAttribute="top" secondItem="bGg-se-e03" secondAttribute="bottom" constant="15" id="h2Y-EW-ZYc"/>
                                             <constraint firstItem="1ea-VQ-lj1" firstAttribute="leading" secondItem="pLX-ul-kNK" secondAttribute="trailing" constant="20" id="mvH-zz-vVx"/>
                                             <constraint firstAttribute="trailing" secondItem="2Uh-qK-SA4" secondAttribute="trailing" constant="20" id="oZE-Fe-sRh"/>
+                                            <constraint firstAttribute="trailing" secondItem="sGb-jQ-5p4" secondAttribute="trailing" constant="20" id="rou-SK-ed9"/>
+                                            <constraint firstItem="sGb-jQ-5p4" firstAttribute="top" secondItem="1ea-VQ-lj1" secondAttribute="bottom" constant="20" id="zho-3T-e60"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -326,6 +344,7 @@
                     </view>
                     <connections>
                         <outlet property="addToListButton" destination="2Uh-qK-SA4" id="oaU-lP-EYU"/>
+                        <outlet property="malScoreLabel" destination="my4-3X-T2F" id="s7L-mu-503"/>
                         <outlet property="mediaImageView" destination="pLX-ul-kNK" id="bjw-GY-U3h"/>
                         <outlet property="mediaNameLabel" destination="1ea-VQ-lj1" id="U2r-mT-apE"/>
                         <outlet property="synopsisLabel" destination="W85-VV-DVS" id="LtI-g8-7ur"/>
@@ -961,6 +980,6 @@
         <image name="Wallpaper" width="736" height="1308"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="tK9-Px-ITK"/>
+        <segue reference="Qle-ZQ-SJv"/>
     </inferredMetricsTieBreakers>
 </document>

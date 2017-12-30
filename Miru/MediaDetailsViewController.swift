@@ -17,6 +17,7 @@ class MediaDetailsViewController: UIViewController {
     @IBOutlet weak var addToListButton: UIButton!
     
     @IBOutlet weak var synopsisLabel: UILabel!
+    @IBOutlet weak var malScoreLabel: UILabel!
     
     var anime: Anime?
     var manga: Manga?
@@ -55,16 +56,17 @@ class MediaDetailsViewController: UIViewController {
         }
         
         DispatchQueue.main.async {
-            let cacheSyn = self.manga == nil ? self.rootNavigationController?.synopsisCache.object(forKey: "anime" + String(describing: (self.anime?.series_animedb_id)!) as NSString) : self.rootNavigationController?.synopsisCache.object(forKey: "manga" + String(describing: (self.manga?.series_mangadb_id)!) as NSString)
+            let cacheObj = self.manga == nil ? self.rootNavigationController?.webscrapeCache.object(forKey: "anime" + String(describing: (self.anime?.series_animedb_id)!) as NSString) : self.rootNavigationController?.webscrapeCache.object(forKey: "manga" + String(describing: (self.manga?.series_mangadb_id)!) as NSString)
             let type = self.manga == nil ? "anime" : "manga"
-            self.getSynopsis(cacheSyn: cacheSyn, type: type)
+            self.getDetails(cacheObj: cacheObj, type: type)
         }
     }
     
-    func getSynopsis(cacheSyn: NSString?, type: String) {
-        if cacheSyn != nil {
+    func getDetails(cacheObj: WebscrapeMedia?, type: String) {
+        if cacheObj != nil {
             print("CACHED")
-            self.synopsisLabel.text = String(describing: cacheSyn!)
+            self.synopsisLabel.text = String(describing: (cacheObj?.synopsis)!)
+            self.malScoreLabel.text = String(describing: (cacheObj?.malScore)!)
             return
         }
         
@@ -74,6 +76,7 @@ class MediaDetailsViewController: UIViewController {
             URL(string: "https://myanimelist.net/manga/" + String(describing: id))!
         
         var synopsis: String?
+        var malScore: String?
         let sem = DispatchSemaphore.init(value: 0)
         URLSession.shared.dataTask(with: url) { data, response, error in
             guard let data = data, error == nil else {
@@ -84,20 +87,30 @@ class MediaDetailsViewController: UIViewController {
             var string = String(data: data, encoding: .utf8)
             print("\(string)")
             synopsis = string?.slice(from: "<span itemprop=\"description\">", to: "</span>")
+            malScore = string?.slice(from: "<span itemprop=\"ratingValue\">", to: "</span>")
             sem.signal()
         }.resume()
         
         sem.wait()
         
         guard let unwrap = synopsis else { return }
+        guard let unwrapScore = malScore else { return }
         do {
-            let at = try! NSAttributedString(data: unwrap.data(using: String.Encoding.utf8)!,
+            let syn = try! NSAttributedString(data: unwrap.data(using: String.Encoding.utf8)!,
                                                              options: [.documentType: NSAttributedString.DocumentType.html,
                                                                        .characterEncoding: String.Encoding.utf8.rawValue],
                                                              documentAttributes: nil)
-            self.synopsisLabel.text = at.string
             
-            self.rootNavigationController?.synopsisCache.setObject(at.string as NSString, forKey: type + String(describing: id) as NSString)
+            let score = try! NSAttributedString(data: unwrapScore.data(using: String.Encoding.utf8)!,
+                                                options: [.documentType: NSAttributedString.DocumentType.html,
+                                                          .characterEncoding: String.Encoding.utf8.rawValue],
+                                                documentAttributes: nil)
+            
+            var newWebscrapeObject = WebscrapeMedia(synopsis: syn.string, malScore: score.string)
+            self.rootNavigationController?.webscrapeCache.setObject(newWebscrapeObject, forKey: type + String(describing: id) as NSString)
+            
+            self.synopsisLabel.text = syn.string
+            self.malScoreLabel.text = score.string
         }
     }
     
