@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class MediaDetailsViewController: UIViewController {
+class MediaDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var mediaNameLabel: UILabel!
     
     @IBOutlet weak var mediaImageView: UIImageView!
@@ -18,6 +18,8 @@ class MediaDetailsViewController: UIViewController {
     
     @IBOutlet weak var synopsisLabel: UILabel!
     @IBOutlet weak var malScoreLabel: UILabel!
+    
+    @IBOutlet weak var tableView: UITableView!
     
     var anime: Anime?
     var manga: Manga?
@@ -34,6 +36,9 @@ class MediaDetailsViewController: UIViewController {
         self.rootNavigationController = self.navigationController as? RootNavigationController
         
         self.mediaNameLabel.text = manga == nil ? anime?.series_title : manga?.series_title
+        
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
         
         if manga == nil {
             // it is anime
@@ -77,6 +82,7 @@ class MediaDetailsViewController: UIViewController {
         
         var synopsis: String?
         var malScore: String?
+        
         let sem = DispatchSemaphore.init(value: 0)
         URLSession.shared.dataTask(with: url) { data, response, error in
             guard let data = data, error == nil else {
@@ -106,7 +112,7 @@ class MediaDetailsViewController: UIViewController {
                                                           .characterEncoding: String.Encoding.utf8.rawValue],
                                                 documentAttributes: nil)
             
-            var newMediaObj = MediaDetails(synopsis: syn.string, malScore: score.string)
+            let newMediaObj = MediaDetails(synopsis: syn.string, malScore: score.string)
             self.rootNavigationController?.mediaDetailsCache.setObject(newMediaObj, forKey: type + String(describing: id) as NSString)
             
             self.synopsisLabel.text = syn.string
@@ -339,6 +345,61 @@ class MediaDetailsViewController: UIViewController {
         } else {
             return rootNavigationController?.user?.planToRead
         }
+    }
+    
+    // TableView protocols
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 2
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        var cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier")
+        if cell == nil {
+            cell = UITableViewCell(style: .value1, reuseIdentifier: "reuseIdentifier")
+        }
+        
+        if indexPath.row == 0 {
+            cell?.textLabel?.text = "Episode"
+            cell?.detailTextLabel?.text = "0"
+        } else {
+            cell?.textLabel?.text = "My score"
+            cell?.detailTextLabel?.text = "-"
+        }
+        
+        // set episodes and my score
+        if manga == nil {
+            // is an anime
+            let foundAnime = self.rootNavigationController?.user?.idToAnime[(self.anime?.series_animedb_id)!]
+            if foundAnime != nil {
+                if indexPath.row == 0 {
+                    if foundAnime?.my_watched_episodes == nil {
+                        cell?.detailTextLabel?.text = "0/" + String(describing: (foundAnime?.series_episodes)!)
+                    } else {
+                        cell?.detailTextLabel?.text = String(describing: (foundAnime?.my_watched_episodes)!) + "/" + String(describing: (foundAnime?.series_episodes)!)
+                    }
+                } else {
+                    if foundAnime?.my_score != 0 {
+                        cell?.detailTextLabel?.text = String(describing: (foundAnime?.my_score)!)
+                    }
+                }
+            }
+        } else {
+            let foundManga = self.rootNavigationController?.user?.idToManga[(self.manga?.series_mangadb_id)!]
+            if foundManga != nil {
+                if indexPath.row == 0 {
+                    if foundManga?.my_read_chapters == nil {
+                        cell?.detailTextLabel?.text = "0/" + String(describing: (foundManga?.series_chapters)!)
+                    } else {
+                        cell?.detailTextLabel?.text = String(describing: (foundManga?.my_read_chapters)!) + "/" + String(describing: (foundManga?.series_chapters)!)
+                    }
+                } else {
+                    if foundManga?.my_score != 0 {
+                        cell?.detailTextLabel?.text = String(describing: (foundManga?.my_score)!)
+                    }
+                }
+            }
+        }
+        return cell!
     }
     
     override func didReceiveMemoryWarning() {
