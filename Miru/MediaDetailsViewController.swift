@@ -19,6 +19,11 @@ class MediaDetailsViewController: UIViewController, UITableViewDelegate, UITable
     @IBOutlet weak var synopsisLabel: UILabel!
     @IBOutlet weak var malScoreLabel: UILabel!
     
+    @IBOutlet weak var rankedLabel: UILabel!
+    
+    @IBOutlet weak var popularityLabel: UILabel!
+    
+    
     @IBOutlet weak var tableView: UITableView!
     
     var anime: Anime?
@@ -72,6 +77,8 @@ class MediaDetailsViewController: UIViewController, UITableViewDelegate, UITable
             print("CACHED")
             self.synopsisLabel.text = String(describing: (cacheObj?.synopsis)!)
             self.malScoreLabel.text = String(describing: (cacheObj?.malScore)!)
+            self.rankedLabel.text = String(describing: (cacheObj?.ranked)!)
+            self.popularityLabel.text = String(describing: (cacheObj?.popularity)!)
             return
         }
         
@@ -82,6 +89,8 @@ class MediaDetailsViewController: UIViewController, UITableViewDelegate, UITable
         
         var synopsis: String?
         var malScore: String?
+        var ranked: String?
+        var popularity: String?
         
         let sem = DispatchSemaphore.init(value: 0)
         URLSession.shared.dataTask(with: url) { data, response, error in
@@ -94,6 +103,8 @@ class MediaDetailsViewController: UIViewController, UITableViewDelegate, UITable
             print("\(string)")
             synopsis = string?.slice(from: "<span itemprop=\"description\">", to: "</span>")
             malScore = string?.slice(from: "<span itemprop=\"ratingValue\">", to: "</span>")
+            ranked = string?.slice(from: "<span class=\"dark_text\">Ranked:</span>\n", to: "<sup>")
+            popularity = string?.slice(from: "<span class=\"dark_text\">Popularity:</span>\n", to: "\n</div>")
             sem.signal()
         }.resume()
         
@@ -101,6 +112,8 @@ class MediaDetailsViewController: UIViewController, UITableViewDelegate, UITable
         
         guard let unwrap = synopsis else { return }
         guard let unwrapScore = malScore else { return }
+        guard let unwrapRanked = ranked else { return }
+        guard let unwrapPopularity = popularity else { return }
         do {
             let syn = try! NSAttributedString(data: unwrap.data(using: String.Encoding.utf8)!,
                                                              options: [.documentType: NSAttributedString.DocumentType.html,
@@ -112,11 +125,23 @@ class MediaDetailsViewController: UIViewController, UITableViewDelegate, UITable
                                                           .characterEncoding: String.Encoding.utf8.rawValue],
                                                 documentAttributes: nil)
             
-            let newMediaObj = MediaDetails(synopsis: syn.string, malScore: score.string)
+            let ranked = try! NSAttributedString(data: unwrapRanked.data(using: String.Encoding.utf8)!,
+                                                options: [.documentType: NSAttributedString.DocumentType.html,
+                                                          .characterEncoding: String.Encoding.utf8.rawValue],
+                                                documentAttributes: nil)
+            
+            let popularity = try! NSAttributedString(data: unwrapPopularity.data(using: String.Encoding.utf8)!,
+                                                     options: [.documentType: NSAttributedString.DocumentType.html,
+                                                               .characterEncoding: String.Encoding.utf8.rawValue],
+                                                     documentAttributes: nil)
+            
+            let newMediaObj = MediaDetails(synopsis: syn.string, malScore: score.string, ranked: ranked.string, popularity: popularity.string)
             self.rootNavigationController?.mediaDetailsCache.setObject(newMediaObj, forKey: type + String(describing: id) as NSString)
             
             self.synopsisLabel.text = syn.string
             self.malScoreLabel.text = score.string
+            self.rankedLabel.text = ranked.string
+            self.popularityLabel.text = popularity.string
         }
     }
     

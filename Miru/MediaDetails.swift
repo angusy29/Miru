@@ -16,9 +16,13 @@ import Foundation
 class MediaDetails {
     var synopsis: String?
     var malScore: String?
+    var ranked: String?
+    var popularity: String?
     
-    init(synopsis: String, malScore: String) {
+    init(synopsis: String, malScore: String, ranked: String, popularity: String) {
         self.synopsis = synopsis
         self.malScore = malScore
+        self.ranked = ranked
+        self.popularity = popularity
     }
 }
