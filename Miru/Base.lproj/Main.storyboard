@@ -158,13 +158,13 @@
                                 <items>
                                     <barButtonItem systemItem="cancel" id="AFC-sb-b4Q">
                                         <connections>
-                                            <action selector="pickerCancelPress:" destination="CLk-Zh-vhZ" id="chf-Gb-ThL"/>
+                                            <action selector="pickerCancelPress:" destination="CLk-Zh-vhZ" id="m1Z-9L-XXr"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="WJ8-jU-XMq"/>
                                     <barButtonItem style="plain" systemItem="save" id="rup-HP-1ul">
                                         <connections>
-                                            <action selector="pickerSavePress:" destination="CLk-Zh-vhZ" id="Y8F-3E-EDQ"/>
+                                            <action selector="pickerSavePress:" destination="CLk-Zh-vhZ" id="xn8-b3-0Dk"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
@@ -226,8 +226,8 @@
                     <tabBarItem key="tabBarItem" title="Anime list" image="AnimeTabBarIcon" id="tcs-8a-X2g"/>
                     <connections>
                         <outlet property="horizontalView" destination="wAF-oF-IaM" id="qGg-Ga-s7N"/>
-                        <outlet property="pickerToolbar" destination="Ek7-lB-bxm" id="E7Y-Wg-Fft"/>
-                        <outlet property="pickerView" destination="id0-PS-EaB" id="d73-3J-YHK"/>
+                        <outlet property="pickerToolbar" destination="Ek7-lB-bxm" id="Zx3-Yx-K4U"/>
+                        <outlet property="pickerView" destination="id0-PS-EaB" id="wWN-74-yL4"/>
                         <outlet property="tableView" destination="Oam-iT-Mhu" id="wEp-Lp-C6R"/>
                     </connections>
                 </viewController>
@@ -426,17 +426,56 @@
                                     <constraint firstItem="RGO-no-tix" firstAttribute="top" secondItem="cu1-Hd-HV9" secondAttribute="top" id="zNc-Kk-Uk2"/>
                                 </constraints>
                             </scrollView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yjC-6a-Edl">
+                                <rect key="frame" x="0.0" y="500" width="375" height="49"/>
+                                <items>
+                                    <barButtonItem systemItem="cancel" id="XTF-oo-PjA">
+                                        <connections>
+                                            <action selector="pickerCancelPress:" destination="dWa-5e-HCM" id="Aqg-ya-HJe"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Q7G-bL-QLb"/>
+                                    <barButtonItem style="plain" systemItem="save" id="d99-bn-xwG">
+                                        <connections>
+                                            <action selector="pickerSaveMediaDetailsPress:" destination="dWa-5e-HCM" id="cCJ-jc-raa"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7eC-77-g1J">
+                                <rect key="frame" x="0.0" y="549" width="375" height="175"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="175" id="lTB-DB-YDo"/>
+                                </constraints>
+                            </pickerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="7eC-77-g1J" secondAttribute="bottom" id="0Uk-VB-bGp"/>
+                            <constraint firstItem="7eC-77-g1J" firstAttribute="top" secondItem="yjC-6a-Edl" secondAttribute="bottom" id="0Un-Ix-G4X"/>
                             <constraint firstItem="cu1-Hd-HV9" firstAttribute="leading" secondItem="4Xg-Oq-aZb" secondAttribute="leading" id="4Id-d3-y4t"/>
+                            <constraint firstItem="7eC-77-g1J" firstAttribute="trailing" secondItem="4Xg-Oq-aZb" secondAttribute="trailing" id="74e-vD-CGv"/>
                             <constraint firstAttribute="bottom" secondItem="cu1-Hd-HV9" secondAttribute="bottom" id="EAh-Wq-1Jw"/>
+                            <constraint firstItem="7eC-77-g1J" firstAttribute="leading" secondItem="4Xg-Oq-aZb" secondAttribute="leading" id="ESa-fp-teg"/>
                             <constraint firstItem="cu1-Hd-HV9" firstAttribute="trailing" secondItem="4Xg-Oq-aZb" secondAttribute="trailing" id="FDh-7L-Egu"/>
+                            <constraint firstItem="yjC-6a-Edl" firstAttribute="leading" secondItem="4Xg-Oq-aZb" secondAttribute="leading" id="GUX-YA-hCv"/>
+                            <constraint firstItem="7eC-77-g1J" firstAttribute="top" secondItem="yjC-6a-Edl" secondAttribute="bottom" id="MUa-oj-sMz"/>
                             <constraint firstItem="cu1-Hd-HV9" firstAttribute="trailing" secondItem="4Xg-Oq-aZb" secondAttribute="trailing" id="MXS-zy-6lq"/>
                             <constraint firstItem="cu1-Hd-HV9" firstAttribute="top" secondItem="4Xg-Oq-aZb" secondAttribute="top" id="O2S-x9-RO8"/>
+                            <constraint firstItem="yjC-6a-Edl" firstAttribute="trailing" secondItem="4Xg-Oq-aZb" secondAttribute="trailing" id="SSX-DK-f6r"/>
                             <constraint firstAttribute="bottom" secondItem="cu1-Hd-HV9" secondAttribute="bottom" id="Te1-dQ-p2Y"/>
                             <constraint firstItem="cu1-Hd-HV9" firstAttribute="top" secondItem="4Xg-Oq-aZb" secondAttribute="top" id="Utj-nQ-r5O"/>
+                            <constraint firstAttribute="bottom" secondItem="7eC-77-g1J" secondAttribute="bottom" id="adY-K1-QLR"/>
                             <constraint firstItem="cu1-Hd-HV9" firstAttribute="leading" secondItem="4Xg-Oq-aZb" secondAttribute="leading" id="bvj-vm-RPC"/>
+                            <constraint firstItem="7eC-77-g1J" firstAttribute="top" secondItem="yjC-6a-Edl" secondAttribute="bottom" id="gGz-bA-d83"/>
+                            <constraint firstItem="yjC-6a-Edl" firstAttribute="trailing" secondItem="4Xg-Oq-aZb" secondAttribute="trailing" id="lSI-az-qZd"/>
+                            <constraint firstItem="7eC-77-g1J" firstAttribute="top" secondItem="yjC-6a-Edl" secondAttribute="bottom" id="men-Hb-oDS"/>
+                            <constraint firstItem="yjC-6a-Edl" firstAttribute="trailing" secondItem="4Xg-Oq-aZb" secondAttribute="trailing" id="plk-k4-MgC"/>
+                            <constraint firstItem="yjC-6a-Edl" firstAttribute="leading" secondItem="4Xg-Oq-aZb" secondAttribute="leading" id="rFF-5u-i43"/>
+                            <constraint firstItem="yjC-6a-Edl" firstAttribute="leading" secondItem="4Xg-Oq-aZb" secondAttribute="leading" id="sJw-oZ-tZR"/>
+                            <constraint firstItem="7eC-77-g1J" firstAttribute="trailing" secondItem="4Xg-Oq-aZb" secondAttribute="trailing" id="t9u-fC-32P"/>
+                            <constraint firstItem="7eC-77-g1J" firstAttribute="leading" secondItem="4Xg-Oq-aZb" secondAttribute="leading" id="war-Dt-ZMS"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="4Xg-Oq-aZb"/>
                     </view>
@@ -445,6 +484,8 @@
                         <outlet property="malScoreLabel" destination="my4-3X-T2F" id="s7L-mu-503"/>
                         <outlet property="mediaImageView" destination="pLX-ul-kNK" id="bjw-GY-U3h"/>
                         <outlet property="mediaNameLabel" destination="1ea-VQ-lj1" id="U2r-mT-apE"/>
+                        <outlet property="pickerToolbar" destination="yjC-6a-Edl" id="Z02-ic-5OI"/>
+                        <outlet property="pickerView" destination="7eC-77-g1J" id="eaE-Ji-eTf"/>
                         <outlet property="popularityLabel" destination="18s-Bb-aXd" id="8DR-hw-EJc"/>
                         <outlet property="rankedLabel" destination="4KE-iK-8d3" id="TQ5-Cm-kch"/>
                         <outlet property="synopsisLabel" destination="W85-VV-DVS" id="LtI-g8-7ur"/>
@@ -617,13 +658,13 @@
                                         <items>
                                             <barButtonItem title="Item" systemItem="cancel" id="lj8-6o-VJp">
                                                 <connections>
-                                                    <action selector="pickerCancelPress:" destination="G6L-v0-fer" id="Unr-hK-698"/>
+                                                    <action selector="pickerCancelPress:" destination="G6L-v0-fer" id="ZWO-ck-mOz"/>
                                                 </connections>
                                             </barButtonItem>
                                             <barButtonItem style="plain" systemItem="flexibleSpace" id="qU1-bN-3aL"/>
                                             <barButtonItem style="plain" systemItem="save" id="jWd-9O-A8f">
                                                 <connections>
-                                                    <action selector="pickerSavePress:" destination="G6L-v0-fer" id="0Vg-gJ-Jug"/>
+                                                    <action selector="pickerSavePress:" destination="G6L-v0-fer" id="NpC-b0-5S2"/>
                                                 </connections>
                                             </barButtonItem>
                                         </items>
@@ -668,8 +709,8 @@
                     <tabBarItem key="tabBarItem" title="Manga list" image="MangaTabBarIcon" id="heO-3n-XOZ"/>
                     <connections>
                         <outlet property="horizontalView" destination="Le8-tX-nk2" id="tbA-VR-C4f"/>
-                        <outlet property="pickerToolbar" destination="KaD-9j-dnR" id="xAZ-U0-4fS"/>
-                        <outlet property="pickerView" destination="mfw-dD-1RM" id="yb2-Qn-P6d"/>
+                        <outlet property="pickerToolbar" destination="KaD-9j-dnR" id="Iem-7a-okR"/>
+                        <outlet property="pickerView" destination="mfw-dD-1RM" id="w2G-ok-zfH"/>
                         <outlet property="tableView" destination="CqE-ds-2FT" id="vWJ-ao-h7o"/>
                     </connections>
                 </viewController>
@@ -1081,6 +1122,6 @@
         <image name="Wallpaper" width="736" height="1308"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="tK9-Px-ITK"/>
+        <segue reference="Qle-ZQ-SJv"/>
     </inferredMetricsTieBreakers>
 </document>

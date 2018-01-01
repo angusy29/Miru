@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class MediaDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class MediaDetailsViewController: EpisodeChapterPickerView, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var mediaNameLabel: UILabel!
     
     @IBOutlet weak var mediaImageView: UIImageView!
@@ -26,8 +26,6 @@ class MediaDetailsViewController: UIViewController, UITableViewDelegate, UITable
     
     @IBOutlet weak var tableView: UITableView!
     
-    var anime: Anime?
-    var manga: Manga?
     var rootNavigationController: RootNavigationController?
     
     override func viewDidAppear(_ animated: Bool) {
@@ -44,6 +42,8 @@ class MediaDetailsViewController: UIViewController, UITableViewDelegate, UITable
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        
+        hidePickerView()
         
         if manga == nil {
             // it is anime
@@ -64,7 +64,7 @@ class MediaDetailsViewController: UIViewController, UITableViewDelegate, UITable
                 setAddToListToMove()
             }
         }
-        
+
         DispatchQueue.main.async {
             let cacheObj = self.manga == nil ? self.rootNavigationController?.mediaDetailsCache.object(forKey: "anime" + String(describing: (self.anime?.series_animedb_id)!) as NSString) : self.rootNavigationController?.mediaDetailsCache.object(forKey: "manga" + String(describing: (self.manga?.series_mangadb_id)!) as NSString)
             let type = self.manga == nil ? "anime" : "manga"
@@ -425,6 +425,30 @@ class MediaDetailsViewController: UIViewController, UITableViewDelegate, UITable
             }
         }
         return cell!
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("HELLO")
+        if indexPath.row == 0 {
+            // episode
+            if manga == nil {
+                guard let anime = self.anime else { return }
+                showPickerView(anime: anime, cell: self.tableView.cellForRow(at: indexPath)!, type: MiruGlobals.CHANGE_EPISODE_OR_CHAPTER)
+            } else {
+                guard let manga = self.manga else { return }
+                showPickerView(manga: manga, cell: self.tableView.cellForRow(at: indexPath)!, type: MiruGlobals.CHANGE_EPISODE_OR_CHAPTER)
+            }
+        } else {
+            // my score
+            // episode
+            if manga == nil {
+                guard let anime = self.anime else { return }
+                showPickerView(anime: anime, cell: self.tableView.cellForRow(at: indexPath)!, type: MiruGlobals.CHANGE_SCORE)
+            } else {
+                guard let manga = self.manga else { return }
+                showPickerView(manga: manga, cell: self.tableView.cellForRow(at: indexPath)!, type: MiruGlobals.CHANGE_SCORE)
+            }
+        }
     }
     
     override func didReceiveMemoryWarning() {

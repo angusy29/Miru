@@ -10,12 +10,12 @@ import EHHorizontalSelectionView
 import Foundation
 import UIKit
 
-class ListViewController: UIViewController, EHHorizontalSelectionViewProtocol, XMLParserDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
+class ListViewController: EpisodeChapterPickerView, EHHorizontalSelectionViewProtocol, XMLParserDelegate {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var horizontalView: EHHorizontalSelectionView!
     
-    @IBOutlet weak var pickerView: UIPickerView!
-    @IBOutlet weak var pickerToolbar: UIToolbar!
+    // @IBOutlet weak var pickerView: UIPickerView!
+    // @IBOutlet weak var pickerToolbar: UIToolbar!
         
     // horizontal view states
     var states = [MiruGlobals.WATCHING_OR_READING,
@@ -26,23 +26,23 @@ class ListViewController: UIViewController, EHHorizontalSelectionViewProtocol, X
     var selectedState = MiruGlobals.WATCHING_OR_READING
     
     // picker view selected item
-    var selectedPickerViewItem: Int?
+    // var selectedPickerViewItem: Int?
     
     // XML parsing variables
     var currentXMLElement: String?   // xml element we are looking at in XML file eg. <my_status>
     var type: String?
     
     // picker view data source
-    var scores = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    /*var scores = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     var scoreString = ["-", "(1) Appalling", "(2) Horrible", "(3) Very bad", "(4) Bad", "(5) Average", "(6) Fine", "(7) Good", "(8) Very good", "(9) Great", "(10) Masterpiece"]
-    var episodesOrChapters = [Int]()
+    var episodesOrChapters = [Int]()*/
     
     // Used for changing scores for the anime/manga
     // this is actually so bad practice.....
-    var anime: Anime?
+    /*var anime: Anime?
     var manga: Manga?
     var cell: TableViewSeriesCell?      // cell to modify
-    var pickerViewModifyType: Int?   // "score" or "episode", denotes which one to change in pickerview
+    var pickerViewModifyType: Int?   // "score" or "episode", denotes which one to change in pickerview*/
     
     var rootNavigationController: RootNavigationController?
     
@@ -77,10 +77,7 @@ class ListViewController: UIViewController, EHHorizontalSelectionViewProtocol, X
         refreshControl.addTarget(self, action: #selector(refreshList), for: .valueChanged)
         refreshControl.attributedTitle = NSAttributedString(string: "Fetching data from myanimelist.net")
         tableView.refreshControl = refreshControl
-        
-        // picker view initialise
-        self.pickerView.delegate = self
-        self.pickerView.dataSource = self
+
         hidePickerView()
     }
     
@@ -175,7 +172,7 @@ class ListViewController: UIViewController, EHHorizontalSelectionViewProtocol, X
     }
     
     // PickerView protocol
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+    /*func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
@@ -329,7 +326,7 @@ class ListViewController: UIViewController, EHHorizontalSelectionViewProtocol, X
         self.pickerToolbar.isHidden = true
         self.pickerView.isHidden = true
         self.tabBarController?.tabBar.isHidden = false
-    }
+    }*/
     
     func titleForItem(at index: UInt, forHorisontalSelection hSelView: EHHorizontalSelectionView) -> String? {
         if self.states[Int(index)] == MiruGlobals.WATCHING_OR_READING {
