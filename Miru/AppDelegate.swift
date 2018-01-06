@@ -7,12 +7,13 @@
 //
 
 import UIKit
+import SwiftKeychainWrapper
+import MalKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -31,6 +32,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+        /*guard let retrieveUsername = KeychainWrapper.standard.string(forKey: "malUser") else { return }
+        guard let retrievePassword = KeychainWrapper.standard.string(forKey: "malPass") else { return }
+        
+        let loginVC = window?.rootViewController as! LoginViewController
+        loginVC.usernameInput.text = retrieveUsername
+        loginVC.passwordInput.text = retrievePassword
+        loginVC.loginAuthenticate()*/
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {

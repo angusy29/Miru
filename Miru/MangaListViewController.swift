@@ -146,6 +146,7 @@ class MangaListViewController: ListViewController, UINavigationBarDelegate, UITa
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // create a new cell if needed or reuse an old one
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "TableViewSeriesCell") as! TableViewSeriesCell
+        cell.delegate = self
         
         // set the text from the data model
         let selectedMangaArray = getSelectedMangaArray()

@@ -10,7 +10,7 @@ import EHHorizontalSelectionView
 import Foundation
 import UIKit
 
-class ListViewController: EpisodeChapterPickerView, EHHorizontalSelectionViewProtocol, XMLParserDelegate {
+class ListViewController: EpisodeChapterPickerView, EHHorizontalSelectionViewProtocol, XMLParserDelegate, TableViewSeriesCellProtocol {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var horizontalView: EHHorizontalSelectionView!
     
@@ -62,6 +62,7 @@ class ListViewController: EpisodeChapterPickerView, EHHorizontalSelectionViewPro
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("VIEW DID LOAD")
         self.navigationController?.navigationBar.prefersLargeTitles = true
         
         self.rootNavigationController = self.navigationController as? RootNavigationController
@@ -340,5 +341,13 @@ class ListViewController: EpisodeChapterPickerView, EHHorizontalSelectionViewPro
         } else {
             return "Plan to watch"
         }
+    }
+    
+    func isUpdating() {
+        Util.showLoading(vc: self, message: "Updating...")
+    }
+    
+    func finishUpdating() {
+        Util.dismissLoading(vc: self)
     }
 }

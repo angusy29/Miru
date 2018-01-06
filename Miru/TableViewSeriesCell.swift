@@ -25,13 +25,15 @@ class TableViewSeriesCell: UITableViewCell {
     var anime: Anime?       // if nil, this cell is manga
     var manga: Manga?       // if nil, this cell is anime
     
-    
+    var delegate: TableViewSeriesCellProtocol!
+
     // increments the chapter or episode
     @IBAction func incEpisode(_ sender: Any) {
         guard let watchedEpisodes = anime?.my_watched_episodes else { return }
         guard let id = anime?.series_animedb_id else { return }
         let nextEpisode = watchedEpisodes + 1
         
+        self.delegate.isUpdating()
         malkit.updateAnime(id, params:["episode": nextEpisode], completionHandler: { (result, status, err) in
             //20 is anime_id
             //result is Bool
@@ -39,11 +41,13 @@ class TableViewSeriesCell: UITableViewCell {
             //your process
             if (result!) {
                 self.anime?.my_watched_episodes = self.anime?.my_watched_episodes.map({ $0 + 1 })
-
+                self.delegate.finishUpdating()
                 DispatchQueue.main.async {
                     let numCompletedTitle = self.anime?.series_episodes! == 0 ? String(describing: nextEpisode) : String(describing: nextEpisode) + "/" + String(describing: (self.anime?.series_episodes)!)
                     self.numCompleted.setTitle(numCompletedTitle, for: UIControlState.normal)
                 }
+            } else {
+                self.delegate.finishUpdating()
             }
         })
     }
@@ -53,6 +57,7 @@ class TableViewSeriesCell: UITableViewCell {
         guard let id = manga?.series_mangadb_id else { return }
         let nextChapter = readChapters + 1
         
+        self.delegate.isUpdating()
         malkit.updateManga(id, params:["chapter": nextChapter], completionHandler: { (result, status, err) in
             //20 is manga_id
             //result is Bool
@@ -60,11 +65,13 @@ class TableViewSeriesCell: UITableViewCell {
             //your process
             if (result!) {
                 self.manga?.my_read_chapters = self.manga?.my_read_chapters.map({ $0 + 1 })
-
+                self.delegate.finishUpdating()
                 DispatchQueue.main.async {
                     let numCompletedTitle = self.manga?.series_chapters! == 0 ? String(describing: nextChapter) : String(describing: nextChapter) + "/" + String(describing: (self.manga?.series_chapters)!)
                     self.numCompleted.setTitle(numCompletedTitle, for: UIControlState.normal)
                 }
+            } else {
+                self.delegate.finishUpdating()
             }
         })
     }

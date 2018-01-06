@@ -100,4 +100,20 @@ class Util {
             }
         }
     }
+    
+    class func showLoading(vc: UIViewController, message: String) {
+        let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        
+        let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
+        loadingIndicator.hidesWhenStopped = true
+        loadingIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
+        loadingIndicator.startAnimating();
+        
+        alert.view.addSubview(loadingIndicator)
+        vc.present(alert, animated: true, completion: nil)
+    }
+    
+    class func dismissLoading(vc: UIViewController) {
+        vc.dismiss(animated: false, completion: nil)
+    }
 }

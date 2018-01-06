@@ -128,6 +128,7 @@ class EpisodeChapterPickerView: UIViewController, UIPickerViewDataSource, UIPick
     // save press on anime list/manga list
     @IBAction func pickerSavePress(_ sender: Any) {
         let tableCell = self.cell as? TableViewSeriesCell
+        tableCell?.delegate.isUpdating()
         if pickerViewModifyType == MiruGlobals.CHANGE_SCORE {
             guard let score = self.selectedPickerViewItem else { return }
             if self.manga == nil {
@@ -138,6 +139,7 @@ class EpisodeChapterPickerView: UIViewController, UIPickerViewDataSource, UIPick
                         DispatchQueue.main.async {
                             let scoreTitle = score == 0 ? "-" : String(describing: score)
                             tableCell?.myScore.setTitle(scoreTitle, for: UIControlState.normal)
+                            tableCell?.delegate.finishUpdating()
                         }
                         self.anime?.my_score = score
                     }
@@ -150,6 +152,7 @@ class EpisodeChapterPickerView: UIViewController, UIPickerViewDataSource, UIPick
                         DispatchQueue.main.async {
                             let scoreTitle = score == 0 ? "-" : String(describing: score)
                             tableCell?.myScore.setTitle(scoreTitle, for: UIControlState.normal)
+                            tableCell?.delegate.finishUpdating()
                         }
                         self.manga?.my_score = score
                     }
@@ -166,6 +169,7 @@ class EpisodeChapterPickerView: UIViewController, UIPickerViewDataSource, UIPick
                         DispatchQueue.main.async {
                             let numCompletedTitle = anime.series_episodes! == 0 ? String(describing: anime.my_watched_episodes!) : String(describing: anime.my_watched_episodes!) + "/" + String(describing: anime.series_episodes!)
                             tableCell?.numCompleted.setTitle(numCompletedTitle, for: UIControlState.normal)
+                            tableCell?.delegate.finishUpdating()
                         }
                         self.anime?.my_watched_episodes = change
                     }
@@ -179,6 +183,7 @@ class EpisodeChapterPickerView: UIViewController, UIPickerViewDataSource, UIPick
                         DispatchQueue.main.async {
                             let numCompletedTitle = manga.series_chapters! == 0 ? String(describing: manga.my_read_chapters!) : String(describing: manga.my_read_chapters!) + "/" + String(describing: manga.series_chapters!)
                             tableCell?.numCompleted.setTitle(numCompletedTitle, for: UIControlState.normal)
+                            tableCell?.delegate.finishUpdating()
                         }
                         self.manga?.my_read_chapters = change
                     }

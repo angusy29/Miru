@@ -87,6 +87,7 @@ class MediaDetailsViewController: EpisodeChapterPickerView, UITableViewDelegate,
         let url = manga == nil ? URL(string: "https://myanimelist.net/anime/" + String(describing: id))! :
             URL(string: "https://myanimelist.net/manga/" + String(describing: id))!
         
+        print(url)
         var synopsis: String?
         var malScore: String?
         var ranked: String?
@@ -103,8 +104,8 @@ class MediaDetailsViewController: EpisodeChapterPickerView, UITableViewDelegate,
             print("\(string)")
             synopsis = string?.slice(from: "<span itemprop=\"description\">", to: "</span>")
             malScore = string?.slice(from: "<span itemprop=\"ratingValue\">", to: "</span>")
-            ranked = string?.slice(from: "<span class=\"dark_text\">Ranked:</span>\n", to: "<sup>")
-            popularity = string?.slice(from: "<span class=\"dark_text\">Popularity:</span>\n", to: "\n</div>")
+            ranked = string?.slice(from: "<span class=\"dark_text\">Ranked:</span>", to: "<sup>")
+            popularity = string?.slice(from: "<span class=\"dark_text\">Popularity:</span>", to: "\n</div>")
             sem.signal()
         }.resume()
         
@@ -232,20 +233,25 @@ class MediaDetailsViewController: EpisodeChapterPickerView, UITableViewDelegate,
     
     func updateOrAddMedia(isInList: Bool, anime: Anime?, type: Int) {
         print("UPDATE OR ADD")
+        Util.showLoading(vc: self, message: "Updating...")
         if isInList {
             self.updateMedia(anime: anime, type: type)
         } else {
             self.addMediaToList(anime: anime, type: type)
         }
+        Util.dismissLoading(vc: self)
         self.rootNavigationController?.didChange = true
     }
     
     func updateOrAddMedia(isInList: Bool, manga: Manga?, type: Int) {
+        Util.showLoading(vc: self, message: "Updating...")
         if isInList {
             self.updateMedia(manga: manga, type: type)
         } else {
             self.addMediaToList(manga: manga, type: type)
         }
+        Util.dismissLoading(vc: self)
+        self.rootNavigationController?.didChange = true
     }
     
     // Post request to MAL to add the media to list
