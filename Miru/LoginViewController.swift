@@ -16,6 +16,19 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var usernameInput: UITextField!
     @IBOutlet weak var passwordInput: UITextField!
     
+    var defaults = UserDefaults.standard
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if defaults.bool(forKey: "miruIsLoggedIn") {
+            guard let retrieveUsername = KeychainWrapper.standard.string(forKey: "malUser") else { return }
+            guard let retrievePassword = KeychainWrapper.standard.string(forKey: "malPass") else { return }
+            usernameInput.text = retrieveUsername
+            passwordInput.text = retrievePassword
+            loginAuthenticate()
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -35,12 +48,13 @@ class LoginViewController: UIViewController {
         guard let username = usernameInput.text else { return }
         guard let password = passwordInput.text else { return }
 
-        let saveUsername = KeychainWrapper.standard.set(username, forKey: "malUser")
-        let savePassword = KeychainWrapper.standard.set(password, forKey: "malPass")
+        let _ = KeychainWrapper.standard.set(username, forKey: "miruUser")
+        let _ = KeychainWrapper.standard.set(password, forKey: "miruPass")
         
         malkit.setUserData(userId: username, passwd: password)
         malkit.verifyCredentials(completionHandler: { (result, status, err) in
             if (status?.statusCode == 200) {
+                self.defaults.set(true, forKey: "miruIsLoggedIn")
                 DispatchQueue.main.sync(execute: {
                     self.performSegue(withIdentifier: "LoginSuccess", sender: nil)
                 })
