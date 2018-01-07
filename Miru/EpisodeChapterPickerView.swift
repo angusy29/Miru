@@ -65,6 +65,7 @@ class EpisodeChapterPickerView: UIViewController, UIPickerViewDataSource, UIPick
     
     // save press on media details
     @IBAction func pickerSaveMediaDetailsPress(_ sender: Any) {
+        Util.showLoading(vc: self, message: "Loading...")
         if pickerViewModifyType == MiruGlobals.CHANGE_SCORE {
             guard let score = self.selectedPickerViewItem else { return }
             if self.manga == nil {
@@ -77,6 +78,7 @@ class EpisodeChapterPickerView: UIViewController, UIPickerViewDataSource, UIPick
                             self.cell?.detailTextLabel?.text = scoreTitle
                         }
                         self.anime?.my_score = score
+                        Util.dismissLoading(vc: self)
                     }
                 })
             } else {
@@ -89,6 +91,7 @@ class EpisodeChapterPickerView: UIViewController, UIPickerViewDataSource, UIPick
                             self.cell?.detailTextLabel?.text = scoreTitle
                         }
                         self.manga?.my_score = score
+                        Util.dismissLoading(vc: self)
                     }
                 })
             }
@@ -105,6 +108,7 @@ class EpisodeChapterPickerView: UIViewController, UIPickerViewDataSource, UIPick
                             self.cell?.detailTextLabel?.text = numCompletedTitle
                         }
                         self.anime?.my_watched_episodes = change
+                        Util.dismissLoading(vc: self)
                     }
                 })
             } else {
@@ -118,6 +122,7 @@ class EpisodeChapterPickerView: UIViewController, UIPickerViewDataSource, UIPick
                             self.cell?.detailTextLabel?.text = numCompletedTitle
                         }
                         self.manga?.my_read_chapters = change
+                        Util.dismissLoading(vc: self)
                     }
                 })
             }
@@ -178,7 +183,7 @@ class EpisodeChapterPickerView: UIViewController, UIPickerViewDataSource, UIPick
                 // UPDATE MANGA CHAPTER
                 guard let id = self.manga?.series_mangadb_id else { return }
                 guard let manga = self.manga else { return }
-                malkit.updateAnime(id, params:["chapter": change], completionHandler: { (result, status, err) in
+                malkit.updateManga(id, params:["chapter": change], completionHandler: { (result, status, err) in
                     if (result!) {
                         DispatchQueue.main.async {
                             let numCompletedTitle = manga.series_chapters! == 0 ? String(describing: manga.my_read_chapters!) : String(describing: manga.my_read_chapters!) + "/" + String(describing: manga.series_chapters!)

@@ -19,9 +19,13 @@ class MangaListViewController: ListViewController, UINavigationBarDelegate, UITa
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.        
-        getList(type: "manga")
-        sortMedia(type: "manga")
+        
+        // Do any additional setup after loading the view, typically from a nib.
+        DispatchQueue.main.async {
+            self.getList(type: "manga")
+            self.sortMedia(type: "manga")
+            self.tableView.reloadData()
+        }
         
         self.tableView.register(UINib(nibName: "TableViewSeriesCell", bundle: nil), forCellReuseIdentifier: "TableViewSeriesCell")
         self.tableView.delegate = self

@@ -38,9 +38,7 @@ class LoginViewController: UIViewController {
         let saveUsername = KeychainWrapper.standard.set(username, forKey: "malUser")
         let savePassword = KeychainWrapper.standard.set(password, forKey: "malPass")
         
-        Util.showLoading(vc: self, message: "Logging in...")
         malkit.setUserData(userId: username, passwd: password)
-        Util.dismissLoading(vc: self)
         malkit.verifyCredentials(completionHandler: { (result, status, err) in
             if (status?.statusCode == 200) {
                 DispatchQueue.main.sync(execute: {

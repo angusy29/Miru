@@ -23,8 +23,13 @@ class AnimeListViewController: ListViewController, UINavigationBarDelegate, UITa
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         // make API call
-        getList(type: "anime")
-        sortMedia(type: "anime")
+        
+        DispatchQueue.main.async {
+            self.getList(type: "anime")
+            self.sortMedia(type: "anime")
+            
+            self.tableView.reloadData()            
+        }
         
         self.tableView.register(UINib(nibName: "TableViewSeriesCell", bundle: nil), forCellReuseIdentifier: "TableViewSeriesCell")
         self.tableView.delegate = self
