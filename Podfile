@@ -8,4 +8,5 @@ target 'Miru' do
   # Pods for Miru
   pod 'MalKit'
   pod 'EHHorizontalSelectionView', '~> 1.3'
+  pod 'SwiftKeychainWrapper'
 end
