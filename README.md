@@ -10,3 +10,12 @@ iOS Unofficial MyAnimeList mobile app.
 * Changing episodes/chapters
 * Browsing myanimelist for anime and manga
 * View own profile page
+
+## Screenshots
+<p align="center">
+    <img src="Screenshots/list.png" width="50%"/>
+    <img src="Screenshots/completed.png" width="50%"/>
+    <img src="Screenshots/info.png" width="50%"/>
+    <img src="Screenshots/browse.png" width="50%"/>
+    <img src="Screenshots/search.png" width="50%"/>
+</p>
