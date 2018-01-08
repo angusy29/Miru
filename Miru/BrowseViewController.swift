@@ -9,13 +9,13 @@
 import UIKit
 import Foundation
 
-class BrowseViewController: UIViewController, UISearchResultsUpdating, UISearchBarDelegate, XMLParserDelegate, UITableViewDelegate, UITableViewDataSource {
+class BrowseViewController: UIViewController, UISearchResultsUpdating, UISearchBarDelegate, XMLParserDelegate, UITableViewDelegate, UITableViewDataSource, UICollectionViewDataSource, UICollectionViewDelegate {
     var animeSearchResults = [Anime]()
     var mangaSearchResults = [Manga]()
     
-    @IBOutlet weak var searchResultTableView: UITableView!
+    var searchResultTableViewController: UITableViewController!
     
-    let searchController = UISearchController(searchResultsController: nil)
+    var searchController: UISearchController?
 
     // XML parsing attributes
     var currentXMLElement: String?
@@ -24,6 +24,12 @@ class BrowseViewController: UIViewController, UISearchResultsUpdating, UISearchB
     
     var imageCache = NSCache<NSString, UIImage>()
     var searchType: Int?        // MiruGlobal.ANIME or MiruGlobals.MANGA
+    
+    @IBOutlet weak var mostPopularAnimeCollection: UICollectionView!
+    
+    @IBOutlet weak var topAiringAnimeCollection: UICollectionView!
+    
+    @IBOutlet weak var topUpcomingAnimeCollection: UICollectionView!
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -43,38 +49,70 @@ class BrowseViewController: UIViewController, UISearchResultsUpdating, UISearchB
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        searchResultTableViewController = (self.storyboard?.instantiateViewController(withIdentifier: "SearchResultTableViewController"))! as! UITableViewController
+        searchController = UISearchController(searchResultsController: searchResultTableViewController)
  
         // set up search controller
-        searchController.searchResultsUpdater = self
-        searchController.searchBar.scopeButtonTitles = ["Anime", "Manga"]
-        searchController.searchBar.delegate = self
-        searchController.searchBar.searchBarStyle = UISearchBarStyle.minimal
-        searchController.searchBar.placeholder = "Search"
-        searchController.searchBar.tintColor = UIColor.white
+        searchController?.searchResultsUpdater = self
+        searchController?.searchBar.scopeButtonTitles = ["Anime", "Manga"]
+        searchController?.searchBar.delegate = self
+        searchController?.searchBar.searchBarStyle = UISearchBarStyle.minimal
+        searchController?.searchBar.placeholder = "Search"
+        searchController?.searchBar.tintColor = UIColor.white
         
-        self.searchResultTableView.register(UINib(nibName: "TableViewSeriesCell", bundle: nil), forCellReuseIdentifier: "TableViewSeriesCell")
-        self.searchResultTableView.delegate = self
-        self.searchResultTableView.dataSource = self
+        self.searchResultTableViewController.tableView.register(UINib(nibName: "TableViewSeriesCell", bundle: nil), forCellReuseIdentifier: "TableViewSeriesCell")
+        self.searchResultTableViewController.tableView.delegate = self
+        self.searchResultTableViewController.tableView.dataSource = self
+
+        self.mostPopularAnimeCollection.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "collectionViewCell")
+        self.mostPopularAnimeCollection.delegate = self
+        self.mostPopularAnimeCollection.dataSource = self
+
+        self.topUpcomingAnimeCollection.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "collectionViewCell")
+        self.topUpcomingAnimeCollection.delegate = self
+        self.topUpcomingAnimeCollection.dataSource = self
         
+        self.topAiringAnimeCollection.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "collectionViewCell")
+        self.topAiringAnimeCollection.delegate = self
+        self.topAiringAnimeCollection.dataSource = self
+        
+        searchHomePageMAL()
     }
     
-    func updateSearchResults(for searchController: UISearchController) {
-        // print("Update")
-        // do nothing
+    func searchHomePageMAL() {
+        let url = URL(string: "https://myanimelist.net")
         
+        guard let unwrapURL = url else { return }
+        
+        let sem = DispatchSemaphore.init(value: 0)
+        URLSession.shared.dataTask(with: unwrapURL) { data, response, error in
+            guard let data = data, error == nil else {
+                print("\(error)")
+                return
+            }
+            
+            var string = String(data: data, encoding: .utf8)
+            var popularRanking = string?.slice(from: "<div class=\"widget popular_ranking right\">", to: "</div>")
+            sem.signal()
+        }.resume()
+        sem.wait()
+    }
+    
+    // On typing, this gets called to change the colour of the search bar text, because default is black
+    func updateSearchResults(for searchController: UISearchController) {
         let textFieldInsideSearchBar = searchController.searchBar.value(forKey: "searchField") as? UITextField
         textFieldInsideSearchBar?.textColor = UIColor.white
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        guard let searchText = self.searchController.searchBar.text else { return }
+        guard let searchText = self.searchController?.searchBar.text else { return }
         if (searchText.count < 3) {
             // need to let user know to input more than 3 chars
             return
         }
         
-        searchType = self.searchController.searchBar.selectedScopeButtonIndex
-        if searchController.searchBar.selectedScopeButtonIndex == MiruGlobals.ANIME {
+        searchType = self.searchController?.searchBar.selectedScopeButtonIndex
+        if searchController?.searchBar.selectedScopeButtonIndex == MiruGlobals.ANIME {
             let sem = DispatchSemaphore(value: 0)
             // search for anime
             malkit.searchAnime(searchText, completionHandler: { (items, status, err) in
@@ -94,9 +132,9 @@ class BrowseViewController: UIViewController, UISearchResultsUpdating, UISearchB
                 }
             })
             sem.wait()
-            self.searchResultTableView.reloadData()
+            self.searchResultTableViewController.tableView.reloadData()
 
-        } else if searchController.searchBar.selectedScopeButtonIndex == MiruGlobals.MANGA {
+        } else if searchController?.searchBar.selectedScopeButtonIndex == MiruGlobals.MANGA {
             // search for manga
             let sem = DispatchSemaphore(value: 0)
 
@@ -118,9 +156,9 @@ class BrowseViewController: UIViewController, UISearchResultsUpdating, UISearchB
             })
             sem.wait()
             
-            self.searchResultTableView.reloadData()
+            self.searchResultTableViewController.tableView.reloadData()
         }
-        searchController.searchBar.resignFirstResponder()
+        searchController?.searchBar.resignFirstResponder()
     }
     
     func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
@@ -230,7 +268,7 @@ class BrowseViewController: UIViewController, UISearchResultsUpdating, UISearchB
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // create a new cell if needed or reuse an old one
-        let cell = self.searchResultTableView.dequeueReusableCell(withIdentifier: "TableViewSeriesCell") as! TableViewSeriesCell
+        let cell = self.searchResultTableViewController.tableView.dequeueReusableCell(withIdentifier: "TableViewSeriesCell") as! TableViewSeriesCell
         
         if (searchType == MiruGlobals.ANIME) {
             cell.title.text = animeSearchResults[indexPath.row].series_title
@@ -284,6 +322,16 @@ class BrowseViewController: UIViewController, UISearchResultsUpdating, UISearchB
         }
         
         self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 10
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionViewCell", for: indexPath)
+        cell.backgroundColor = UIColor.black
+        return cell
     }
     
     override func didReceiveMemoryWarning() {
