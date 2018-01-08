@@ -8,7 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		3304180AA0AEBED579CDFCA6 /* Pods_Miru.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF0BF946466754992A97F8B6 /* Pods_Miru.framework */; };
-		8A3D3C831FE38348000D2573 /* TableViewSeriesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3D3C821FE38348000D2573 /* TableViewSeriesCell.swift */; };
+		8A4DCF4F20043398005D0DC6 /* RootNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DCF4320043398005D0DC6 /* RootNavigationController.swift */; };
+		8A4DCF5020043398005D0DC6 /* TableViewSeriesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DCF4420043398005D0DC6 /* TableViewSeriesCell.swift */; };
+		8A4DCF5120043398005D0DC6 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DCF4520043398005D0DC6 /* User.swift */; };
+		8A4DCF5220043398005D0DC6 /* UserStatisticsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DCF4620043398005D0DC6 /* UserStatisticsTableView.swift */; };
+		8A4DCF5320043398005D0DC6 /* BrowseCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A4DCF4720043398005D0DC6 /* BrowseCollectionViewCell.xib */; };
+		8A4DCF5420043398005D0DC6 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DCF4820043398005D0DC6 /* ListViewController.swift */; };
+		8A4DCF5520043398005D0DC6 /* BrowseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DCF4920043398005D0DC6 /* BrowseCollectionViewCell.swift */; };
+		8A4DCF5620043398005D0DC6 /* MediaDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DCF4A20043398005D0DC6 /* MediaDetailsViewController.swift */; };
+		8A4DCF5720043398005D0DC6 /* MediaDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DCF4B20043398005D0DC6 /* MediaDetails.swift */; };
+		8A4DCF5820043398005D0DC6 /* TableViewSeriesCellProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DCF4C20043398005D0DC6 /* TableViewSeriesCellProtocol.swift */; };
+		8A4DCF5920043398005D0DC6 /* EpisodeChapterPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DCF4D20043398005D0DC6 /* EpisodeChapterPickerView.swift */; };
+		8A4DCF5A20043398005D0DC6 /* TableViewSeriesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A4DCF4E20043398005D0DC6 /* TableViewSeriesCell.xib */; };
 		8A5D59001FE0B92E00304B91 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5D58FF1FE0B92E00304B91 /* AppDelegate.swift */; };
 		8A5D59021FE0B92E00304B91 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5D59011FE0B92E00304B91 /* LoginViewController.swift */; };
 		8A5D59051FE0B92E00304B91 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8A5D59031FE0B92E00304B91 /* Main.storyboard */; };
@@ -27,7 +38,18 @@
 
 /* Begin PBXFileReference section */
 		0D339C64A2D27B2D5418B6F6 /* Pods-Miru.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Miru.release.xcconfig"; path = "Pods/Target Support Files/Pods-Miru/Pods-Miru.release.xcconfig"; sourceTree = "<group>"; };
-		8A3D3C821FE38348000D2573 /* TableViewSeriesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewSeriesCell.swift; sourceTree = "<group>"; };
+		8A4DCF4320043398005D0DC6 /* RootNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootNavigationController.swift; sourceTree = "<group>"; };
+		8A4DCF4420043398005D0DC6 /* TableViewSeriesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewSeriesCell.swift; sourceTree = "<group>"; };
+		8A4DCF4520043398005D0DC6 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		8A4DCF4620043398005D0DC6 /* UserStatisticsTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserStatisticsTableView.swift; sourceTree = "<group>"; };
+		8A4DCF4720043398005D0DC6 /* BrowseCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BrowseCollectionViewCell.xib; sourceTree = "<group>"; };
+		8A4DCF4820043398005D0DC6 /* ListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
+		8A4DCF4920043398005D0DC6 /* BrowseCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowseCollectionViewCell.swift; sourceTree = "<group>"; };
+		8A4DCF4A20043398005D0DC6 /* MediaDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaDetailsViewController.swift; sourceTree = "<group>"; };
+		8A4DCF4B20043398005D0DC6 /* MediaDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaDetails.swift; sourceTree = "<group>"; };
+		8A4DCF4C20043398005D0DC6 /* TableViewSeriesCellProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewSeriesCellProtocol.swift; sourceTree = "<group>"; };
+		8A4DCF4D20043398005D0DC6 /* EpisodeChapterPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EpisodeChapterPickerView.swift; sourceTree = "<group>"; };
+		8A4DCF4E20043398005D0DC6 /* TableViewSeriesCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableViewSeriesCell.xib; sourceTree = "<group>"; };
 		8A5D58FC1FE0B92E00304B91 /* Miru.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Miru.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A5D58FF1FE0B92E00304B91 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8A5D59011FE0B92E00304B91 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -98,22 +120,33 @@
 		8A5D58FE1FE0B92E00304B91 /* Miru */ = {
 			isa = PBXGroup;
 			children = (
+				8A5D59111FE0C47400304B91 /* Anime.swift */,
+				8AEE73561FE1E3420044B216 /* AnimeListViewController.swift */,
 				8A5D58FF1FE0B92E00304B91 /* AppDelegate.swift */,
+				8A5D59061FE0B92E00304B91 /* Assets.xcassets */,
+				8AEE735A1FE1ECBE0044B216 /* BrowseViewController.swift */,
+				8A5D590B1FE0B92F00304B91 /* Info.plist */,
+				8A5D59081FE0B92E00304B91 /* LaunchScreen.storyboard */,
+				8A4DCF4920043398005D0DC6 /* BrowseCollectionViewCell.swift */,
+				8A4DCF4720043398005D0DC6 /* BrowseCollectionViewCell.xib */,
+				8A4DCF4D20043398005D0DC6 /* EpisodeChapterPickerView.swift */,
+				8A4DCF4820043398005D0DC6 /* ListViewController.swift */,
+				8A4DCF4B20043398005D0DC6 /* MediaDetails.swift */,
+				8A4DCF4A20043398005D0DC6 /* MediaDetailsViewController.swift */,
+				8A4DCF4320043398005D0DC6 /* RootNavigationController.swift */,
+				8A4DCF4420043398005D0DC6 /* TableViewSeriesCell.swift */,
+				8A4DCF4E20043398005D0DC6 /* TableViewSeriesCell.xib */,
+				8A4DCF4C20043398005D0DC6 /* TableViewSeriesCellProtocol.swift */,
+				8A4DCF4520043398005D0DC6 /* User.swift */,
+				8A4DCF4620043398005D0DC6 /* UserStatisticsTableView.swift */,
 				8A5D59011FE0B92E00304B91 /* LoginViewController.swift */,
 				8A5D59031FE0B92E00304B91 /* Main.storyboard */,
-				8A5D59061FE0B92E00304B91 /* Assets.xcassets */,
-				8A5D59081FE0B92E00304B91 /* LaunchScreen.storyboard */,
-				8A5D590B1FE0B92F00304B91 /* Info.plist */,
-				8A5D59111FE0C47400304B91 /* Anime.swift */,
-				8AEE73541FE1DEBE0044B216 /* Util.swift */,
-				8AEE73561FE1E3420044B216 /* AnimeListViewController.swift */,
-				8AEE73581FE1ECA40044B216 /* MangaListViewController.swift */,
-				8AEE735A1FE1ECBE0044B216 /* BrowseViewController.swift */,
-				8AEE735C1FE1ECD30044B216 /* SettingsViewController.swift */,
-				8AEE735E1FE1F2A20044B216 /* MiruGlobals.swift */,
 				8AEE73601FE1F4F60044B216 /* Manga.swift */,
+				8AEE73581FE1ECA40044B216 /* MangaListViewController.swift */,
+				8AEE735E1FE1F2A20044B216 /* MiruGlobals.swift */,
 				8AEE73621FE231AA0044B216 /* ProfileViewController.swift */,
-				8A3D3C821FE38348000D2573 /* TableViewSeriesCell.swift */,
+				8AEE735C1FE1ECD30044B216 /* SettingsViewController.swift */,
+				8AEE73541FE1DEBE0044B216 /* Util.swift */,
 			);
 			path = Miru;
 			sourceTree = "<group>";
@@ -182,6 +215,8 @@
 			files = (
 				8A5D590A1FE0B92E00304B91 /* LaunchScreen.storyboard in Resources */,
 				8A5D59071FE0B92E00304B91 /* Assets.xcassets in Resources */,
+				8A4DCF5320043398005D0DC6 /* BrowseCollectionViewCell.xib in Resources */,
+				8A4DCF5A20043398005D0DC6 /* TableViewSeriesCell.xib in Resources */,
 				8A5D59051FE0B92E00304B91 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -231,11 +266,13 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-Miru/Pods-Miru-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/EHHorizontalSelectionView/EHHorizontalSelectionView.framework",
 				"${BUILT_PRODUCTS_DIR}/MalKit/MalKit.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftKeychainWrapper/SwiftKeychainWrapper.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EHHorizontalSelectionView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MalKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftKeychainWrapper.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -249,17 +286,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A4DCF5420043398005D0DC6 /* ListViewController.swift in Sources */,
 				8A5D59021FE0B92E00304B91 /* LoginViewController.swift in Sources */,
 				8AEE73591FE1ECA40044B216 /* MangaListViewController.swift in Sources */,
 				8AEE73611FE1F4F60044B216 /* Manga.swift in Sources */,
+				8A4DCF5920043398005D0DC6 /* EpisodeChapterPickerView.swift in Sources */,
 				8A5D59001FE0B92E00304B91 /* AppDelegate.swift in Sources */,
 				8AEE735F1FE1F2A20044B216 /* MiruGlobals.swift in Sources */,
+				8A4DCF5220043398005D0DC6 /* UserStatisticsTableView.swift in Sources */,
 				8A5D59121FE0C47400304B91 /* Anime.swift in Sources */,
+				8A4DCF4F20043398005D0DC6 /* RootNavigationController.swift in Sources */,
+				8A4DCF5620043398005D0DC6 /* MediaDetailsViewController.swift in Sources */,
+				8A4DCF5820043398005D0DC6 /* TableViewSeriesCellProtocol.swift in Sources */,
 				8AEE73551FE1DEBE0044B216 /* Util.swift in Sources */,
+				8A4DCF5120043398005D0DC6 /* User.swift in Sources */,
 				8AEE73571FE1E3420044B216 /* AnimeListViewController.swift in Sources */,
+				8A4DCF5520043398005D0DC6 /* BrowseCollectionViewCell.swift in Sources */,
 				8AEE73631FE231AA0044B216 /* ProfileViewController.swift in Sources */,
+				8A4DCF5720043398005D0DC6 /* MediaDetails.swift in Sources */,
 				8AEE735B1FE1ECBE0044B216 /* BrowseViewController.swift in Sources */,
-				8A3D3C831FE38348000D2573 /* TableViewSeriesCell.swift in Sources */,
+				8A4DCF5020043398005D0DC6 /* TableViewSeriesCell.swift in Sources */,
 				8AEE735D1FE1ECD30044B216 /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
