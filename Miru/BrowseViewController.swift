@@ -13,8 +13,9 @@ class BrowseViewController: UIViewController, UISearchResultsUpdating, UISearchB
     var animeSearchResults = [Anime]()
     var mangaSearchResults = [Manga]()
     
-    var popularAnimeList = [String]()       // anime names
-    var popularAnimeImageList = [String]()  // anime images
+    var popularAnimeList = [Anime]()       // anime names
+    var topAiringAnimeList = [Anime]()         // top airing names
+    var topUpcomingAnimeList = [Anime]()
     
     var searchResultTableViewController: UITableViewController!
     
@@ -91,14 +92,6 @@ class BrowseViewController: UIViewController, UISearchResultsUpdating, UISearchB
         let url = URL(string: "https://myanimelist.net")
         
         guard let unwrapURL = url else { return }
-        var popularAnimeRegex = NSRegularExpression()
-        var popularAnimeImage = NSRegularExpression()
-        do {
-            popularAnimeRegex = try NSRegularExpression(pattern: "alt=\"(.+?)\"", options: [])
-            popularAnimeImage = try NSRegularExpression(pattern: "1x, (.*?) 2x", options: [])
-        } catch {
-            
-        }
         
         let sem = DispatchSemaphore.init(value: 0)
         
@@ -110,28 +103,58 @@ class BrowseViewController: UIViewController, UISearchResultsUpdating, UISearchB
             
             var string = String(data: data, encoding: .utf8)
             var popularRanking = string?.slice(from: "<div class=\"widget popular_ranking right\">", to: "</div>")
-            print(popularRanking)
+            var topAiring = string?.slice(from: "<div class=\"widget airing_ranking right\">", to: "</div>")
+            var upcomingRanking = string?.slice(from: "<div class=\"widget upcoming_ranking right\">", to: "</div>")
             guard let unwrapPopular = popularRanking else { return }
+            guard let unwrapTopAiring = topAiring else { return }
+            guard let unwrapUpcoming = upcomingRanking else { return }
             
-            let matches = popularAnimeRegex.matches(in: unwrapPopular, options: [], range: NSRange(location: 0, length: unwrapPopular.utf16.count))
-            let imageMatches = popularAnimeImage.matches(in: unwrapPopular, options: [], range: NSRange(location: 0, length: unwrapPopular.utf16.count))
-            var i = 0
-            for match in matches as [NSTextCheckingResult] {
-                // range at index 0: full match
-                // range at index 1: first capture group
-                let substring = (unwrapPopular as! NSString).substring(with: match.range(at: 1))
-                let imageSubstring = (unwrapPopular as! NSString).substring(with: imageMatches[i].range(at: 1))
-                print(substring)
-                print(imageSubstring)
-                self.popularAnimeList.append(substring)
-                self.popularAnimeImageList.append(imageSubstring)
-                i += 1
-            }
-        
+            self.populateMatches(html: unwrapPopular, type: "popular")
+            self.populateMatches(html: unwrapTopAiring, type: "top_airing")
+            self.populateMatches(html: unwrapUpcoming, type: "upcoming")
             sem.signal()
         }.resume()
         sem.wait()
         self.mostPopularAnimeCollection.reloadData()
+    }
+    
+    func populateMatches(html: String, type: String) {
+        var animeTitleRegex = NSRegularExpression()
+        var animeImageRegex = NSRegularExpression()
+        var animeIdRegex = NSRegularExpression()
+        do {
+            animeTitleRegex = try NSRegularExpression(pattern: "alt=\"(.+?)\"", options: [])
+            animeImageRegex = try NSRegularExpression(pattern: "1x, (.+?) 2x", options: [])
+            animeIdRegex = try NSRegularExpression(pattern: "<a class=\"title\" href=\"https://myanimelist.net/anime/(.+?)/", options: [])
+        } catch {
+            
+        }
+        
+        var matches = animeTitleRegex.matches(in: html, options: [], range: NSRange(location: 0, length: html.utf16.count))
+        var imageMatches = animeImageRegex.matches(in: html, options: [], range: NSRange(location: 0, length: html.utf16.count))
+        var idMatches = animeIdRegex.matches(in: html, options: [], range: NSRange(location: 0, length: html.utf16.count))
+        var i = 0
+        for match in matches as [NSTextCheckingResult] {
+            // range at index 0: full match
+            // range at index 1: first capture group
+            let substring = (html as! NSString).substring(with: match.range(at: 1))
+            let imageSubstring = (html as! NSString).substring(with: imageMatches[i].range(at: 1))
+            let idString = (html as! NSString).substring(with: idMatches[i].range(at: 1))
+
+            let newAnime = Anime()
+            newAnime.series_animedb_id = Int(idString)
+            newAnime.series_title = substring
+            newAnime.series_image = imageSubstring
+            if type == "popular" {
+                self.popularAnimeList.append(newAnime)
+            } else if type == "top_airing" {
+                self.topAiringAnimeList.append(newAnime)
+            } else if type == "upcoming" {
+                self.topUpcomingAnimeList.append(newAnime)
+            }
+            
+            i += 1
+        }
     }
     
     // On typing, this gets called to change the colour of the search bar text, because default is black
@@ -346,7 +369,6 @@ class BrowseViewController: UIViewController, UISearchResultsUpdating, UISearchB
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "MediaDetailsViewController") as! MediaDetailsViewController
         
         if (searchType == MiruGlobals.ANIME) {
@@ -361,16 +383,51 @@ class BrowseViewController: UIViewController, UISearchResultsUpdating, UISearchB
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print(popularAnimeList.count)
-        return popularAnimeList.count
+        if collectionView == mostPopularAnimeCollection {
+            return popularAnimeList.count
+        } else if collectionView == topAiringAnimeCollection {
+            return topAiringAnimeList.count
+        } else {
+            return topUpcomingAnimeList.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BrowseCollectionViewCell", for: indexPath) as! BrowseCollectionViewCell
-        let img = self.rootNavigationController?.imageCache.object(forKey: popularAnimeList[indexPath.row] as NSString)
-        Util.setImage(urlString: popularAnimeImageList[indexPath.row], imageViewToSet: cell.imageView, image: img, cache: (self.rootNavigationController?.imageCache)!)
-        cell.name.text = self.popularAnimeList[indexPath.row]
+        
+        if collectionView == mostPopularAnimeCollection {
+            let img = self.rootNavigationController?.imageCache.object(forKey: popularAnimeList[indexPath.row].series_image as! NSString)
+            Util.setImage(anime: popularAnimeList[indexPath.row], imageViewToSet: cell.imageView, image: img, cache: (self.rootNavigationController?.imageCache)!)
+            cell.name.text = self.popularAnimeList[indexPath.row].series_title
+        } else if collectionView == topAiringAnimeCollection {
+            let img = self.rootNavigationController?.imageCache.object(forKey: topAiringAnimeList[indexPath.row].series_image as! NSString)
+            Util.setImage(anime: topAiringAnimeList[indexPath.row], imageViewToSet: cell.imageView, image: img, cache: (self.rootNavigationController?.imageCache)!)
+            cell.name.text = self.topAiringAnimeList[indexPath.row].series_title
+        } else if collectionView == topUpcomingAnimeCollection {
+            let img = self.rootNavigationController?.imageCache.object(forKey: topUpcomingAnimeList[indexPath.row].series_image as! NSString)
+            Util.setImage(anime: topUpcomingAnimeList[indexPath.row], imageViewToSet: cell.imageView, image: img, cache: (self.rootNavigationController?.imageCache)!)
+            cell.name.text = self.topUpcomingAnimeList[indexPath.row].series_title
+        }
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "MediaDetailsViewController") as! MediaDetailsViewController
+        var animeToPass = Anime()
+        if collectionView == mostPopularAnimeCollection {
+            animeToPass = popularAnimeList[indexPath.row]
+            vc.anime = animeToPass
+        } else if collectionView == topAiringAnimeCollection {
+            animeToPass = topAiringAnimeList[indexPath.row]
+            vc.anime = animeToPass
+        } else if collectionView == topUpcomingAnimeCollection {
+            animeToPass = topUpcomingAnimeList[indexPath.row]
+            vc.anime = animeToPass
+        }
+        print("TEST")
+        print(animeToPass.series_animedb_id)
+        print(animeToPass.series_title)
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     override func didReceiveMemoryWarning() {

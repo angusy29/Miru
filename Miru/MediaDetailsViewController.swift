@@ -9,6 +9,9 @@
 import Foundation
 import UIKit
 
+/*
+ * Only requires anime/manga object with title, image, id for this ViewController to work
+ */
 class MediaDetailsViewController: EpisodeChapterPickerView, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var mediaNameLabel: UILabel!
     
@@ -51,6 +54,7 @@ class MediaDetailsViewController: EpisodeChapterPickerView, UITableViewDelegate,
             Util.setImage(anime: anime, imageViewToSet: mediaImageView, image: img, cache: (rootNavigationController?.imageCache)!)
             
             guard let id = anime?.series_animedb_id else { return }
+            print(id)
             if self.rootNavigationController?.user?.idToAnime[id] != nil {
                 setAddToListToMove()
             }
