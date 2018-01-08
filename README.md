@@ -13,9 +13,9 @@ iOS Unofficial MyAnimeList mobile app.
 
 ## Screenshots
 <p align="center">
-    <img src="Screenshots/list.png" style="width:50%"/>
-    <img src="Screenshots/completed.png" style="width:50%"/>
-    <img src="Screenshots/info.png" style="width:50%"/>
-    <img src="Screenshots/browse.png" style="width:50%"/>
-    <img src="Screenshots/search.png" style="width:50%"/>
+    <img src="Screenshots/list.png" width="30%"/>
+    <img src="Screenshots/completed.png" width="30%"/>
+    <img src="Screenshots/info.png" width="30%"/>
+    <img src="Screenshots/browse.png" width="30%"/>
+    <img src="Screenshots/search.png" width="30%"/>
 </p>
