@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   type = "0"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Miru/TableViewSeriesCell.swift"
+            timestampString = "537099510.852959"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "5"
+            endingLineNumber = "5"
+            landmarkName = "unknown"
+            landmarkType = "0">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Miru.TableViewSeriesCell.__deallocating_deinit"
+                  moduleName = "Miru"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/angusyuen/Documents/XCode/Miru/Miru/TableViewSeriesCell.swift"
+                  timestampString = "535070135.836878"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "4">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Miru.TableViewSeriesCell.__allocating_init(style: __C.UITableViewCellStyle, reuseIdentifier: Swift.Optional&lt;Swift.String&gt;) -&gt; Miru.TableViewSeriesCell"
+                  moduleName = "Miru"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/angusyuen/Documents/XCode/Miru/Miru/TableViewSeriesCell.swift"
+                  timestampString = "535070135.842756"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "13">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Miru.TableViewSeriesCell.init(style: __C.UITableViewCellStyle, reuseIdentifier: Swift.Optional&lt;Swift.String&gt;) -&gt; Miru.TableViewSeriesCell"
+                  moduleName = "Miru"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/angusyuen/Documents/XCode/Miru/Miru/TableViewSeriesCell.swift"
+                  timestampString = "535070135.846043"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "14"
+                  endingLineNumber = "14"
+                  offsetFromSymbolStart = "80">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Miru.TableViewSeriesCell.__allocating_init(coder: __ObjC.NSCoder) -&gt; Swift.Optional&lt;Miru.TableViewSeriesCell&gt;"
+                  moduleName = "Miru"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/angusyuen/Documents/XCode/Miru/Miru/TableViewSeriesCell.swift"
+                  timestampString = "535070135.848524"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "4">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Miru.TableViewSeriesCell.init(coder: __ObjC.NSCoder) -&gt; Swift.Optional&lt;Miru.TableViewSeriesCell&gt;"
+                  moduleName = "Miru"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/angusyuen/Documents/XCode/Miru/Miru/TableViewSeriesCell.swift"
+                  timestampString = "535070135.851364"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "14"
+                  endingLineNumber = "14"
+                  offsetFromSymbolStart = "46">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Miru/MediaDetailsViewController.swift"
+            timestampString = "537090451.655301"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "151"
+            endingLineNumber = "151"
+            landmarkName = "setAddToListToMove()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

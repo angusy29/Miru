@@ -13,6 +13,9 @@ class BrowseViewController: UIViewController, UISearchResultsUpdating, UISearchB
     var animeSearchResults = [Anime]()
     var mangaSearchResults = [Manga]()
     
+    var popularAnimeList = [String]()       // anime names
+    var popularAnimeImageList = [String]()  // anime images
+    
     var searchResultTableViewController: UITableViewController!
     
     var searchController: UISearchController?
@@ -31,6 +34,14 @@ class BrowseViewController: UIViewController, UISearchResultsUpdating, UISearchB
     
     @IBOutlet weak var topUpcomingAnimeCollection: UICollectionView!
     
+    var rootNavigationController: RootNavigationController?
+
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.navigationController?.navigationBar.topItem?.searchController = nil
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.navigationController?.navigationBar.prefersLargeTitles = true
@@ -41,13 +52,10 @@ class BrowseViewController: UIViewController, UISearchResultsUpdating, UISearchB
         self.navigationController?.navigationBar.topItem?.hidesSearchBarWhenScrolling = false
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        self.navigationController?.navigationBar.topItem?.searchController = nil
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.rootNavigationController = self.navigationController as? RootNavigationController
+
         // Do any additional setup after loading the view, typically from a nib.
         searchResultTableViewController = (self.storyboard?.instantiateViewController(withIdentifier: "SearchResultTableViewController"))! as! UITableViewController
         searchController = UISearchController(searchResultsController: searchResultTableViewController)
@@ -64,15 +72,15 @@ class BrowseViewController: UIViewController, UISearchResultsUpdating, UISearchB
         self.searchResultTableViewController.tableView.delegate = self
         self.searchResultTableViewController.tableView.dataSource = self
 
-        self.mostPopularAnimeCollection.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "collectionViewCell")
+        self.mostPopularAnimeCollection.register(UINib.init(nibName: "BrowseCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "BrowseCollectionViewCell")
         self.mostPopularAnimeCollection.delegate = self
         self.mostPopularAnimeCollection.dataSource = self
 
-        self.topUpcomingAnimeCollection.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "collectionViewCell")
+        self.topUpcomingAnimeCollection.register(UINib.init(nibName: "BrowseCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "BrowseCollectionViewCell")
         self.topUpcomingAnimeCollection.delegate = self
         self.topUpcomingAnimeCollection.dataSource = self
         
-        self.topAiringAnimeCollection.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "collectionViewCell")
+        self.topAiringAnimeCollection.register(UINib.init(nibName: "BrowseCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "BrowseCollectionViewCell")
         self.topAiringAnimeCollection.delegate = self
         self.topAiringAnimeCollection.dataSource = self
         
@@ -83,8 +91,17 @@ class BrowseViewController: UIViewController, UISearchResultsUpdating, UISearchB
         let url = URL(string: "https://myanimelist.net")
         
         guard let unwrapURL = url else { return }
+        var popularAnimeRegex = NSRegularExpression()
+        var popularAnimeImage = NSRegularExpression()
+        do {
+            popularAnimeRegex = try NSRegularExpression(pattern: "alt=\"(.+?)\"", options: [])
+            popularAnimeImage = try NSRegularExpression(pattern: "1x, (.*?) 2x", options: [])
+        } catch {
+            
+        }
         
         let sem = DispatchSemaphore.init(value: 0)
+        
         URLSession.shared.dataTask(with: unwrapURL) { data, response, error in
             guard let data = data, error == nil else {
                 print("\(error)")
@@ -93,9 +110,28 @@ class BrowseViewController: UIViewController, UISearchResultsUpdating, UISearchB
             
             var string = String(data: data, encoding: .utf8)
             var popularRanking = string?.slice(from: "<div class=\"widget popular_ranking right\">", to: "</div>")
+            print(popularRanking)
+            guard let unwrapPopular = popularRanking else { return }
+            
+            let matches = popularAnimeRegex.matches(in: unwrapPopular, options: [], range: NSRange(location: 0, length: unwrapPopular.utf16.count))
+            let imageMatches = popularAnimeImage.matches(in: unwrapPopular, options: [], range: NSRange(location: 0, length: unwrapPopular.utf16.count))
+            var i = 0
+            for match in matches as [NSTextCheckingResult] {
+                // range at index 0: full match
+                // range at index 1: first capture group
+                let substring = (unwrapPopular as! NSString).substring(with: match.range(at: 1))
+                let imageSubstring = (unwrapPopular as! NSString).substring(with: imageMatches[i].range(at: 1))
+                print(substring)
+                print(imageSubstring)
+                self.popularAnimeList.append(substring)
+                self.popularAnimeImageList.append(imageSubstring)
+                i += 1
+            }
+        
             sem.signal()
         }.resume()
         sem.wait()
+        self.mostPopularAnimeCollection.reloadData()
     }
     
     // On typing, this gets called to change the colour of the search bar text, because default is black
@@ -325,12 +361,15 @@ class BrowseViewController: UIViewController, UISearchResultsUpdating, UISearchB
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        print(popularAnimeList.count)
+        return popularAnimeList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionViewCell", for: indexPath)
-        cell.backgroundColor = UIColor.black
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BrowseCollectionViewCell", for: indexPath) as! BrowseCollectionViewCell
+        let img = self.rootNavigationController?.imageCache.object(forKey: popularAnimeList[indexPath.row] as NSString)
+        Util.setImage(urlString: popularAnimeImageList[indexPath.row], imageViewToSet: cell.imageView, image: img, cache: (self.rootNavigationController?.imageCache)!)
+        cell.name.text = self.popularAnimeList[indexPath.row]
         return cell
     }
     
