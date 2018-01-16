@@ -138,9 +138,17 @@ class BrowseViewController: UIViewController, UISearchResultsUpdating, UISearchB
             // range at index 0: full match
             // range at index 1: first capture group
             let substring = (html as! NSString).substring(with: match.range(at: 1))
-            let imageSubstring = (html as! NSString).substring(with: imageMatches[i].range(at: 1))
+            var imageSubstring = (html as! NSString).substring(with: imageMatches[i].range(at: 1))
             let idString = (html as! NSString).substring(with: idMatches[i].range(at: 1))
-
+            
+            do {
+                // replace the string for higher quality images
+                let regex = try NSRegularExpression(pattern: "/r/(.+?)/", options: [])
+                imageSubstring = regex.stringByReplacingMatches(in: imageSubstring, options: [], range: NSMakeRange(0, imageSubstring.count), withTemplate: "/")
+            } catch {
+                
+            }
+            
             let newAnime = Anime()
             newAnime.series_animedb_id = Int(idString)
             newAnime.series_title = substring
