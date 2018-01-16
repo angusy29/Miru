@@ -18,6 +18,7 @@ class ProfileViewController: UIViewController {
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationController?.navigationBar.topItem?.title = "Profile"
         // self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.topItem?.rightBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(logout))
     }
     
     override func viewDidLoad() {
@@ -26,10 +27,20 @@ class ProfileViewController: UIViewController {
         print("PROFILE LIST LOAD")
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.navigationController?.navigationBar.topItem?.rightBarButtonItem = nil
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         self.rootNavigationController = self.navigationController as? RootNavigationController
         let destVC = segue.destination as? UserStatisticsTableView
         destVC?.user = self.rootNavigationController?.user
+    }
+    
+    @objc func logout(sender: AnyObject) {
+        UserDefaults.standard.set(false, forKey: "miruIsLoggedIn")
+        self.performSegue(withIdentifier: "LogoutSuccess", sender: self)
     }
     
     override func didReceiveMemoryWarning() {

@@ -18,14 +18,4 @@ class RootNavigationController: UINavigationController {
     var didChange = false
     var imageCache = NSCache<NSString, UIImage>()       // map of image links to the actual image
     var mediaDetailsCache = NSCache<NSString, MediaDetails>()   // map of "anime|manga"+id to synopsis
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        self.navigationBar.topItem?.rightBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(logout))
-    }
-    
-    @objc func logout(sender: AnyObject) {
-        UserDefaults.standard.set(false, forKey: "miruIsLoggedIn")
-        self.performSegue(withIdentifier: "UnwindToLoginViewController", sender: self)
-    }
 }
