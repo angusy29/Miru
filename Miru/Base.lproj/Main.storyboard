@@ -14,7 +14,7 @@
         <!--Login View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="LoginViewController" customModule="Miru" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="LoginViewController" customModule="Miru" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -120,11 +120,13 @@
                     </navigationBar>
                     <connections>
                         <segue destination="z7O-gJ-Cok" kind="relationship" relationship="rootViewController" id="at3-aS-pUC"/>
+                        <segue destination="RHA-8o-ZgF" kind="unwind" identifier="UnwindToLoginViewController" unwindAction="prepareForUnwindWithSegue:" id="0bl-ee-yeq"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t4o-cf-hAu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="RHA-8o-ZgF" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-175" y="907"/>
+            <point key="canvasLocation" x="-426" y="921"/>
         </scene>
         <!--Anime list-->
         <scene sceneID="sa1-3m-CIZ">

@@ -16,12 +16,10 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var usernameInput: UITextField!
     @IBOutlet weak var passwordInput: UITextField!
     
-    var defaults = UserDefaults.standard
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if defaults.bool(forKey: "miruIsLoggedIn") {
+        if UserDefaults.standard.bool(forKey: "miruIsLoggedIn") {
             guard let retrieveUsername = KeychainWrapper.standard.string(forKey: "malUser") else { return }
             guard let retrievePassword = KeychainWrapper.standard.string(forKey: "malPass") else { return }
             usernameInput.text = retrieveUsername
@@ -54,7 +52,7 @@ class LoginViewController: UIViewController {
         malkit.setUserData(userId: username, passwd: password)
         malkit.verifyCredentials(completionHandler: { (result, status, err) in
             if (status?.statusCode == 200) {
-                self.defaults.set(true, forKey: "miruIsLoggedIn")
+                UserDefaults.standard.set(true, forKey: "miruIsLoggedIn")
                 DispatchQueue.main.sync(execute: {
                     self.performSegue(withIdentifier: "LoginSuccess", sender: nil)
                 })
@@ -77,6 +75,10 @@ class LoginViewController: UIViewController {
         // Create a new variable to store the instance of PlayerTableViewController
         let destVC = segue.destination as! RootNavigationController
         destVC.user = user
+    }
+    
+    @IBAction func prepareForUnwind(segue: UIStoryboardSegue) {
+        
     }
 
     //Calls this function when the tap is recognized.
